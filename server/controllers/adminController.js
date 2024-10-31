@@ -6,6 +6,12 @@ export const dashboard = (req,res)=>{
             layout:"./layouts/admin"
         })
 };
+export const home = (req,res)=>{
+    
+        res.render("admin/home",{
+            layout:"./layouts/admin"
+        })
+};
 
 
 
