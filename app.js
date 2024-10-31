@@ -1,5 +1,6 @@
 import express from "express";
-import env from "dotenv";
+import dotenv from "dotenv";
+dotenv.config();
 import expressEjsLayouts from "express-ejs-layouts";
 import adminRoute from "./server/routes/admin.js";
 
@@ -14,7 +15,7 @@ app.set("view engine", "ejs");
 
 
 // routes 
-app.use(adminRoute);
+app.use( adminRoute);
 
 
 
