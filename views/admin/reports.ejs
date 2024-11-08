@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        <!-- Reports Form Section on the left side -->
+        <div class="col-md-6">
+            <section class="section report-form-section">
+                <h2>Send Report to Manager</h2>
+                <form id="reportForm">
+                    <label for="reportTitle">Report Title:</label>
+                    <input type="text" id="reportTitle" name="reportTitle" required placeholder="Enter report title" class="form-control mb-3">
+
+                    <label for="reportContent">Report Content:</label>
+                    <textarea id="reportContent" name="reportContent" rows="6" required placeholder="Enter the details of the report" class="form-control mb-3"></textarea>
+
+                    <button type="submit" class="btn btn-primary">Send Report</button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Reports View Section on the right side -->
+        <div class="col-md-6">
+            <section class="section report-view-section">
+                <h2>Reports Submitted by Workers</h2>
+                <div class="report-list" id="reportList">
+                    <!-- Reports will be displayed here -->
+                    <div class="report-card border p-3 mb-3">
+                        <h3>Report Title</h3>
+                        <p class="report-date">Submitted on: 2024-11-08</p>
+                        <p class="report-content">This is a sample report content sent by a worker.</p>
+                    </div>
+                    <!-- Additional report cards will appear here -->
+                </div>
+            </section>
+        </div>
+    </div>
+</div>

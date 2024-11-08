@@ -20,5 +20,18 @@ export const products = (req,res)=>{
     })
 };
 
+export const about = (req, res) => {
+
+    res.render("admin/about", {
+        layout:"./layouts/admin"
+    })
+}
+
+export const reports = (req, res) => {
+    res.render("admin/reports", {
+        layout:"./layouts/admin"
+    })
+}
+
 
 export default dashboard;
