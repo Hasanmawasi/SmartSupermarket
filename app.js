@@ -15,7 +15,7 @@ app.set("view engine", "ejs");
 
 
 // routes 
-app.use( adminRoute);
+app.use(adminRoute);
 
 
 

@@ -9,11 +9,16 @@ export const dashboard = (req,res)=>{
 export const home = (req,res)=>{
     
         res.render("admin/home",{
-            layout:"./layouts/admin"
+            layout:"./layouts/home"
         })
 };
 
-
+export const products = (req,res)=>{
+    
+    res.render("admin/products",{
+        layout:"./layouts/admin"
+    })
+};
 
 
 export default dashboard;

@@ -1,0 +1,20 @@
+body{
+    height: 89vh !important;
+    background-image: url("/image/cover.jpg") !important;
+    background-repeat: no-repeat; /* Prevents the background from repeating */
+  background-size: cover; /* Makes the image cover the entire background */
+  background-position: center; /* Centers the image */
+}
+.home-title{
+    font-size: 50px;
+    color: black;
+    font-weight: bolder;
+
+
+}
+
+.home-text{
+    font-size: 30px;
+    color: black;
+    font: bold;
+}

@@ -7,5 +7,6 @@ adminRoute.get("/admin/dashboard",adminController.dashboard);
 
 adminRoute.get("/admin/home", adminController.home)
 
+adminRoute.get("/admin/products",adminController.products)
 
 export default adminRoute;

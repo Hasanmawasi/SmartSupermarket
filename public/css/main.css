@@ -4,78 +4,25 @@
 
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
 body {
     background-color: var(--gray);
+   /* height: 100%; */
 }
 
 .navbarr {
-    background-color: var(--blue);
-    position: fixed;
+    background-color: var(--blue) !important;
+    /* position: fixed; */
 }
 
 .nav-link {
-    color: #333;
-    font-weight: 500;
-    padding: 15px;
-}
-
-.nav-link.active {
-    background-color: #007bff;
-    color: white;
-}
-
-.card {
-    margin-bottom: 20px;
-}
-
-.card h2 {
-    font-size: 2.5rem;
-}
-
-h1.h2 {
-    font-weight: 500;
-}
-
-
-
-
-
-/* top  items table*/
-.top-items-card {
-  background-color: #f8f9fa;
-  border-radius: 8px;
-  padding: 20px;
-}
-.item-list {
-  max-height: 400px;
-  overflow-y: auto;
-}
-.item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #e9ecef;
-}
-.item:last-child {
-  border-bottom: none;
-}
-.item img {
-  width: 40px;
-  height: 40px;
-  margin-right: 10px;
-  border-radius: 4px;
-  object-fit: cover;
-}
-.item-name {
-  font-weight: bold;
-}
-.item-sales {
-  color: #495057;
-}
-/* ============= */
-
-
     display: block;
     padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
     font-size: 1.2rem;
@@ -87,14 +34,17 @@ h1.h2 {
     transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
 }
 
-.sidebar {
+
+
+/* .sidebar {
     top: 77px;
-    height: 100vh;
+    
     background-color: rgb(248, 248, 248);
     position: fixed;
     overflow-y: auto;
     height: calc(100% - 77px);
-}
+} */
+ 
 
 .btn-primary {
     --bs-btn-color: var(--blue);
@@ -130,3 +80,40 @@ h1.h2 {
     overflow-y: auto; /* Allow scrolling only in the content area */
     padding: 20px;
 }
+
+/* the dash board section========================= */
+.profit-section{
+    background-color: #dbedff;
+    padding: 5px;
+    border-radius: 10px;
+}
+
+.title{
+    background-color: white;
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+
+
+.table-item{
+    display: flex;
+    gap: 10px;
+    margin: 9px 0px;
+    background-color: rgb(163, 188, 255);
+    border-radius: 5px;
+    justify-content: space-around;
+    align-items: center;
+    padding: 5px;
+}
+
+.table-image{
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+
+}
+
+/* ============================================= */
