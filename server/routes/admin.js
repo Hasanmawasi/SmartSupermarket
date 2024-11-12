@@ -18,5 +18,6 @@ adminRoute.get("/admin/workers",adminController.workers);
 
 adminRoute.get("/admin/profile",adminController.profile);
 
+adminRoute.get("/admin/products/forms",adminController.forms);
 
 export default adminRoute;

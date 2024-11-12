@@ -438,3 +438,71 @@ body {
 #photoInput {
     display: none;
 }
+
+/* ========Formss */
+.manage-products {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    height: 502px;
+  }
+  
+  .manage-products h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  /* Individual Features Styling */
+  .feature {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .feature h3 {
+    font-size: 20px;
+    color: #007bff;
+    margin-bottom: 15px;
+  }
+  
+  /* Form Styling for Manage Products */
+  .product-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .product-form label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .product-form input[type="text"],
+  .product-form input[type="number"] {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .product-form button {
+    padding: 10px 20px;
+    background-color: #13a300;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: fit-content;
+  }
+  
+  .product-form button:hover {
+    background-color: #ff2f00;
+  }
+  
+/* ============= */

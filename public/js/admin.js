@@ -61,9 +61,9 @@ const config = {
 };
 
 // Get the context and render the chart
-const ctx = document.getElementById("myChart").getContext("2d");
+const ctx = document.getElementById("myChart");
 new Chart(ctx, config);
-const ctx1 = document.getElementById("myChart1").getContext("2d");
+const ctx1 = document.getElementById("myChart1");
 new Chart(ctx1, config);
 
 
@@ -139,3 +139,6 @@ function loadPhoto(event) {
   const photo = document.getElementById('profilePhoto');
   photo.src = URL.createObjectURL(event.target.files[0]);
 }
+// const ctx2= document.getElementById("donatchart");
+// new Chart(ctx2,config2);
+

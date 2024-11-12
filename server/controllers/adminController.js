@@ -20,6 +20,15 @@ export const products = (req,res)=>{
     })
 };
 
+export const forms = (req,res)=>{
+    let form= req.query.form;
+    res.render("admin/forms",{
+        form: form,
+        layout:"./layouts/admin"
+    })
+};
+
+
 export const about = (req, res) => {
 
     res.render("admin/about", {
