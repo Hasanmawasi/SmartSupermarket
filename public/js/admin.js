@@ -99,3 +99,43 @@ const config2 = {
 
 const ctx2= document.getElementById("donatchart").getContext("2d");
 new Chart(ctx2,config2);
+
+function editProfile() {
+  // Toggle display for text and input elements
+  document.querySelectorAll('.info-text').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.profile-info input').forEach(el => el.style.display = 'block');
+
+  // Show photo input and Save button, hide Edit button
+  document.getElementById('photoInput').style.display = 'block';
+  document.querySelector('.edit-button').style.display = 'none';
+  document.querySelector('.save-button').style.display = 'block';
+}
+
+function saveProfile() {
+  // Get values from inputs
+  const firstName = document.getElementById('firstNameInput').value;
+  const lastName = document.getElementById('lastNameInput').value;
+  const phone = document.getElementById('phoneInput').value;
+  const email = document.getElementById('emailInput').value;
+
+  // Set text content to new values
+  document.getElementById('firstNameText').textContent = firstName;
+  document.getElementById('lastNameText').textContent = lastName;
+  document.getElementById('phoneText').textContent = phone;
+  document.getElementById('emailText').textContent = email;
+
+  // Hide inputs and show text elements
+  document.querySelectorAll('.info-text').forEach(el => el.style.display = 'block');
+  document.querySelectorAll('.profile-info input').forEach(el => el.style.display = 'none');
+
+  // Hide photo input and Save button, show Edit button
+  document.getElementById('photoInput').style.display = 'none';
+  document.querySelector('.edit-button').style.display = 'block';
+  document.querySelector('.save-button').style.display = 'none';
+}
+
+// Function to load the new profile photo
+function loadPhoto(event) {
+  const photo = document.getElementById('profilePhoto');
+  photo.src = URL.createObjectURL(event.target.files[0]);
+}

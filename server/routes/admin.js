@@ -14,4 +14,9 @@ adminRoute.get("/admin/dashboard",adminController.dashboard);
 
 adminRoute.get("/admin/products",adminController.products);
 
+adminRoute.get("/admin/workers",adminController.workers);
+
+adminRoute.get("/admin/profile",adminController.profile);
+
+
 export default adminRoute;

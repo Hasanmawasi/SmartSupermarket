@@ -33,5 +33,16 @@ export const reports = (req, res) => {
     })
 }
 
+export const workers = (req, res) => {
+    res.render("admin/workers", {
+        layout:"./layouts/admin"
+    })
+}
+export const profile = (req, res) => {
+    res.render("admin/profile", {
+        
+    })
+}
+
 
 export default dashboard;
