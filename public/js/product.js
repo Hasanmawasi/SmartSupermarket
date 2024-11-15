@@ -1,71 +1,25 @@
-// let addProduct = document.getElementById("addProduct");
-//     addProduct.addEventListener('click', () => {
-//       document.getElementById("forms-container").innerHTML= `
-     
-//                         <section class="feature">
-//                             <h2>Add New Product</h2>
-//                             <form class="product-form" id="addProductForm">
-//                                 <label for="productName">Product Name:</label>
-//                                 <input type="text" id="productName" required>
-                
-//                                 <label for="productPhoto">Product Photo URL:</label>
-//                                 <input type="text" id="productPhoto" required>
-                
-//                                 <label for="productPrice">Product Price:</label>
-//                                 <input type="number" id="productPrice" required>
-                
-//                                 <button type="submit">Add Product</button>
-//                             </form>
-//                         </section> 
-//       `
-//     });
 
 
+// Function to display stars based on the average rating
+function displayRating(average) {
+  const stars = document.querySelectorAll('.star-container');
+  const fullStars = Math.floor(average); // Number of fully filled stars
+  const decimalPart = average % 1; // Decimal part to fill partially
 
-//     let editProduct = document.getElementById("editproduct");
-//     editProduct.addEventListener('click', () => {
-//         document.getElementById("forms-container").innerHTML= `
-//                        <div class="feature">
-//                             <h3>Edit Products</h3>
-//                             <form class="product-form" id=" ">
-//                                 <label for="editProductName">Product Name:</label>
-//                                 <input type="text" id="editProductName" required>
-//                                 <label for="editProductPrice">New Price:</label>
-//                                 <input type="number" id="editProductPrice" required>
-//                                 <button type="submit">Update Product</button>
-//                             </form>
-//                         </div>
-//         `
-//       });
+  stars.forEach((star, index) => {
+    if (index < fullStars) {
+      star.classList.add('full-star'); // Full star
+      star.querySelector('.partial-fill').style.width = '100%'; // Ensure full fill for clarity
+    } else if (index === fullStars) {
+      // Set partial fill based on the decimal part
+      star.querySelector('.partial-fill').style.width = `${decimalPart * 100}%`;
+    } else {
+      // No fill for empty stars
+      star.classList.remove('full-star');
+      star.querySelector('.partial-fill').style.width = '0%';
+    }
+  });
+}
 
-//       let deleteProduct = document.getElementById("deleteproduct");
-//       deleteProduct.addEventListener('click', () => {
-//         document.getElementById("forms-container").innerHTML= `
-//                       <div class="feature">
-//                             <h3>Delete Products</h3>
-//                             <form class="product-form" id="deleteProductForm" >
-//                                 <label for="deleteProductName">Product Name:</label>
-//                                 <input type="text" id="deleteProductName" required>
-//                                 <button type="submit">Delete Product</button>
-//                             </form>
-//                         </div>
-//         `
-//       });
-
-
-
-//       let addCatigory = document.getElementById("addcatigory");
-//       addCatigory.addEventListener('click', () => {
-//         document.getElementById("forms-container").innerHTML= `
-//         <div class="feature">
-//             <h3>Add Categories</h3>
-//             <form class="product-form" id="addCategoryForm">
-//                 <label for="categoryName">Category Name:</label>
-//                 <input type="text" id="categoryName" required>
-//                 <button type="submit">Add Category</button>
-//             </form>
-//          </div>
-//         `
-//       });
-
-      
+// Call the function with the average rating
+displayRating(4.7);

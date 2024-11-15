@@ -72,14 +72,6 @@ body {
     --bs-btn-disabled-border-color: var(--gray);
 }
 
-/* .nav-link.active {
-    background-color: white !important;
-    color: var(--blue) !important;
-}
-
-.nav-link:hover {
-    color: var(--gray)
-} */
 
 /* the following cssis for the rest of data in the page */
 .content {
@@ -316,7 +308,7 @@ body {
 
 /* ========================== */
 /* workers */
-.workers {
+.cover-layout {
     /* background-image: url(../image/cover.jpg); */
     margin: 0;
     padding: 0;
@@ -327,14 +319,19 @@ body {
     /* height: 80vh; */
 
     width: 100%; /* Optional: Ensures the div spans full width of its container */
-    height: 100vh; /* Optional: Sets the div to full viewport height */
+    height: 84vh; /* Optional: Sets the div to full viewport height */
     
-    background-image: url(../image/workers.jpg); /* Replace with your image path */
+    
     background-size: cover;      /* Makes the image cover the entire div */
     background-position: center; /* Centers the image within the div */
     background-repeat: no-repeat; 
   }
-  
+  .workers{
+    background-image: url(../image/workers.jpg); /* Replace with your image path */
+  }
+ .product-cover{
+    background-image: url(../image/cover.jpg);
+ }
   .container {
     text-align: center;
   }
@@ -351,7 +348,9 @@ body {
     gap: 20px;
     justify-content: center;
   }
-  
+  .worker-types a {
+    text-decoration: none;
+  }
   .worker-card {
     background-color: rgba(0, 123, 255, 0.5);
     color: white;
@@ -365,7 +364,7 @@ body {
     justify-content: center;
     text-align: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.7s ease;
   }
   
   .worker-card h2 {
@@ -506,3 +505,95 @@ body {
   }
   
 /* ============= */
+/* ======= customer === */
+.reviews-list {
+  margin-bottom: 40px;
+  height: 400px;
+  overflow-y: scroll;
+}
+/* .custom-scrollbar {
+  overflow-y: scroll; /* or overflow-x: scroll; 
+} */
+
+/* Style the scrollbar itself */
+.reviews-list::-webkit-scrollbar {
+  width: 10px; /* Width of the scrollbar */
+  height: 10px; /* Height of the scrollbar for horizontal scrolling */
+}
+
+/* Style the scrollbar track */
+.reviews-list::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Background of the scrollbar track */
+  border-radius: 10px;
+}
+
+/* Style the scrollbar thumb (the moving part) */
+.reviews-list::-webkit-scrollbar-thumb {
+  background-color: #007bff; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the scrollbar thumb */
+}
+
+/* Hover effect for the scrollbar thumb */
+.reviews-list::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color when the thumb is hovered */
+}
+.review-item {
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #007bff;
+  border-radius: 8px;
+}
+
+.review-item h3 {
+  margin: 0;
+  color: #333;
+}
+
+.review-item p {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #555;
+}
+
+.review-date {
+  font-size: 12px;
+  color: #888;
+}
+.stars {
+  display: inline-flex;
+  font-size: 3rem;
+  position: relative;
+}
+
+/* Star style */
+.stars .star-container {
+  position: relative;
+  display: inline-block;
+  color: #ccc; /* Default color for empty stars */
+}
+
+/* Full star */
+.stars .star-container.full-star {
+  color: #f0c420; /* Yellow color for full stars */
+}
+
+/* Overlay for partial stars */
+.stars .star-container .partial-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 0%; /* This will be adjusted based on decimal part */
+  overflow: hidden;
+  color: #f0c420; /* Yellow color for the filled part */
+}
+/*====================  */
+
+
+  /* profits */
+  .highlight {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  /* ========== */
