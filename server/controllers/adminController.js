@@ -28,6 +28,23 @@ export const forms = (req,res)=>{
     })
 };
 
+export const customers = (req, res)=>{
+    res.render("admin/customers",{
+        layout:"./layouts/admin"
+    })
+};
+
+export const orders = (req, res)=>{
+    res.render("admin/orders",{
+        layout:"./layouts/admin"
+    })
+};
+
+export const profit = (req, res)=>{
+    res.render("admin/profit",{
+        layout:"./layouts/admin"
+    })
+};
 
 export const about = (req, res) => {
 

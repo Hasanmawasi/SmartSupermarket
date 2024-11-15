@@ -1,0 +1,89 @@
+
+    <!-- Dashboard Overview -->
+    <div class="row text-center mt-5">
+      <div class="col-md-3">
+        <div class="card shadow p-3">
+          <h5>Total Monthly Profit</h5>
+          <p class="highlight text-success">$12,000</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow p-3">
+          <h5>Total Sales Revenue</h5>
+          <p class="highlight">$30,000</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow p-3">
+          <h5>Total Expenses</h5>
+          <p class="highlight text-danger">$18,000</p>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card shadow p-3">
+          <h5>Number of Transactions</h5>
+          <p class="highlight">500</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 mt-4 card p-2 mb-3 shadow ">
+        <h2 >Monthly Profit Breakdown</h2>
+        <div class="p3">
+            <canvas class="" id="profitChart"></canvas>
+        </div>
+    </div>
+    <div class="row card shadow mt-4">
+        <div class="col-md-12">
+        
+          <table class="table table-bordered mt-3">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Revenue</th>
+                <th>Expenses</th>
+                <th>Profit</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>January</td>
+                <td>$30,000</td>
+                <td>$18,000</td>
+                <td>$12,000</td>
+              </tr>
+              <tr>
+                <td>February</td>
+                <td>$28,000</td>
+                <td>$16,500</td>
+                <td>$11,500</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Transaction Details -->
+    <div class="row mt-4">
+        <div class="col-md-12 card shadow">
+          <h3>Transaction Details</h3>
+          <input type="text" class="form-control mb-3" placeholder="Search Transactions">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Transaction ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="transactionTable">
+              <!-- Rows populated dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    <!-- </div> -->
+    <script src="/js/profit.js"></script>    
