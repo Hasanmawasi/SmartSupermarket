@@ -1,0 +1,99 @@
+<div class="main-log">
+<div class="log-container">
+    <h2>Daily Log</h2>
+    <p class="description">Submit your arrival and departure times. Please wait for admin approval after each submission.</p>
+    <button id="arrivalButton" class="log-button" onclick="submitLog('arrival')">
+      <i class="fas fa-sign-in-alt"></i> Log Arrival
+    </button>
+    <button id="departureButton" class="log-button" onclick="submitLog('departure')" disabled>
+      <i class="fas fa-sign-out-alt"></i> Log Departure
+    </button>
+    <div id="statusMessage" class="status pending">Status: Awaiting arrival log</div>
+  </div>
+
+  <div class="schedule-container">
+    <div class="schedule-heading">Weekly Work Schedule</div>
+    <table>
+        <thead>
+            <tr>
+                <th>Day</th>
+                <th>Shift Start</th>
+                <th>Shift End</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Monday</td>
+                <td>09:00 AM</td>
+                <td>05:00 PM</td>
+                <td><span class="badge badge-available">Available</span></td>
+            </tr>
+            <tr>
+                <td>Tuesday</td>
+                <td>09:00 AM</td>
+                <td>05:00 PM</td>
+                <td><span class="badge badge-available">Available</span></td>
+            </tr>
+            <tr>
+                <td>Wednesday</td>
+                <td>09:00 AM</td>
+                <td>05:00 PM</td>
+                <td><span class="badge badge-available">Available</span></td>
+            </tr>
+            <tr>
+                <td>Thursday</td>
+                <td>09:00 AM</td>
+                <td>01:00 PM</td>
+                <td><span class="badge badge-halfday">Half Day</span></td>
+            </tr>
+            <tr>
+                <td>Friday</td>
+                <td>09:00 AM</td>
+                <td>05:00 PM</td>
+                <td><span class="badge badge-available">Available</span></td>
+            </tr>
+            <tr>
+                <td>Saturday</td>
+                <td colspan="2">-</td>
+                <td><span class="badge badge-off">Off</span></td>
+            </tr>
+            <tr>
+                <td>Sunday</td>
+                <td colspan="2">-</td>
+                <td><span class="badge badge-off">Off</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+  <script>
+    async function submitLog(type) {
+      const button = document.getElementById(`${type}Button`);
+      const otherButton = type === 'arrival' ? document.getElementById('departureButton') : document.getElementById('arrivalButton');
+      const statusMessage = document.getElementById('statusMessage');
+      
+      button.disabled = true;
+      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pending...';
+      
+      const response = await fetch('/submitLog', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type, timestamp: new Date().toISOString() })
+      });
+      
+      const data = await response.json();
+      
+      if (data.status === 'accepted') {
+        statusMessage.textContent = `Status: ${type.charAt(0).toUpperCase() + type.slice(1)} time accepted`;
+        statusMessage.className = 'status accepted';
+        button.innerHTML = type === 'arrival' ? '<i class="fas fa-check-circle"></i> Arrived' : '<i class="fas fa-check-circle"></i> Left';
+        otherButton.disabled = type === 'arrival' ? false : true;
+      } else {
+        statusMessage.textContent = `Status: ${type.charAt(0).toUpperCase() + type.slice(1)} time rejected. Please try again.`;
+        statusMessage.className = 'status rejected';
+        button.disabled = false;
+        button.innerHTML = type === 'arrival' ? '<i class="fas fa-sign-in-alt"></i> Log Arrival' : '<i class="fas fa-sign-out-alt"></i> Log Departure';
+      }
+    }
+  </script>

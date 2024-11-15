@@ -1,0 +1,22 @@
+:root {
+    --gray : #D3D3D3;
+    --blue: #0033ff;
+
+}
+
+body{
+    /* font-family: ; */
+    background-color: var(--gray);
+    font-size: 16px;
+    color: #121212;
+    line-height: 1.6;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+

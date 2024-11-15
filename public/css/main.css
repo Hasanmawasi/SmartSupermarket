@@ -13,6 +13,7 @@
 }
 
 body {
+    font-family: "Ubuntu", sans-serif!important;
     background-color: var(--gray);
    /* height: 100%; */
    
@@ -138,14 +139,13 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    font-family: Arial, sans-serif;
 }
 
 .about-section {
     margin-bottom: 40px;
     padding: 20px;
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: #e3e3e3;
 }
 
 .about-header {

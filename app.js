@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import expressEjsLayouts from "express-ejs-layouts";
 import adminRoute from "./server/routes/admin.js";
+import workerRoute from "./server/routes/worker.js";
 
 const app = express();
 app.use(express.static("public"));
@@ -16,6 +17,7 @@ app.set("view engine", "ejs");
 
 // routes 
 app.use(adminRoute);
+app.use(workerRoute);
 
 
 

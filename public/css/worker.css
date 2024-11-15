@@ -1,0 +1,462 @@
+:root {
+    --gray : #D3D3D3;
+    --blue: #0033ff;
+
+}
+
+.navbarr {
+    background-color: var(--blue) !important;
+    /* position: fixed; */
+    
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030; /* Ensures navbar stays above other elements */
+        
+}
+
+
+.about-us-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.about-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-header h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.tagline {
+    font-size: 1.2em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Feature Cards */
+.features .feature-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.feature-card {
+    flex: 1 1 30%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Benefits List */
+.benefits-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.benefits-list li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.benefits-list li::before {
+    content: "✔";
+    color: #007bff;
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+    top: -2px;
+}
+
+/* Contact Section */
+.contact {
+    text-align: center;
+}
+
+.contact-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+.about-us-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.about-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #e3e3e3;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-header h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.tagline {
+    font-size: 1.2em;
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Feature Cards */
+.features .feature-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.feature-card {
+    flex: 1 1 30%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1em;
+    color: #666;
+}
+
+/* Benefits List */
+.benefits-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.benefits-list li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.benefits-list li::before {
+    content: "✔";
+    color: #007bff;
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+    top: -2px;
+}
+
+/* Contact Section */
+.contact {
+    text-align: center;
+}
+
+.contact-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+/* ===================daily log=========== */
+.main-log {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 100vh; */
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to bottom right, #f0f4ff, #d9e4ff);
+    margin: 0;
+    gap: 3rem;
+  }
+
+  .log-container {
+    margin-top: 4rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+  }
+
+  .log-container h2 {
+    margin-bottom: 1rem;
+    color: #333333;
+    font-size: 1.5rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    color: #666666;
+    margin-bottom: 1.5rem;
+  }
+
+  .status {
+    margin-top: 1rem;
+    font-weight: bold;
+    font-size: 1rem;
+    padding: 0.3rem 0;
+    border-radius: 5px;
+  }
+
+  .status.pending {
+    color: #ff9800;
+    background-color: #fff3e0;
+  }
+
+  .status.accepted {
+    color: #4caf50;
+    background-color: #e8f5e9;
+  }
+
+  .status.rejected {
+    color: #f44336;
+    background-color: #ffebee;
+  }
+
+  .log-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--blue);
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0.5rem 0;
+    width: 100%;
+    transition: background-color 0.3s;
+  }
+
+  .button i {
+    margin-right: 8px;
+  }
+
+  .button:disabled {
+    background-color: #aaaaaa;
+    cursor: not-allowed;
+  }
+
+  .button:hover:not(:disabled) {
+    background-color: #388e3c;
+  }
+
+  /* ======================= */
+
+  .schedule-container {
+    margin-bottom: 3rem;
+    width: 80%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    padding: 15px;
+    border: 1px solid #e0e0e0;
+}
+
+th {
+    background-color: #0055ff;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+td {
+    background-color: #f7faff;
+    color: #333333;
+}
+
+/* Alternate row colors */
+tr:nth-child(even) td {
+    background-color: #e6f0ff;
+}
+
+/* Table Heading */
+.schedule-heading {
+    font-size: 24px;
+    color: #333333;
+    font-weight: bold;
+}
+
+/* Status Badge */
+.badge {
+    display: inline-block;
+    padding: 5px 10px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.badge-available {
+    background-color: #28a745;
+}
+
+.badge-off {
+    background-color: #dc3545;
+}
+
+.badge-halfday {
+    background-color: #ffc107;
+    color: #333333;
+}
+
+@media (max-width: 600px) {
+    /* Reduce font sizes */
+    .schedule-heading {
+        font-size: 18px;
+    }
+
+    th, td {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    /* Scale down container width */
+    .schedule-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    .badge {
+        font-size: 12px;
+        padding: 4px 8px;
+    }
+}
+
+/* =====reports====== */
+
+.reports-main {
+    font-family: Arial, sans-serif;
+    background-color: #e6f0ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 90vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+/* Report Container */
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Report Form Styling */
+.report-form-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.report-form-section input[type="text"],
+.report-form-section input[type="date"],
+.report-form-section textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+/* Responsive Styles */
