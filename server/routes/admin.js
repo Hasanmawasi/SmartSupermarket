@@ -26,6 +26,8 @@ adminRoute.get("/admin/orders",adminController.orders);
 
 adminRoute.get("/admin/profit",adminController.profit);
 
+adminRoute.get("/admin/dailylog",adminController.dailyLog);
+
 
 
 const transactions = [

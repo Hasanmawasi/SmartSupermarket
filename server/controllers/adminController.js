@@ -69,6 +69,11 @@ export const profile = (req, res) => {
         
     })
 }
+export const dailyLog = (req, res) => {
+    res.render("admin/dailylog", {
+        
+    })
+}
 
 
 export default dashboard;
