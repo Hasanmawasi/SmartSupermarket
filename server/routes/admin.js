@@ -28,6 +28,7 @@ adminRoute.get("/admin/profit",adminController.profit);
 
 adminRoute.get("/admin/dailylog",adminController.dailyLog);
 
+adminRoute.get("/admin/workers/type",adminController.workerType);
 
 
 const transactions = [

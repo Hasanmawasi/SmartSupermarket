@@ -1,0 +1,60 @@
+<div class="container my-4">
+    <!-- Add Worker Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Workers</h3>
+      <button class="btn btn-primary">Add Worker</button>
+    </div>
+  
+    <!-- Worker List -->
+    <div class="worker-list">
+      <!-- Worker Item -->
+      <div class="worker-item d-flex bg-white align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "cashier") ? "" : "d-none" %>" >
+        <div class="d-flex align-items-center">
+          <!-- Profile Photo -->
+          <img src="profile1.jpg" alt="Profile" class="worker-photo rounded-circle">
+          <!-- Worker Info -->
+          <div class="worker-info ms-3">
+            <h5 class="mb-0">John Doe</h5>
+            <p class="text-muted mb-0">Cashier</p>
+          </div>
+        </div>
+        <!-- Edit Button -->
+        <button class="btn btn-outline-primary">Edit</button>
+      </div>
+  
+      <!-- Repeat for other workers -->
+      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "clerks") ? "" : "d-none" %>">
+        <div class="d-flex align-items-center">
+          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
+          <div class="worker-info ms-3">
+            <h5 class="mb-0">Jane Smith</h5>
+            <p class="text-muted mb-0">Stock Clerk</p>
+          </div>
+        </div>
+        <button class="btn btn-outline-primary">Edit</button>
+      </div>
+
+      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "staff") ? "" : "d-none" %>">
+        <div class="d-flex align-items-center">
+          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
+          <div class="worker-info ms-3">
+            <h5 class="mb-0">Jane Smith</h5>
+            <p class="text-muted mb-0">Staff</p>
+          </div>
+        </div>
+        <button class="btn btn-outline-primary">Edit</button>
+      </div>
+
+      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "cleaners") ? "" : "d-none" %>">
+        <div class="d-flex align-items-center">
+          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
+          <div class="worker-info ms-3">
+            <h5 class="mb-0">Jane Smith</h5>
+            <p class="text-muted mb-0">Cleaner</p>
+          </div>
+        </div>
+        <button class="btn btn-outline-primary">Edit</button>
+      </div>
+    </div>
+  </div>
+  

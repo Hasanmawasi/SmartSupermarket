@@ -6,6 +6,7 @@
 
 body{
     /* font-family: ; */
+    font-family: "Ubuntu", serif;
     background-color: var(--gray);
     font-size: 16px;
     color: #121212;

@@ -1,5 +1,5 @@
 body{
-    height: 89vh !important;
+    height: 100vh;
     background-image: url("/image/cover.jpg") !important;
     background-repeat: no-repeat; /* Prevents the background from repeating */
     background-size: cover; /* Makes the image cover the entire background */

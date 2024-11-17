@@ -75,5 +75,13 @@ export const dailyLog = (req, res) => {
     })
 }
 
+export const workerType = (req, res) => {
+    let type = req.query.type;
+    res.render("admin/workerType", {
+        type: type,
+        layout: './layouts/admin'
+    })
+}
+
 
 export default dashboard;
