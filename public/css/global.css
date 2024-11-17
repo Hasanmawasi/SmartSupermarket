@@ -59,13 +59,35 @@ body{
     
   }
 
+h1 {
+    font-size: 3rem;
+}
+
+
 .btn-primary {
+    --bs-btn-color: white;
+    --bs-btn-bg: var(--blue);
+    --bs-btn-border-color: var(--blue);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: rgb(62, 120, 255);
+    --bs-btn-hover-border-color: var(--blue);
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--gray);
+    --bs-btn-active-border-color: var(--gray);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--gray);
+    --bs-btn-disabled-border-color: var(--gray);
+}
+
+.btn-light {
     --bs-btn-color: var(--blue);
     --bs-btn-bg: white;
-    --bs-btn-border-color: #0d6efd;
+    --bs-btn-border-color: white;
     --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #0b5ed7;
-    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-hover-bg: rgb(62, 120, 255);
+    --bs-btn-hover-border-color: white;
     --bs-btn-focus-shadow-rgb: 49, 132, 253;
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: var(--gray);
@@ -106,8 +128,8 @@ body{
     color: #666;
     margin-top: 5px;
 }
-    /* ==== */
-    /* Feature Cards used for forms */
+/* ==== */
+/* Feature Cards used for forms */
 .features .feature-cards {
     display: flex;
     flex-wrap: wrap;
@@ -134,10 +156,10 @@ body{
     font-size: 1em;
     color: #666;
 }
-    /* ==== */
+/* ==== */
 
-    /* ====About & report  section */
-    /* Benefits List */
+/* ====About & report  section */
+/* Benefits List */
 .benefits-list {
     list-style-type: none;
     padding: 0;
@@ -258,9 +280,9 @@ body{
     font-size: 16px;
     color: #555;
 }
-    /* =============== */
+/* =============== */
 
-     /* profile */
+/* profile */
 
 .profile-container {
     
@@ -332,7 +354,7 @@ body{
     justify-content: center;
     align-items: center;
     /* height: 80vh; */
-
+    
     width: 100%; /* Optional: Ensures the div spans full width of its container */
     height: 84vh; /* Optional: Sets the div to full viewport height */
     
@@ -340,4 +362,17 @@ body{
     background-size: cover;      /* Makes the image cover the entire div */
     background-position: center; /* Centers the image within the div */
     background-repeat: no-repeat; 
-  }
+}
+
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2.5rem; /* Slightly smaller for tablets */
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 2rem; /* Smaller for mobile devices */
+    }
+}

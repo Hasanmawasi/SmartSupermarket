@@ -1,8 +1,12 @@
+:root {
+  --gray : #D3D3D3;
+  --blue: #0033ff;
 
+}
 
 /* the dash board section========================= */
 .profit-section{
-    background-color: #dbedff;
+    background-color: white;
     padding: 5px;
     border-radius: 10px;
 }
@@ -21,7 +25,8 @@
     display: flex;
     gap: 10px;
     margin: 9px 0px;
-    background-color: rgb(163, 188, 255);
+    background-color: var(--blue);
+    color: white;
     border-radius: 5px;
     justify-content: space-around;
     align-items: center;
@@ -261,14 +266,6 @@
   /* ========== */
 
   /* =========daily log page========== */
-
-  /* General Page Style */
-/* body {
-  font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
-  margin: 0;
-  padding: 20px;
-} */
 
 /* Request Container Style */
 .request-container {
