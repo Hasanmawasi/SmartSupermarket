@@ -5,9 +5,9 @@
 }
 
 body{
-    /* font-family: ; */
+    
     font-family: "Ubuntu", serif;
-    background-color: var(--gray);
+    background-color: var(--gray) !important;
     font-size: 16px;
     color: #121212;
     line-height: 1.6;
@@ -21,3 +21,323 @@ body{
     padding: 0;
 }
 
+.navbarr {
+    background-color: var(--blue) !important;
+    /* position: fixed; */
+    
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1030; /* Ensures navbar stays above other elements */
+        
+}
+/* .mt{
+    margin-top: 70px;
+} */
+
+.nav-link {
+    display: block;
+    padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+    font-size: 1.2rem;
+    /* font-weight: bold; */
+    color: white;
+    text-decoration: none;
+    background: 0 0;
+    border: 0;
+    transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+
+
+.sidebar {
+    position: fixed;
+    top: 60px; /* Adjust this to match navbar height */
+    left: 0;
+    height: 100%;
+    padding-top: 20px;
+    overflow-y: auto; /* Scrollbar for the sidebar */
+    
+  }
+
+.btn-primary {
+    --bs-btn-color: var(--blue);
+    --bs-btn-bg: white;
+    --bs-btn-border-color: #0d6efd;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0b5ed7;
+    --bs-btn-hover-border-color: #0a58ca;
+    --bs-btn-focus-shadow-rgb: 49, 132, 253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--gray);
+    --bs-btn-active-border-color: var(--gray);
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: var(--gray);
+    --bs-btn-disabled-border-color: var(--gray);
+}
+
+/* Header Section */
+/* General Page Styling */
+.about-us-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.about-section {
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #e3e3e3;
+}
+
+.about-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.about-header h1 {
+    font-size: 2.5em;
+    color: #333;
+}
+
+.tagline {
+    font-size: 1.2em;
+    color: #666;
+    margin-top: 5px;
+}
+    /* ==== */
+    /* Feature Cards used for forms */
+.features .feature-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.feature-card {
+    flex: 1 1 30%;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.feature-card h3 {
+    font-size: 1.3em;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.feature-card p {
+    font-size: 1em;
+    color: #666;
+}
+    /* ==== */
+
+    /* ====About & report  section */
+    /* Benefits List */
+.benefits-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.benefits-list li {
+    padding-left: 20px;
+    position: relative;
+    margin-bottom: 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.benefits-list li::before {
+    content: "✔";
+    color: #007bff;
+    position: absolute;
+    left: 0;
+    font-size: 1.2em;
+    top: -2px;
+}
+
+/* Contact Section */
+.contact {
+    text-align: center;
+}
+
+.contact-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+.contact-button:hover {
+    background-color: #0056b3;
+}
+
+/* ---------------------------- */
+/* reports page */
+.section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.section h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Report Form Styling */
+.report-form-section label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #555;
+}
+
+.report-form-section input[type="text"],
+.report-form-section input[type="date"],
+.report-form-section textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Report View Styling */
+.report-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.report-card {
+    padding: 15px;
+    background-color: #f0f8ff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.report-card h3 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.report-card .report-date {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.report-card .report-content {
+    font-size: 16px;
+    color: #555;
+}
+    /* =============== */
+
+     /* profile */
+
+.profile-container {
+    
+    width: 40% !important;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+.profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 20px;
+}
+.profile-info {
+    margin-bottom: 20px;
+    text-align: left;
+}
+.profile-info label {
+    display: block;
+    font-weight: bold;
+    margin-top: 10px;
+}
+.profile-info input[type="text"],
+.profile-info input[type="email"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: none;
+}
+.profile-info .info-text {
+    padding: 8px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+.button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+}
+.edit-button {
+    background-color: #007bff;
+    color: #fff;
+}
+.save-button {
+    background-color: #28a745;
+    color: #fff;
+    display: none;
+}
+#photoInput {
+    display: none;
+}
+/* ================= */
+
+.cover-layout {
+    /* background-image: url(../image/cover.jpg); */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* height: 80vh; */
+
+    width: 100%; /* Optional: Ensures the div spans full width of its container */
+    height: 84vh; /* Optional: Sets the div to full viewport height */
+    
+    
+    background-size: cover;      /* Makes the image cover the entire div */
+    background-position: center; /* Centers the image within the div */
+    background-repeat: no-repeat; 
+  }
