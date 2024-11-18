@@ -21,3 +21,8 @@ export const reports = (req, res) => {
         layout:'./layouts/worker'
     })
 }
+export const profile = (req, res) => {
+    res.render('worker/profile', {
+        layout:'./layouts/worker'
+    })
+}

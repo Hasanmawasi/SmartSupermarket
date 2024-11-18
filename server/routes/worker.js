@@ -11,5 +11,7 @@ workerRoute.get('/worker/log', workerController.log);
 
 workerRoute.get('/worker/reports', workerController.reports);
 
+workerRoute.get('/worker/profile', workerController.profile);
+
 
 export default workerRoute;

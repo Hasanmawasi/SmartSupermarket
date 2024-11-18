@@ -1,0 +1,31 @@
+<div class="d-flex justify-content-center mt-5" > 
+    <div class="profile-container shadow mt-5">
+        <!-- Profile Photo -->
+        <img src="https://via.placeholder.com/100" alt="Profile Photo" class="profile-photo" id="profilePhoto">
+        <input type="file" id="photoInput" accept="image/*" onchange="loadPhoto(event)">
+    
+        <!-- Profile Information -->
+        <div class="profile-info">
+            <label>First Name</label>
+            <p class="info-text" id="firstNameText">John</p>
+            <input type="text" id="firstNameInput" value="John">
+    
+            <label>Last Name</label>
+            <p class="info-text" id="lastNameText">Doe</p>
+            <input type="text" id="lastNameInput" value="Doe">
+    
+            <label>Phone Number</label>
+            <p class="info-text" id="phoneText">123-456-7890</p>
+            <input type="text" id="phoneInput" value="123-456-7890">
+    
+            <label>Email Address</label>
+            <p class="info-text" id="emailText">john.doe@example.com</p>
+            <input type="email" id="emailInput" value="john.doe@example.com">
+        </div>
+    
+        <!-- Buttons -->
+        <button class="button edit-button" onclick="editProfile()">Edit</button>
+        <button class="button save-button" onclick="saveProfile()">Save</button>
+    </div>
+    </div>
+    <script src="/js/admin.js"></script>
