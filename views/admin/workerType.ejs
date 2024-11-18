@@ -2,7 +2,7 @@
     <!-- Add Worker Button -->
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3>Workers</h3>
-      <button class="btn btn-primary">Add Worker</button>
+      <a href="/admin/worker/add?form=add"><button class="btn btn-primary">Add Worker</button></a>
     </div>
   
     <!-- Worker List -->
@@ -19,7 +19,7 @@
           </div>
         </div>
         <!-- Edit Button -->
-        <button class="btn btn-outline-primary">Edit</button>
+        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
       </div>
   
       <!-- Repeat for other workers -->
@@ -31,7 +31,7 @@
             <p class="text-muted mb-0">Stock Clerk</p>
           </div>
         </div>
-        <button class="btn btn-outline-primary">Edit</button>
+        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
       </div>
 
       <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "staff") ? "" : "d-none" %>">
@@ -42,7 +42,7 @@
             <p class="text-muted mb-0">Staff</p>
           </div>
         </div>
-        <button class="btn btn-outline-primary">Edit</button>
+        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
       </div>
 
       <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "cleaners") ? "" : "d-none" %>">
@@ -53,7 +53,7 @@
             <p class="text-muted mb-0">Cleaner</p>
           </div>
         </div>
-        <button class="btn btn-outline-primary">Edit</button>
+        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
       </div>
     </div>
   </div>

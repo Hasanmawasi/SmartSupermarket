@@ -354,6 +354,167 @@
     height: 100vh;
 }
 
+/* -------add worker form -------- */
+.add-worker {
+    max-width: 600px;
+    margin: 50px auto;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  .form-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  .form-row input {
+    flex: 2;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  .form-row button {
+    flex: 1;
+    padding: 10px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .form-row button:hover {
+    background-color: #0056b3;
+  }
+  .generated-text {
+    font-size: 14px;
+    color: #555;
+    margin-top: 5px;
+    text-align: left;
+  }
+  .vertical-form input,
+  .vertical-form select,
+  .vertical-form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    outline: none;
+    margin-bottom: 15px;
+  }
+  .vertical-form button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+  }
+  .vertical-form button:hover {
+    background-color: #0056b3;
+  }
+
+/*---------- view worker form----------- */
+.worker-form {
+  width: 400px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  text-align: center;
+  background-color: #ffffff;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.edit-button, .delete-button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #fff;
+}
+
+.edit-button {
+  background-color: #007bff;
+}
+
+.delete-button {
+  background-color: #dc3545;
+}
+
+.worker-image img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.worker-detail {
+  margin: 10px 0;
+  text-align: left;
+}
+
+.worker-detail label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+}
+
+.worker-detail input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.worker-detail input[readonly] {
+  background-color: #e9ecef;
+}
+
+.worker-actions {
+  margin-top: 20px;
+}
+
+.worker-actions button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#save-btn {
+  background-color: #28a745;
+  color: #fff;
+}
+
+#cancel-btn {
+  background-color: #6c757d;
+  color: #fff;
+}
+
+
+
 /* Media query for medium screens and above */
 @media (min-width: 768px) {
   .large-screen {
