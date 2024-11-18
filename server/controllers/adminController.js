@@ -28,6 +28,14 @@ export const forms = (req,res)=>{
     })
 };
 
+export const workerEdit = (req,res)=>{
+    let form= req.query.form;
+    res.render("admin/workerEdit",{
+        form: form,
+        layout:"./layouts/admin"
+    })
+};
+
 export const customers = (req, res)=>{
     res.render("admin/customers",{
         layout:"./layouts/admin"

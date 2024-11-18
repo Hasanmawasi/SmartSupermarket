@@ -30,6 +30,8 @@ adminRoute.get("/admin/dailylog",adminController.dailyLog);
 
 adminRoute.get("/admin/workers/type",adminController.workerType);
 
+adminRoute.get("/admin/worker/add",adminController.workerEdit);
+
 
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },
