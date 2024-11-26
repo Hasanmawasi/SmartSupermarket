@@ -30,13 +30,11 @@
 
 
   <div class="worker-form" <%= (form === "view") ? "" : "hidden" %>>
-    <div class="form-header">
-      <button class="edit-button" id="edit-btn">Edit</button>
-      <button class="delete-button" id="delete-btn">Delete</button>
-    </div>
+    
     <div class="worker-image">
-      <img src="path-to-worker-photo.jpg" alt="Worker Photo">
+      <img src="/image/logo.png" alt="Worker Photo">
     </div>
+    
     <form id="worker-details-form">
       <div class="worker-detail">
         <label for="first-name">First Name:</label>
@@ -54,15 +52,21 @@
         <label for="salary">Salary:</label>
         <input type="number" id="salary" value="2000" readonly>
       </div>
+      
       <div class="worker-detail">
         <label for="work-type">Work Type:</label>
         <input type="text" id="work-type" value="Cashier" readonly>
       </div>
+     
       <div class="worker-actions">
         <button type="submit" id="save-btn" style="display: none;">Save</button>
         <button type="button" id="cancel-btn" style="display: none;">Cancel</button>
       </div>
     </form>
+    <div class="form-header">
+      <button class="edit-button" id="edit-btn">Edit</button>
+      <button class="delete-button" id="delete-btn">Delete</button>
+    </div>
   </div>
 
   <script>
@@ -97,10 +101,10 @@
     // ------------------------------------------------------------------------
 
     const editButton = document.getElementById("edit-btn");
-const deleteButton = document.getElementById("delete-btn");
-const saveButton = document.getElementById("save-btn");
-const cancelButton = document.getElementById("cancel-btn");
-const inputs = document.querySelectorAll("#worker-details-form input");
+    const deleteButton = document.getElementById("delete-btn");
+    const saveButton = document.getElementById("save-btn");
+    const cancelButton = document.getElementById("cancel-btn");
+    const inputs = document.querySelectorAll("#worker-details-form input");
 
 // Enable editing
 editButton.addEventListener("click", () => {
