@@ -1,15 +1,19 @@
 <div class="add-worker" <%= (form === "add") ? "" : "hidden" %>>
     <h2 class="form-title">Add Worker</h2>
-    <form id="addWorkerForm">
+    <form id="addWorkerForm" action="/admin/addworker" method="post">
       <!-- Generate ID Row -->
       <div class="form-row">
-        <input type="text" id="generatedIdDisplay" placeholder="Generated ID" readonly>
+        <input type="text" id="generatedIdDisplay" placeholder="Generated ID" name="workerID" >
         <button type="button" id="generateIdButton">Generate ID</button>
       </div>
       <!-- Generate Password Row -->
       <div class="form-row">
-        <input type="text" id="generatedPasswordDisplay" placeholder="Generated Password" readonly>
+        <input type="text" id="generatedPasswordDisplay" placeholder="Generated Password" name="workerPassword">
         <button type="button" id="generatePasswordButton">Generate Password</button>
+      </div>
+      <div class="form-row">
+        <input type="text" id="" placeholder="Worker branch" name="workerBranch">
+        
       </div>
       <!-- Vertical Form Fields -->
       <div class="vertical-form">
@@ -92,7 +96,7 @@
 
     // Handle form submission
     document.getElementById("addWorkerForm").addEventListener("submit", (event) => {
-      event.preventDefault();
+      // event.preventDefault();
       alert("Worker added successfully!");
       // Additional submission logic can be added here
     });
