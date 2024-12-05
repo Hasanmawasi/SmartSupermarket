@@ -3,6 +3,6 @@ export let isloggedIn = function (req,res,next){
         // console.log(req.session)
         next()
     }else{
-        res.status(401).send('Access Denied');
+        res.redirect("/admin/login")
     }
 }

@@ -4,7 +4,7 @@ import { AdminStrategy } from "../strategy/adminStrategy.js";
 import passport from "passport";
 import db from "../config/db.js";
 import { isloggedIn } from "../middleware/chechAuth.js";
-
+import { uploadProfile } from "../middleware/uploadprofileImage.js";
 
 
 
@@ -58,6 +58,8 @@ adminRoute.get("/admin/workers",adminController.workers);
 
 adminRoute.get("/admin/profile",adminController.profile);
 
+adminRoute.post("/admin/updateProfile",uploadProfile.single("uploadedPhoto"),adminController.profileUpdate);
+
 adminRoute.get("/admin/products/forms",adminController.forms);
 
 adminRoute.get("/admin/customers",adminController.customers);
@@ -72,6 +74,7 @@ adminRoute.get("/admin/workers/type",adminController.workerType);
 
 adminRoute.get("/admin/worker/add",adminController.workerEdit);
 
+adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
 
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },

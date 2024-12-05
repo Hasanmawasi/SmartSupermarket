@@ -343,6 +343,9 @@ h1 {
 #photoInput {
     display: none;
 }
+#updateBtn{
+    display: none;
+}
 /* ================= */
 
 .cover-layout {

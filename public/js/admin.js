@@ -107,6 +107,7 @@ function editProfile() {
 
   // Show photo input and Save button, hide Edit button
   document.getElementById('photoInput').style.display = 'block';
+  document.getElementById('updateBtn').style.display = 'block';
   document.querySelector('.edit-button').style.display = 'none';
   document.querySelector('.save-button').style.display = 'block';
 }
@@ -130,6 +131,7 @@ function saveProfile() {
 
   // Hide photo input and Save button, show Edit button
   document.getElementById('photoInput').style.display = 'none';
+  document.getElementById('updateBtn').style.display = 'none';
   document.querySelector('.edit-button').style.display = 'block';
   document.querySelector('.save-button').style.display = 'none';
 }

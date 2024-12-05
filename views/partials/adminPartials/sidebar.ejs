@@ -82,7 +82,7 @@
     <hr>
     <div class="dropdown">
       <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+        <img src="" id="sidebarimg" alt="" width="32" height="32" class="rounded-circle me-2">
         <strong>mdo</strong>
       </a>
       <ul class="dropdown-menu text-small shadow">
@@ -94,7 +94,16 @@
     </div>
   </div>
 </div>
-
+<script>
+  
+  fetch('/sidebarPhoto')
+  .then(response => response.json())
+  .then((data) => {
+    const img= document.getElementById("sidebarimg");
+    console.log(data)
+    img.src = data;
+  })
+ </script>
   <!-- small screen  -->
 
     <div class=" d-none small-screen  flex-column flex-shrink-0 bg-light" style="width: 4.5rem;">
@@ -138,7 +147,7 @@
       </ul>
       <div class="dropdown border-top">
         <a href="#" class="d-flex align-items-center justify-content-center p-3 link-dark text-decoration-none dropdown-toggle" id="dropdownUser3" data-bs-toggle="dropdown" aria-expanded="false">
-          <img src="https://github.com/mdo.png" alt="mdo" width="24" height="24" class="rounded-circle">
+          <img src=""  alt="mdo" width="24" height="24" class="rounded-circle">
         </a>
         <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser3">
           <li><a class="dropdown-item" href="#">Settings</a></li>
@@ -148,5 +157,5 @@
         </ul>
       </div>
     </div>
-
+ 
   <!-- d-flex flex-column flex-shrink-0 bg-light -->

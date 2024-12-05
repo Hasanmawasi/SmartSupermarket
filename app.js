@@ -10,6 +10,7 @@ import session from "express-session";
 
 const app = express();
 app.use(express.static("public"));
+app.use('/admin/updateProfile', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 dotenv.config();
