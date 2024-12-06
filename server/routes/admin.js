@@ -58,7 +58,9 @@ adminRoute.get("/admin/workers",adminController.workers);
 
 adminRoute.get("/admin/profile",adminController.profile);
 
-adminRoute.post("/admin/updateProfile",uploadProfile.single("uploadedPhoto"),adminController.profileUpdate);
+adminRoute.post("/admin/updateProfileImg",uploadProfile.single("uploadedPhoto"),adminController.ImgprofileUpdate);
+
+adminRoute.post("/admin/updateProfile",adminController.adminProfileUpdate);
 
 adminRoute.get("/admin/products/forms",adminController.forms);
 
@@ -72,7 +74,11 @@ adminRoute.get("/admin/dailylog",adminController.dailyLog);
 
 adminRoute.get("/admin/workers/type",adminController.workerType);
 
+adminRoute.post("/admin/updateWorkerInfo",adminController.updateWorkerInfo);
+
 adminRoute.get("/admin/worker/add",adminController.workerEdit);
+
+// adminRoute.get("/admin/worker/view",adminController.workerEdit);
 
 adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
 

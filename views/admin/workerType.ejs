@@ -7,54 +7,36 @@
   
     <!-- Worker List -->
     <div class="worker-list">
-      <!-- Worker Item -->
-      <div class="worker-item d-flex bg-white align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "cashier") ? "" : "d-none" %>" >
-        <div class="d-flex align-items-center">
-          <!-- Profile Photo -->
-          <img src="profile1.jpg" alt="Profile" class="worker-photo rounded-circle">
-          <!-- Worker Info -->
+        <!-- ======== -->
+       <% if(locals.workersInfo){ %>
+        <% workersInfo.forEach(worker =>{ if(worker.position == type){ %>
+          <!-- Worker Item -->
+          <div class="worker-item d-flex bg-white align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type ===  worker.position ) ? "" : "d-none" %>" >
+          <div class="d-flex align-items-center">
+            <!-- Profile Photo -->
+            <img src="<%= worker.image_url %>" alt="Profile" class="worker-photo rounded-circle">
+            <!-- Worker Info -->
+            <div class="worker-info ms-3">
+              <h5 class="mb-0">worker ID</h5>
+              <p class="text-muted mb-0">#<%= worker.worker_id %></p>
+            </div>
+            <div class="worker-info ms-3">
+              <h5 class="mb-0"><%= worker.name %></h5>
+              <p class="text-muted mb-0"><%= worker.position %></p>
+            </div>
+          
           <div class="worker-info ms-3">
-            <h5 class="mb-0">John Doe</h5>
-            <p class="text-muted mb-0">Cashier</p>
+            <h5 class="mb-0">salary</h5>
+            <p class="text-muted mb-0"><%= worker.salary %></p>
           </div>
         </div>
-        <!-- Edit Button -->
-        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
-      </div>
-  
-      <!-- Repeat for other workers -->
-      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "clerks") ? "" : "d-none" %>">
-        <div class="d-flex align-items-center">
-          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
-          <div class="worker-info ms-3">
-            <h5 class="mb-0">Jane Smith</h5>
-            <p class="text-muted mb-0">Stock Clerk</p>
+          <!-- Edit Button -->
+          <a href="/admin/worker/add?form=view&&id=<%= worker.worker_id %>"><button class="btn btn-outline-primary">View</button></a>
           </div>
-        </div>
-        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
-      </div>
+     <%   }}); %>
+      <% } %>
+     <!-- ======= -->
 
-      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "staff") ? "" : "d-none" %>">
-        <div class="d-flex align-items-center">
-          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
-          <div class="worker-info ms-3">
-            <h5 class="mb-0">Jane Smith</h5>
-            <p class="text-muted mb-0">Staff</p>
-          </div>
-        </div>
-        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
-      </div>
-
-      <div class="worker-item d-flex align-items-center justify-content-between p-3 mb-3 rounded shadow-sm <%= (type === "cleaners") ? "" : "d-none" %>">
-        <div class="d-flex align-items-center">
-          <img src="profile2.jpg" alt="Profile" class="worker-photo rounded-circle">
-          <div class="worker-info ms-3">
-            <h5 class="mb-0">Jane Smith</h5>
-            <p class="text-muted mb-0">Cleaner</p>
-          </div>
-        </div>
-        <a href="/admin/worker/add?form=view"><button class="btn btn-outline-primary">View</button></a>
-      </div>
     </div>
   </div>
   

@@ -22,7 +22,7 @@
         <select id="workerType" name="workerType" required>
           <option value="" disabled selected>Select Worker Type</option>
           <option value="cashier">Cashier</option>
-          <option value="stock_clerk">Stock Clerk</option>
+          <option value="clerks">Stock Clerk</option>
           <option value="receiving_staff">Receiving Staff</option>
           <option value="cleaner">Cleaner</option>
         </select>
@@ -36,30 +36,33 @@
   <div class="worker-form" <%= (form === "view") ? "" : "hidden" %>>
     
     <div class="worker-image">
-      <img src="/image/logo.png" alt="Worker Photo">
+      <img src="<%= profileimg %>" alt="Worker Photo">
     </div>
     
-    <form id="worker-details-form">
+    <form id="worker-details-form" action="/admin/updateWorkerInfo" method="post">
       <div class="worker-detail">
-        <label for="first-name">First Name:</label>
-        <input type="text" id="first-name" value="John" readonly>
+        <label for="first-name">Name:</label>
+        <input type="text" id="first-name" value="<%= locals.name %>" readonly>
       </div>
-      <div class="worker-detail">
+      <!-- <div class="worker-detail">
         <label for="last-name">Last Name:</label>
-        <input type="text" id="last-name" value="Doe" readonly>
-      </div>
+        <input type="text" id="last-name" value="<%= locals.lname %>" readonly>
+      </div> -->
       <div class="worker-detail">
         <label for="worker-id">Worker ID:</label>
-        <input type="text" id="worker-id" value="12345" readonly>
+        <input type="text" id="worker-id" value="<%= locals.id %>" name="workerid" readonly>
       </div>
       <div class="worker-detail">
         <label for="salary">Salary:</label>
-        <input type="number" id="salary" value="2000" readonly>
+        <input type="number" id="salary" value="<%= locals.salary %>" name="salary" readonly >
       </div>
-      
+      <div class="worker-detail">
+        <label for="work-type">Work email:</label>
+        <input type="text" id="work-email" value="<%= locals.email %>" name="email" readonly>
+      </div>
       <div class="worker-detail">
         <label for="work-type">Work Type:</label>
-        <input type="text" id="work-type" value="Cashier" readonly>
+        <input type="text" id="work-type" value="<%= locals.position %>" name="type" readonly>
       </div>
      
       <div class="worker-actions">
@@ -113,7 +116,7 @@
 // Enable editing
 editButton.addEventListener("click", () => {
   inputs.forEach(input => {
-    if (input.id === "worker-id" || input.id === "salary" || input.id === "work-type") {
+    if (input.id === "work-email" || input.id === "salary" || input.id === "work-type") {
       input.removeAttribute("readonly");
       input.style.backgroundColor = "#ffffff";
     }
@@ -144,7 +147,7 @@ deleteButton.addEventListener("click", () => {
 
 // Save functionality (placeholder)
 saveButton.addEventListener("click", (e) => {
-  e.preventDefault();
+  // e.preventDefault();
   alert("Changes saved!");
   // Add update logic here (e.g., API call)
 });

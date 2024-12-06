@@ -7,7 +7,8 @@ import db from "../config/db.js";
 export const AdminStrategy =new Strategy({ usernameField: 'Admin_id', passwordField: 'Admin_password' },async function verfy(AdminId, password, cb) {
   
     try{
-        const result = await db.query("SELECT * FROM worker where worker_id = $1 " ,[AdminId]);
+        if(AdminId.startsWith("Admin")){ 
+        const result = await db.query("SELECT * FROM worker where worker_id = $1" ,[AdminId]);
     
         if(result.rows.length >0){
             const admin = result.rows[0];
@@ -31,9 +32,14 @@ export const AdminStrategy =new Strategy({ usernameField: 'Admin_id', passwordFi
         }else{
             return cb("Admin not found")
         }
+    }else{
+        console.log("Wrong admin id");
+        return cb(null, false);
+    }
     }catch (err){
         console.log(err);
     }
+    
   })
 
 
