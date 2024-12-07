@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { log } from "console";
+import { log, timeStamp } from "console";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -72,6 +72,24 @@ export const workerEdit =async (req,res)=>{
     console.log(err);
   }
 };
+
+export const deleteWorker = async (req, res)=>{
+    let {id} = req.params;
+    try{
+     let type= await db.query("SELECT position, name from worker where worker_id = $1",[id]);
+     let result = await db.query("DELETE FROM worker WHERE worker_id = $1",[id]);
+     if(result){
+        req.flash('success', `Worker "${type.rows[0].name}" Deleted !`);
+        console.log("deleted");
+        res.redirect(`/admin/workers/type?type=${type.rows[0].position}`);
+     }else{
+        console.log(err);;
+        req.flash('error', `Worker "${type.rows[0].name}" failed to Delete !`);
+     }
+    }catch(err){
+        console.log(err);
+    }
+}
 
 export const updateWorkerInfo =async (req, res)=>{
     const {workerid, salary, type,email} = req.body;
@@ -261,14 +279,21 @@ export const addworkers = async (req , res)=>{
 
                     const user= InsertData.rows[0];
                     
-                    req.login(user,(err)=>{
-                        if(err){
-                            console.log(err);
-                        }else{
-                            console.log("success");
-                            res.redirect("/admin/home");
-                        }
-                    })
+                    // req.login(user,(err)=>{
+                    //     if(err){
+                    //         console.log(err);
+                    //     }else{
+                    //         console.log("success");
+                    //         res.redirect("/admin/workers");
+                    //     }
+                    // })
+                    if(InsertData){
+                        req.flash('success', `Worker ${fullName} added successfully!`);
+                        console.log(`success added ${fullName}`);
+                            res.redirect(`/admin/workers/type?type=${workertype}`);
+                    }else{
+                        req.flash('error', 'Failed to add worker.');
+                    }
                 }
             })
         }

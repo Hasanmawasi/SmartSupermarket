@@ -8,6 +8,7 @@ import db from "./server/config/db.js";
 import bodyParser from "body-parser";
 import passport from "passport";
 import session from "express-session";
+import flash from "connect-flash";
 import { LoginStrategy } from "./server/strategy/LoginStrategy.js";
 
 const app = express();
@@ -25,7 +26,14 @@ app.use(session({
   cookie:{
     maxAge: 60000*60,
   }
-}))
+}));
+
+app.use(flash());
+app.use((req, res, next) => {
+  res.locals.successMessage = req.flash('success');
+  res.locals.errorMessage = req.flash('error');
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());

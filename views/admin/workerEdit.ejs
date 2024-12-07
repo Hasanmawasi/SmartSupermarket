@@ -3,16 +3,16 @@
     <form id="addWorkerForm" action="/admin/addworker" method="post">
       <!-- Generate ID Row -->
       <div class="form-row">
-        <input type="text" id="generatedIdDisplay" placeholder="Generated ID" name="workerID" >
+        <input type="text" id="generatedIdDisplay" placeholder="Generated ID" name="workerID" required>
         <button type="button" id="generateIdButton">Generate ID</button>
       </div>
       <!-- Generate Password Row -->
       <div class="form-row">
-        <input type="text" id="generatedPasswordDisplay" placeholder="Generated Password" name="workerPassword">
+        <input type="text" id="generatedPasswordDisplay" placeholder="Generated Password" name="workerPassword" required>
         <button type="button" id="generatePasswordButton">Generate Password</button>
       </div>
       <div class="form-row">
-        <input type="text" id="" placeholder="Worker branch" name="workerBranch">
+        <input type="text" id="" placeholder="Worker branch" name="workerBranch" required>
         
       </div>
       <!-- Vertical Form Fields -->
@@ -23,7 +23,7 @@
           <option value="" disabled selected>Select Worker Type</option>
           <option value="cashier">Cashier</option>
           <option value="clerks">Stock Clerk</option>
-          <option value="receiving_staff">Receiving Staff</option>
+          <option value="staff">Receiving Staff</option>
           <option value="cleaner">Cleaner</option>
         </select>
         <input type="number" id="salary" name="salary" placeholder="Salary" required>
@@ -72,9 +72,22 @@
     </form>
     <div class="form-header">
       <button class="edit-button" id="edit-btn">Edit</button>
-      <button class="delete-button" id="delete-btn">Delete</button>
+      
+      <!-- <button class="" >Delete</button> -->
+      <button type="button" id="delete-btn" class="delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" >
+        Delete
+      </button>
     </div>
   </div>
+
+  <%- include('../partials/adminPartials/adminModals.ejs', {
+    ModalId: "deleteModal",
+    ModalTitle: "Delete Worker",
+    ModalBody: `Are you sure to delete "${locals.name}" ?`,
+    ActionBoton: "Delete",
+    formAction:`/admin/delete/${locals.id}`,
+    formMethod:"POST"
+  }) %>
 
   <script>
     // Generate unique ID
@@ -138,12 +151,12 @@ cancelButton.addEventListener("click", () => {
 });
 
 // Delete functionality (placeholder)
-deleteButton.addEventListener("click", () => {
-  if (confirm("Are you sure you want to delete this worker?")) {
-    alert("Worker deleted!");
-    // Add deletion logic here (e.g., API call)
-  }
-});
+// deleteButton.addEventListener("click", () => {
+//   if (confirm("Are you sure you want to delete this worker?")) {
+//     alert("Worker deleted!");
+//     // Add deletion logic here (e.g., API call)
+//   }
+// });
 
 // Save functionality (placeholder)
 saveButton.addEventListener("click", (e) => {
