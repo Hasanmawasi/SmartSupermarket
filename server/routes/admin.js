@@ -53,7 +53,7 @@ adminRoute.get("/admin/worker/add",adminController.workerEdit);
 
 adminRoute.post("/admin/worker/sendReport" ,adminController.sendReport);
 
-// adminRoute.get("/admin/worker/view",adminController.workerEdit);
+adminRoute.post("/admin/delete/:id",adminController.deleteWorker);
 
 adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
 
