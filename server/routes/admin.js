@@ -1,46 +1,19 @@
 import express, { Router } from "express";
 import * as adminController from "../controllers/adminController.js";
-import { AdminStrategy } from "../strategy/adminStrategy.js";
+import { LoginStrategy } from "../strategy/LoginStrategy.js";
 import passport from "passport";
 import db from "../config/db.js";
-import { isloggedIn } from "../middleware/chechAuth.js";
+import { authorizeRoles } from "../middleware/chechAuth.js";
 import { uploadProfile } from "../middleware/uploadprofileImage.js";
+import authRoutes from "./authRoutes.js";
 
+passport.use(LoginStrategy);
 
+const adminRoute = Router();
 
-passport.use(AdminStrategy);
+adminRoute.use(authRoutes);
 
-passport.serializeUser((user, done) => {
-  console.log(`serlizer ${user.worker_id} ${user.name}`)
-	done(null, user.worker_id);
-});
-
-
-  
-  passport.deserializeUser(async (id, done) => {
-    console.log(`deserlizer ${id}`);
-    try {
-      const result = await db.query('SELECT * FROM worker WHERE worker_id = $1', [id]);
-      if (result.rows.length > 0) {
-        done(null, result.rows[0]); // Pass the user object to the session
-      } else {
-        done(new Error('User not found'), null);
-      }
-    } catch (err) {
-      done(err, null);
-    }
-  });
-
-  const adminRoute = Router();
-
-adminRoute.post("/admin/login",
-  passport.authenticate("local",
-    {
-      successRedirect:"/admin/home",
-      failureRedirect:"/admin/login"
-    }));
-
-adminRoute.get("/admin/login", adminController.login);
+adminRoute.get("/login", adminController.login);
 
 adminRoute.post("/admin/addworker",adminController.addworkers);
 
@@ -50,7 +23,7 @@ adminRoute.get("/admin/about",adminController.about);
 
 adminRoute.get('/admin/reports', adminController.reports)
 
-adminRoute.get("/admin/dashboard",isloggedIn,adminController.dashboard);
+adminRoute.get("/admin/dashboard",authorizeRoles(["Admin"]),adminController.dashboard);
 
 adminRoute.get("/admin/products",adminController.products);
 
@@ -77,6 +50,8 @@ adminRoute.get("/admin/workers/type",adminController.workerType);
 adminRoute.post("/admin/updateWorkerInfo",adminController.updateWorkerInfo);
 
 adminRoute.get("/admin/worker/add",adminController.workerEdit);
+
+adminRoute.post("/admin/worker/sendReport" ,adminController.sendReport);
 
 // adminRoute.get("/admin/worker/view",adminController.workerEdit);
 

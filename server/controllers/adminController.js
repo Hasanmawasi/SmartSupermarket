@@ -114,10 +114,26 @@ export const about = (req, res) => {
     })
 }
 
-export const reports = (req, res) => {
-    res.render("admin/reports", {
-        layout:"./layouts/admin"
-    })
+export const reports = async (req, res) => {
+
+    try {
+        const branch = req.user.branch_id;
+        const recipient = `${branch}-admin`;
+
+        const result = await db.query(
+            "SELECT report_date, report_title, report_body FROM reports WHERE recipient = $1 ORDER BY report_date    DESC",
+            [recipient]
+        );
+        res.render("admin/reports", {
+            reports:  result.rows,
+            layout:"./layouts/admin",
+        })
+    
+    } catch (error) {
+        console.error('Error retrieving reports:', error);
+        res.status(500).send('Failed to load reports.');
+    }
+
 }
 
 export const workers = (req, res) => {
@@ -270,4 +286,30 @@ export const sidebarPhoto =async (req, res)=>{
 
     res.json(photo);
 }
+
+
+export const sendReport = async (req, res) => {
+    const workerId =  req.user.worker_id;
+    const report_title = req.body.reportTitle;
+    const report_content = req.body.reportContent;
+    const recipient = "Manager";
+    const report_date = new Date().toISOString().slice(0, 10);
+
+    if (!report_title || !report_content) {
+        return res.status(400).json({ error: "All fields are required!" });
+    }
+
+    try {
+       const result = await db.query("INSERT INTO reports(report_date, report_title, report_body, recipient, worker_id) VALUES ($1,$2,$3,$4,$5) RETURNING *", [report_date, report_title, report_content, recipient, workerId]);
+       res.status(201).json({ message: "Report added successfully!", report: result.rows[0] });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: "Database error occurred!" });
+    }
+}
+
+export const viewReport = async (req, res) => {
+
+}
+
 export default dashboard;
