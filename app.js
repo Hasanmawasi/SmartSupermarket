@@ -3,15 +3,18 @@ import dotenv from "dotenv";
 import expressEjsLayouts from "express-ejs-layouts";
 import adminRoute from "./server/routes/admin.js";
 import workerRoute from "./server/routes/worker.js";
+import authRoutes from "./server/routes/authRoutes.js"
 import db from "./server/config/db.js";
 import bodyParser from "body-parser";
 import passport from "passport";
 import session from "express-session";
+import { LoginStrategy } from "./server/strategy/LoginStrategy.js";
 
 const app = express();
 app.use(express.static("public"));
 app.use('/admin/updateProfile', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+passport.use(LoginStrategy);
 
 dotenv.config();
 
@@ -36,8 +39,10 @@ app.set("view engine", "ejs");
 db.connect();
 // routes 
 
+app.use("/auth", authRoutes);
 app.use(adminRoute);
 app.use(workerRoute);
+
 
 
 
