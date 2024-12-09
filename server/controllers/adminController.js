@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-import { log, timeStamp } from "console";
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -92,14 +92,16 @@ export const deleteWorker = async (req, res)=>{
 }
 
 export const updateWorkerInfo =async (req, res)=>{
-    const {workerid, salary, type,email} = req.body;
+    const {workerid, salary, type,email , name} = req.body;
     let parsedSalary =parseFloat(salary);
 
     try{
-       let result= await db.query("UPDATE worker set  salary=$1, position=$2,email=$3  where worker_id=$4",[parsedSalary,type,email,workerid]);
+       let result= await db.query("UPDATE worker set  salary=$1, position=$2,email=$3  where worker_id=$4 RETURNING *",[parsedSalary,type,email,workerid]);
         if(result){
+            req.flash('success', `Worker ${name} Updated successfully!`);
             res.redirect(`/admin/workers/type?type=${type}`);
         }else{
+            req.flash('error', `Worker ${name} failed Updated !`);
             console.log("faile to update");
         }
     }catch(err){

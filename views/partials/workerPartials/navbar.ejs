@@ -5,9 +5,19 @@
   >
     <div class="container-fluid">
       <a href="/worker/profile" class="d-flex align-items-center link-body-emphasis text-decoration-none " >
-        <img src="https://github.com/mdo.png" alt="" width="45" height="43" class="rounded-circle me-2">
+        <img id="navbarimg" src="https://github.com/mdo.png" alt="" width="45" height="43" class="rounded-circle me-2">
         
       </a>
+      <script>
+  
+        fetch('/sidebarPhoto')
+        .then(response => response.json())
+        .then((data) => {
+          const img= document.getElementById("navbarimg");
+          console.log(data)
+          img.src = data;
+        })
+       </script>
       <a class="navbar-brand" href="#"> Supermarket</a>
       <button
         class="navbar-toggler"
