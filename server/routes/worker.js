@@ -29,13 +29,10 @@ workerRoute.post('/worker/updateProfile',workerController.workerProfileUpdate);
 
 workerRoute.post('/worker/sendReport', workerController.sendReport);
 
-<<<<<<< Updated upstream
 workerRoute.get('/profilePhoto',workerController.profile);
-=======
 workerRoute.post('/worker/submitArrival', workerController.submitArrival);
 
 workerRoute.post('/worker/submitDeparture', workerController.submitDeparture);
 
->>>>>>> Stashed changes
 
 export default workerRoute;
