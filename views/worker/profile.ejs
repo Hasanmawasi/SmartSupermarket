@@ -1,31 +1,86 @@
-<div class="d-flex justify-content-center mt-5" > 
-    <div class="profile-container shadow mt-5">
-        <!-- Profile Photo -->
-        <img src="https://via.placeholder.com/100" alt="Profile Photo" class="profile-photo" id="profilePhoto">
-        <input type="file" id="photoInput" accept="image/*" onchange="loadPhoto(event)">
-    
-        <!-- Profile Information -->
-        <div class="profile-info">
-            <label>First Name</label>
-            <p class="info-text" id="firstNameText">John</p>
-            <input type="text" id="firstNameInput" value="John">
-    
-            <label>Last Name</label>
-            <p class="info-text" id="lastNameText">Doe</p>
-            <input type="text" id="lastNameInput" value="Doe">
-    
-            <label>Phone Number</label>
-            <p class="info-text" id="phoneText">123-456-7890</p>
-            <input type="text" id="phoneInput" value="123-456-7890">
-    
-            <label>Email Address</label>
-            <p class="info-text" id="emailText">john.doe@example.com</p>
-            <input type="email" id="emailInput" value="john.doe@example.com">
-        </div>
-    
-        <!-- Buttons -->
-        <button class="button edit-button" onclick="editProfile()">Edit</button>
-        <button class="button save-button" onclick="saveProfile()">Save</button>
-    </div>
-    </div>
-    <script src="/js/admin.js"></script>
+<div class="d-flex justify-content-center mt-5">
+  <div class="profile-container mt-5">
+    <form
+      action="/worker/updateProfileImg"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <!-- Profile Photo -->
+      <img
+        src="<%= locals.image %>"
+        alt="Profile Photo"
+        class="profile-photo"
+        id="profilePhoto"
+      />
+      <div class="d-flex justify-content-between">
+        <input
+          type="file"
+          id="photoInput"
+          accept="image/*"
+          name="UploadedPhoto"
+          onchange="loadPhoto(event)"
+          required
+        />
+        <button type="submit" id="updateBtn" class="btn btn-success">
+          update
+        </button>
+      </div>
+    </form>
+    <!-- Profile Information -->
+    <form action="/worker/updateProfile" method="post">
+      <div class="profile-info">
+        <label>First Name:</label>
+        <p class="info-text" id="firstNameText"><%= locals.firstName %></p>
+        <input
+          type="text"
+          id="firstNameInput"
+          value="<%= locals.firstName %>"
+          name="fname"
+        />
+
+        <label>Last Name</label>
+        <p class="info-text" id="lastNameText"><%= locals.lastName %></p>
+        <input
+          type="text"
+          id="lastNameInput"
+          value="<%= locals.lastName %>"
+          name="lname"
+        />
+
+        <label>Salary</label>
+        <p class="info-text" id="salary"><%= locals.salary %></p>
+        <input
+          type="text"
+          id="Salary"
+          value="<%= locals.salary %>"
+          name="salary"
+          readonly
+        />
+
+        <label>Phone Number</label>
+        <p class="info-text" id="phoneText"><%= locals.phone %></p>
+        <input
+          type="text"
+          id="phoneInput"
+          value="<%= locals.phone %>"
+          name="phoneNumber"
+        />
+
+        <label>Email Address</label>
+        <p class="info-text" id="emailText"><%= locals.email %></p>
+        <input
+          type="email"
+          id="emailInput"
+          value="<%= locals.email %>"
+          name="email"
+        />
+      </div>
+      <button type="submit" class="button save-button" onclick="saveProfile()">
+        Save
+      </button>
+    </form>
+    <!-- Buttons -->
+    <button class="button edit-button" onclick="editProfile()">Edit</button>
+  </div>
+</div>
+<script src="/js/admin.js"></script>

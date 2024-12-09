@@ -4,6 +4,7 @@ import { authorizeRoles } from '../middleware/chechAuth.js'
 import authRoutes from './authRoutes.js';
 import { LoginStrategy } from '../strategy/LoginStrategy.js';
 import passport from 'passport';
+import { uploadProfile } from '../middleware/uploadprofileImage.js';
 
 passport.use(LoginStrategy);
 
@@ -22,7 +23,12 @@ workerRoute.get('/worker/reports', authorizeRoles(["Worker"]), workerController.
 
 workerRoute.get('/worker/profile', workerController.profile);
 
+workerRoute.post('/worker/updateProfileImg',uploadProfile.single("UploadedPhoto"),workerController.ImgprofileUpdate);
+
+workerRoute.post('/worker/updateProfile',workerController.workerProfileUpdate);
+
 workerRoute.post('/worker/sendReport', workerController.sendReport);
 
+workerRoute.get('/profilePhoto',workerController.profile);
 
 export default workerRoute;

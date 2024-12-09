@@ -10,7 +10,9 @@ import passport from "passport";
 import session from "express-session";
 import flash from "connect-flash";
 import { LoginStrategy } from "./server/strategy/LoginStrategy.js";
+import connectPgSimple from "connect-pg-simple";
 
+const PgSession = connectPgSimple(session);
 const app = express();
 app.use(express.static("public"));
 app.use('/admin/updateProfile', express.static('public'));
@@ -19,14 +21,29 @@ passport.use(LoginStrategy);
 
 dotenv.config();
 
-app.use(session({
-  secret:"secrets",
-  saveUninitialized: false,
-  resave: false,
-  cookie:{
-    maxAge: 60000*60,
-  }
-}));
+app.use(
+  session({
+    store: new PgSession({
+      pool: db, // PostgreSQL conection
+      tableName: 'session', // Name of the table in PostgreSQL to store sessions
+    }),
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false, // Set this to true in production with HTTPS
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day
+    },
+  })
+);
+// app.use(session({
+//   secret:"secrets",
+//   saveUninitialized: false,
+//   resave: false,
+//   cookie:{
+//     maxAge: 60000*60,
+//   }
+// }));
 
 app.use(flash());
 app.use((req, res, next) => {
