@@ -2,13 +2,32 @@
 <div class="log-container ">
     <h2>Daily Log</h2>
     <p class="description">Submit your arrival and departure times. Please wait for admin approval after each submission.</p>
-    <button id="arrivalButton" class="log-button" onclick="submitLog('arrival')">
-      <i class="fas fa-sign-in-alt"></i> Log Arrival
-    </button>
-    <button id="departureButton" class="log-button" onclick="submitLog('departure')" disabled>
+    <form action="/worker/submitArrival" method="POST">
+      <input type="hidden" name="type" value="arrival">
+      <% if (locals.a_status){ %>
+        <button id="arrivalButton" class="log-button" disabled>
+          <i class="fas fa-sign-out-alt"></i> <%= locals.a_status %>
+        </button>
+        <% } else { %>
+        <button id="arrivalButton" class="log-button" >
+        <i class="fas fa-sign-out-alt"></i> Log Arrival
+        </button>
+        <% } %>
+    </form>
+    <form action="/worker/submitDeparture" method="POST">
+      <input type="hidden" name="type" value="departure">
+    <% if (locals.d_status){ %>
+      <button id="departureButton" class="log-button" disabled>
+        <i class="fas fa-sign-out-alt"></i> <%= locals.d_status %>
+      </button>
+      <% } else { %>
+      <button id="arrivalButton" class="log-button" >
       <i class="fas fa-sign-out-alt"></i> Log Departure
+      </button>
+      <% } %>
     </button>
-    <div id="statusMessage" class="status pending">Status: Awaiting arrival log</div>
+    </form>
+    <div id="statusMessage" class="status pending">Status: </div>
   </div>
 
   <div class="schedule-container">
@@ -67,33 +86,3 @@
     </table>
 </div>
 </div>
-  <script>
-    async function submitLog(type) {
-      const button = document.getElementById(`${type}Button`);
-      const otherButton = type === 'arrival' ? document.getElementById('departureButton') : document.getElementById('arrivalButton');
-      const statusMessage = document.getElementById('statusMessage');
-      
-      button.disabled = true;
-      button.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Pending...';
-      
-      const response = await fetch('/submitLog', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ type, timestamp: new Date().toISOString() })
-      });
-      
-      const data = await response.json();
-      
-      if (data.status === 'accepted') {
-        statusMessage.textContent = `Status: ${type.charAt(0).toUpperCase() + type.slice(1)} time accepted`;
-        statusMessage.className = 'status accepted';
-        button.innerHTML = type === 'arrival' ? '<i class="fas fa-check-circle"></i> Arrived' : '<i class="fas fa-check-circle"></i> Left';
-        otherButton.disabled = type === 'arrival' ? false : true;
-      } else {
-        statusMessage.textContent = `Status: ${type.charAt(0).toUpperCase() + type.slice(1)} time rejected. Please try again.`;
-        statusMessage.className = 'status rejected';
-        button.disabled = false;
-        button.innerHTML = type === 'arrival' ? '<i class="fas fa-sign-in-alt"></i> Log Arrival' : '<i class="fas fa-sign-out-alt"></i> Log Departure';
-      }
-    }
-  </script>
