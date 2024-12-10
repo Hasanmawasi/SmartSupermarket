@@ -4,17 +4,46 @@
     <h2>Manage Products </h2>
     <a href="/admin/products"><button class="btn btn-primary ">Go Back</button></a>
 </div>
+<%- include('../partials/adminpartials/alertmessage.ejs') %>
     <section class="feature"  <%= (form === "add") ? "" : "hidden" %>>
         <h2>Add New Product</h2>
-        <form class="product-form" id="addProductForm" >
-            <label for="productName">Product Name:</label>
-            <input type="text" id="productName" required>
-
+        <form class="product-form" id="addProductForm" method="POST" action="/admin/addproduct" enctype="multipart/form-data">
+            <div class="row">
+             <div class="col-6">    
+                <label for="productName">Product Name:</label>
+                <input type="text" id="productName" name="productName" required>
+             </div>
+             <div class="col-6">
+                <label for="category">Choose Category:</label>
+                <select name="category" id="categoryType">
+                    <% if(category){ %>
+                    <% category.forEach(categ =>{ %>
+                        <option value="<%= categ.category_id %>"><%= categ.type %></option>
+                    <% }) %>    
+                    <% } %>
+                </select>
+            </div>
+            </div>
             <label for="productPhoto">Product Photo URL:</label>
-            <input type="text" id="productPhoto" required>
+            <input type="file" id="productPhoto" name="image" required>
 
-            <label for="productPrice">Product Price:</label>
-            <input type="number" id="productPrice" required>
+            <label for="productPrice">Product Selling Price:</label>
+            <input type="number" id="productPrice" name="productPrice" required>
+
+            <label for="basePrice">Product Base Price</label>
+            <input type="text" name="basePrice" id="basePrice">
+            
+            <label for="expideDate">Product Expire Date</label>
+            <input type="date" name="expideDate" id="">
+
+            <label for="description">Product Description</label>
+            <input type="text" name="description" id="">
+            
+            <label for="barcode">Product BarCode</label>
+            <input type="text" name="barcode" id="">
+
+            <label for="quantity">Product Quantity</label>
+            <input type="text" name="quantity" id="">
 
             <button type="submit">Add Product</button>
         </form>
@@ -22,13 +51,23 @@
 
     
     <div class="feature" <%= (form === "edit") ? "" : "hidden" %>>
-        <h3>Edit Products</h3>
+        <h2>Edit Products</h2>
+        
+        <input
+            type="text"
+            id="searchInput"
+            placeholder="Type to search..."
+            onkeyup="searchProducts()"
+        />
+        <div id="results"></div>
+       
         <form class="product-form" id=" " >
             <label for="editProductName">Product Name:</label>
             <input type="text" id="editProductName" required>
             <label for="editProductPrice">New Price:</label>
             <input type="number" id="editProductPrice" required>
             <button type="submit">Update Product</button>
+
         </form>
     </div>
 

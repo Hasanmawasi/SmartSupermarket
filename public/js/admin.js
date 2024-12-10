@@ -7,6 +7,46 @@ let links = document.querySelectorAll(".sidebar-list li a");
       })
     })
 
+    async function searchProducts() {
+      const query = document.getElementById('searchInput').value;
+
+      if (!query) {
+        document.getElementById('results').innerHTML = '';
+        return;
+      }
+
+      try {
+        const response = await fetch(`/search?query=${query}`);
+        const data = await response.json();
+
+        displayResults(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+
+    function displayResults(products) {
+      const resultsContainer = document.getElementById('results');
+      resultsContainer.innerHTML = ''; // Clear previous results
+
+      if (products.length === 0) {
+        resultsContainer.innerHTML = '<p>No products found</p>';
+        return;
+      }
+
+      products.forEach((product) => {
+        const div = document.createElement('div');
+        div.className = 'product';
+        div.innerHTML = `
+          <strong>${product.product_name}</strong><br />
+          ${product.description}<br />
+          Price: $${product.base_price}
+        `;
+        resultsContainer.appendChild(div);
+      });
+    }
+
+
 
 // profet label
 const labels = [

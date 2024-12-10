@@ -16,6 +16,18 @@ const storage = diskStorage({
     }
 });
 
+const storage1 = diskStorage({
+    destination:(req , file, cb)=>{
+        const uploadedPath = path.join(__dirname,"../../public/image/productImg")
+        cb(null,uploadedPath);// where the file is saved 
+    },
+    filename: (req, file, cb)=>{
+       
+        cb(null,Date.now()+"-"+file.originalname); // add a date to the file name if there is two file in same name
+    }
+});
+
+
 const fileFilter = (req, file, cb)=>{
     const filetype= /jpeg|jpg|png|gif/;
     const extname = filetype.test(path.extname(file.originalname).toLocaleLowerCase()); // check the extension if match
@@ -35,3 +47,8 @@ export  const uploadProfile = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
 });
 
+export const uplaodProductImg = multer({
+    storage: storage1,
+    fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
+})

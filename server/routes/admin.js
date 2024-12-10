@@ -4,7 +4,7 @@ import { LoginStrategy } from "../strategy/LoginStrategy.js";
 import passport from "passport";
 import db from "../config/db.js";
 import { authorizeRoles } from "../middleware/chechAuth.js";
-import { uploadProfile } from "../middleware/uploadprofileImage.js";
+import { uplaodProductImg, uploadProfile } from "../middleware/uploadprofileImage.js";
 import authRoutes from "./authRoutes.js";
 
 passport.use(LoginStrategy);
@@ -55,8 +55,11 @@ adminRoute.post("/admin/worker/sendReport" ,adminController.sendReport);
 
 adminRoute.post("/admin/delete/:id",adminController.deleteWorker);
 
+adminRoute.post("/admin/addproduct",uplaodProductImg.single("image"),adminController.addProduct);
+
 adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
 
+adminRoute.get("/search",adminController.search);
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },
     { date: '2024-11-02', id: '00002', type: 'Refund', amount: 50.0, method: 'Cash', status: 'Completed' },

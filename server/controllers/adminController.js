@@ -36,13 +36,71 @@ export const products = (req,res)=>{
     })
 };
 
-export const forms = (req,res)=>{
+export const forms = async (req,res)=>{
     let form= req.query.form;
-    res.render("admin/forms",{
-        form: form,
-        layout:"./layouts/admin"
-    })
+    try{
+        let result = await db.query("SELECT type, category_id FROM category");
+        let type = result.rows;
+        res.render("admin/forms",{
+            form: form,
+            category: type,
+            layout:"./layouts/admin"
+        })
+    }catch(err){
+        console.log(err);
+    }
 };
+
+export const search =  async (req, res) => {
+    try {
+        const { query } = req.query;
+    
+        if (!query) {
+          return res.status(400).json({ error: 'Query parameter is missing' });
+        }
+    
+        // Search database using ILIKE for case-insensitive matching
+        const result = await db.query(
+          `SELECT * FROM product WHERE product_name ILIKE $1 OR description ILIKE $1`,
+          [`%${query}%`] // Match the query as part of name or description
+        );
+    
+        res.status(200).json(result.rows);
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+};
+  
+
+export const addProduct =async (req, res)=>{
+    const file =req.file;
+    console.log(file.filename);
+    const adminBranch = req.user.branch_id;
+    const {productName,category,productPrice,basePrice,expideDate,description,barcode,quantity}= req.body;
+    if(!file){
+        res.send("image not uploaded")
+    }
+    let imageUrl = `/image/productPhoto/${file.filename}`;
+    let result = await db.query(`INSERT INTO product(description,expire_date,image_url,base_price,selling_price,bar_code,product_name,category_id)
+         VALUES($1,$2,$3,$4,$5,$6,$7,$8)
+          RETURNING *`,
+        [description,expideDate,imageUrl,basePrice,productPrice,barcode,productName,category]
+    );
+    let productId = result.rows[0].product_id;
+
+    let result2 = await db.query(`INSERT INTO branch_storage(branch_id,product_id,quantity)
+         VALUES($1,$2,$3)`,
+         [adminBranch,productId,quantity]
+        );
+
+    if(result && result2){
+        req.flash('success',`the product: ${productName} added successfuly ${quantity} items to ${adminBranch}!`);
+        res.redirect("/admin/products/forms?form=add")
+    }else{
+        res.status(404).send("error adding pruduct");
+    }
+}
 
 export const workerEdit =async (req,res)=>{
     try{ 
@@ -141,7 +199,7 @@ export const reports = async (req, res) => {
         const recipient = `${branch}-admin`;
 
         const result = await db.query(
-            "SELECT report_date, report_title, report_body FROM reports WHERE recipient = $1 ORDER BY report_date    DESC",
+            `SELECT report_date, report_title, report_body FROM reports WHERE recipient = $1 ORDER BY report_date    DESC`,
             [recipient]
         );
         res.render("admin/reports", {
