@@ -30,6 +30,7 @@ workerRoute.post('/worker/updateProfile',workerController.workerProfileUpdate);
 workerRoute.post('/worker/sendReport', workerController.sendReport);
 
 workerRoute.get('/profilePhoto',workerController.profile);
+
 workerRoute.post('/worker/submitArrival', workerController.submitArrival);
 
 workerRoute.post('/worker/submitDeparture', workerController.submitDeparture);

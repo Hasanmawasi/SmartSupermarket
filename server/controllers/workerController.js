@@ -157,11 +157,13 @@ export const submitArrival = async (req, res) => {
     res.render('worker/daily-log', {
         layout: "./layouts/worker",
         a_status: arrivalStatus,
+        message: `Arrival log is ${arrivalStatus}`
     });
   
   } catch (error) {
     console.error("Error logging time:", error);
-    res.render("daily-log", {
+    res.render("worker/daily-log", {
+      layout: "./layouts/worker",
       message: "An internal error occurred. Please try again.",
     });
   }
@@ -185,27 +187,31 @@ export const submitDeparture= async (req, res) => {
     arrivalStatus = result.rows[0].log_status;
     console.log(arrivalStatus);
     
-    if (type === "departure" && arrivalStatus != null ) {
-    const result = await db.query(
-        `UPDATE dailylog
-         SET leaving_time = $1, departure_time = $2
-         WHERE log_date = $3 AND worker_id = $4 AND log_status = 'accepted'`,
-        [currentTime, status, logDate, workerId]
-      );
+    if (type === "departure") {
+      if(arrivalStatus == 'accepted'){
+        const result = await db.query(
+          `UPDATE dailylog
+          SET leaving_time = $1, departure_time = $2
+          WHERE log_date = $3 AND worker_id = $4 AND log_status = 'accepted'`,
+          [currentTime, status, logDate, workerId]
+        );
 
-    const result2 = await db.query('SELECT departure_time FROM dailylog WHERE log_date = $1 AND worker_id = $2', [logDate, workerId]);
-    departureStatus = result2.rows[0].departure_time;
-    console.log(result2.rows[0]);
-    console.log(departureStatus);
-    }
-    res.render('worker/daily-log', {
-        layout: "./layouts/worker",
-        d_status: departureStatus,
-    });
-  
+        const result2 = await db.query('SELECT departure_time FROM dailylog WHERE log_date = $1 AND worker_id = $2', [logDate, workerId]);
+        departureStatus = result2.rows[0].departure_time;
+        console.log(result2.rows[0]);
+        console.log(departureStatus);
+        res.render('worker/daily-log', {
+          layout: "./layouts/worker",
+          d_status: departureStatus,
+          message: `Departure log ${departureStatus}`,
+        });
+      } else {
+      res.json(`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`)
+      }}
   } catch (error) {
     console.error("Error logging time:", error);
-    res.render("daily-log", {
+    res.render('worker/daily-log', {
+      layout: "./layouts/worker",
       message: "An internal error occurred. Please try again.",
     });
   }

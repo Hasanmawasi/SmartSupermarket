@@ -27,7 +27,11 @@
       <% } %>
     </button>
     </form>
-    <div id="statusMessage" class="status pending">Status: </div>
+    <% if (locals.message){ %>
+        <div id="statusMessage" class="status pending">Status: <%= message %></div>
+    <% } else {%>
+        <div id="statusMessage" class="status pending">Status: Awaiting arrival log</div>
+    <% } %>
   </div>
 
   <div class="schedule-container">
