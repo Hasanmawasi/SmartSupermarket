@@ -1,32 +1,133 @@
-<div class="mt-5">
-<div class="request-container">
-    <div class="request-details">
-      <p class="worker-name">John Doe</p>
-      <p class="request-info">Arrival - 09:30 AM</p>
+<div id="arrivalContainer" class="arrivalContainer border shadow reviews-list mt-5">
+  <% if(pendingWorker){ %>
+    <% pendingWorker.forEach((worker) =>{ %>
+    <div class="request-container">
+      <div class="request-details">
+        <img src="<%= worker.image_url %>" alt="Profile" class="worker-photo rounded-circle">
+        <div class="mx-2"> 
+         <p class="worker-name"><%= worker.name %></p>
+         <p class="request-info"><%= worker.arrival_time %></p>
+       </div>
+      </div>
+      <p>ariving to work</p>
+      <div class="action-buttons">
+        <form action="/accept/<%= worker.worker_id %>" method="post">
+        <button class="accept-btn" >Accept</button>
+       </form>
+        <button class="reject-btn">Reject</button>
+      </div>
     </div>
-    <div class="action-buttons">
-      <button class="accept-btn">Accept</button>
-      <button class="reject-btn">Reject</button>
-    </div>
-  </div>
-<div class="request-container">
-    <div class="request-details">
-      <p class="worker-name">John Doe</p>
-      <p class="request-info">Arrival - 09:30 AM</p>
-    </div>
-    <div class="action-buttons">
-      <button class="accept-btn">Accept</button>
-      <button class="reject-btn">Reject</button>
-    </div>
-  </div>
-<div class="request-container">
-    <div class="request-details">
-      <p class="worker-name">John Doe</p>
-      <p class="request-info">Arrival - 09:30 AM</p>
-    </div>
-    <div class="action-buttons">
-      <button class="accept-btn">Accept</button>
-      <button class="reject-btn">Reject</button>
-    </div>
-  </div>
+    <% }) %>
+    <% } %>
    </div>
+
+   <div id="departureContainer" class="departureContainer border shadow reviews-list mt-1">
+    <% if(departureWorker){ %>
+      <% departureWorker.forEach((worker) =>{ %>
+      <div class="request-container">
+        <div class="request-details">
+          <img src="<%= worker.image_url %>" alt="Profile" class="worker-photo rounded-circle">
+          <div class="mx-2"> 
+           <p class="worker-name"><%= worker.name %></p>
+           <p class="request-info"><%= worker.arrival_time %></p>
+         </div>
+        </div>
+        <p>leaving work </p>
+        <div class="action-buttons">
+          <form action="/departure/accept/<%= worker.worker_id %>" method="post">
+          <button class="accept-btn" >Accept</button>
+         </form>
+          <button class="reject-btn">Reject</button>
+        </div>
+      </div>
+      <% }) %>
+      <% }%>
+     
+     </div>
+
+
+
+
+
+
+   <script src="/socket.io/socket.io.js"></script>
+<script>
+  const socket = io();
+  
+  socket.on('connect', () => {
+  console.log('Connected to the server');
+});
+
+// Listen for new logs
+  socket.on('new-log', (log) => {
+    const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
+    notificationSound.play().catch((error) => {
+    console.error("Audio playback failed:", error);
+});
+    const logContainer = document.getElementById('arrivalContainer');
+    const newLog = document.createElement('div');
+    newLog.className = 'request-container';
+    console.log(log);
+    // newLog.id = `log-${log.id}`;
+    newLog.innerHTML = `
+      <div class="request-details">
+        <img src="${log.image_url}" alt="Profile" class="worker-photo rounded-circle">
+        <div class="mx-2"> 
+         <p class="worker-name">${log.name} </p>
+         <p class="request-info">${log.arrival_time} </p>
+       </div>
+      </div>
+      <p>ariving to work</p>
+      <div class="action-buttons">
+        <form action="/accept/${log.worker_id}" method="post">
+        <button class="accept-btn" >Accept</button>
+       </form>
+        <button class="reject-btn">Reject</button>
+      </div>
+    `;
+    logContainer.appendChild(newLog);
+  });
+
+
+
+  socket.on('new-departure', (departure) => {
+    const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
+    notificationSound.play().catch((error) => {
+    console.error("Audio playback failed:", error);
+   });
+    const logContainer = document.getElementById('departureContainer');
+    const newLog = document.createElement('div');
+    newLog.className = 'request-container';
+    console.log(departure);
+    // newLog.id = `log-${log.id}`;
+    newLog.innerHTML = `
+      <div class="request-details">
+        <img src="${departure.image_url}" alt="Profile" class="worker-photo rounded-circle">
+        <div class="mx-2"> 
+         <p class="worker-name">${departure.name} </p>
+         <p class="request-info">${departure.leaving_time} </p>
+       </div>
+      </div>
+      <p>leaving work</p>
+      <div class="action-buttons">
+        <form action="/departure/accept/${departure.worker_id}" method="post">
+        <button class="accept-btn" >Accept</button>
+       </form>
+        <button class="reject-btn">Reject</button>
+      </div>
+    `;
+    logContainer.appendChild(newLog);
+  });
+  // Accept log
+  // function acceptLog(logId) {
+  //     fetch('/accept/${log.worker_id}', {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({ logId }),
+  //     }).then((res) => {
+  //       if (res.ok) {
+  //         document.getElementById(`log-${logId}`).remove();
+  //       }
+  //     });
+  //   }
+</script>

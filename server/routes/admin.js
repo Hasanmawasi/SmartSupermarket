@@ -61,6 +61,7 @@ adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
 
 adminRoute.get("/search",adminController.search);
 
+<<<<<<< Updated upstream
 adminRoute.get("/admin/products/type", adminController.productDivisions);
 
 adminRoute.post("/admin/products/addDivision", adminController.addDivision);
@@ -72,6 +73,11 @@ adminRoute.post("/admin/products/addProduct", adminController.addProduct);
 adminRoute.post("/admin/products/editProduct/:id", adminController.editProduct);
 
 adminRoute.post("/admin/products/deleteProduct/:id", adminController.deleteProduct);
+=======
+adminRoute.post("/accept/:id",adminController.acceptArrivalWorker);
+
+adminRoute.post("/departure/accept/:id",adminController.acceptDepartureWorker);
+>>>>>>> Stashed changes
 
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },

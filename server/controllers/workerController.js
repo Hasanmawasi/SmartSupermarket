@@ -2,7 +2,7 @@ import db from "../config/db.js";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import { io } from "../../app.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -145,10 +145,18 @@ export const submitArrival = async (req, res) => {
     const currentTime = currentTimestamp.toTimeString().split(' ')[0];
     const logDate = currentTimestamp.toISOString().split("T")[0];
     if (type === "arrival") {
-      await db.query(
-        `INSERT INTO dailylog (log_date, log_status, arrival_time, worker_id, branch_id) VALUES ($1, $2, $3, $4, $5)`,
+     await db.query(
+        `INSERT INTO dailylog (log_date, log_status, arrival_time, worker_id, branch_id) VALUES ($1, $2, $3, $4, $5) ;`,
         [logDate, status, currentTime, workerId, branch]
       );
+     
+      let log =  await db.query(`SELECT dailylog.arrival_time, worker.name, worker.image_url, worker.worker_id
+                                FROM dailylog
+                                JOIN worker ON dailylog.worker_id =worker.worker_id
+                                WHERE dailylog.worker_id = $1 AND log_status=$2;`,
+       [workerId,status]);
+      //  console.log(log);
+      io.emit('new-log', log.rows[0]);
       const result = await db.query('SELECT log_status FROM dailylog WHERE log_date = $1 AND worker_id = $2', [logDate, workerId]);
       arrivalStatus = result.rows[0].log_status;
       console.log(arrivalStatus);
@@ -159,7 +167,6 @@ export const submitArrival = async (req, res) => {
         a_status: arrivalStatus,
         message: `Arrival log is ${arrivalStatus}`
     });
-  
   } catch (error) {
     console.error("Error logging time:", error);
     res.render("worker/daily-log", {
@@ -195,10 +202,16 @@ export const submitDeparture= async (req, res) => {
           WHERE log_date = $3 AND worker_id = $4 AND log_status = 'accepted'`,
           [currentTime, status, logDate, workerId]
         );
-
+        let departure =  await db.query(`SELECT dailylog.leaving_time, worker.name, worker.image_url, worker.worker_id
+          FROM dailylog
+          JOIN worker ON dailylog.worker_id =worker.worker_id
+          WHERE dailylog.worker_id = $1 AND departure_time=$2;`,
+          [workerId,status]);
+        console.log(departure);
+        io.emit('new-departure', departure.rows[0]);
         const result2 = await db.query('SELECT departure_time FROM dailylog WHERE log_date = $1 AND worker_id = $2', [logDate, workerId]);
         departureStatus = result2.rows[0].departure_time;
-        console.log(result2.rows[0]);
+        // console.log(result2.rows[0]);
         console.log(departureStatus);
         res.render('worker/daily-log', {
           layout: "./layouts/worker",
@@ -215,4 +228,15 @@ export const submitDeparture= async (req, res) => {
       message: "An internal error occurred. Please try again.",
     });
   }
+};
+
+export const logout = (req, res) => {
+    // Destroy the session
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: 'Error logging out' });
+        }
+        // Redirect to the login page
+        res.redirect('/login');
+    });
 };

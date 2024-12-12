@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
-
+import { io } from "../../app.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -293,12 +293,86 @@ export const ImgprofileUpdate = async (req, res)=>{
     }
 };
 
-export const dailyLog = (req, res) => {
-    res.render("admin/dailylog", {
-        
-    })
+export const dailyLog = async (req, res) => {
+    try {
+        let branch = req.user.branch_id;
+        let logStatus= "pending"
+        let result = await db.query(`SELECT * FROM dailylog
+                                    inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
+                                     where 
+                                     dailylog.branch_id=$1 and dailylog.log_status = $2 
+                                     `,
+                                    [branch, logStatus]);
+        let result2 = await db.query(`SELECT * FROM dailylog
+            inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
+             where 
+             dailylog.branch_id=$1 and dailylog.departure_time= $2 
+             `,
+            [branch, logStatus]); 
+        let pendingWorker = result.rows; 
+        let departureWorker = result2.rows;
+        res.render("admin/dailylog", {
+        pendingWorker: pendingWorker,
+        departureWorker: departureWorker,
+        });
+    } catch (error) {
+        console.log(error)
+    }
+    
 }
 
+// export const dailyDeparture =async (req, res)=>{
+//     try {
+//         let branch = req.user.branch_id;
+//         let logStatus= "pending"
+//         let result = await db.query(`SELECT * FROM dailylog
+//                                     inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
+//                                      where 
+//                                      dailylog.branch_id=$1 and dailylog.departure_time= $2 
+//                                      `,
+//                                     [branch, logStatus]);
+//         let departureWorker = result.rows; 
+//         res.render("admin/dailylog", {
+//             departureWorker: departureWorker,
+//         });
+//     } catch (error) {
+//         console.log(error)
+//     }
+// }
+
+
+export const acceptArrivalWorker= async (req, res)=>{
+    try {
+        const acceptedWorker = req.params.id;
+        let message= 'accepted'
+        let result = await db.query(`UPDATE dailylog set log_status='accepted'
+                                        where 
+                                        log_date=CURRENT_DATE and worker_id =$1`,[acceptedWorker]);
+        if(result)
+        console.log("accepted!");   
+       //sending data
+        io.emit('accepted-login',message);
+        res.redirect("/admin/dailylog");                          
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const acceptDepartureWorker =async (req, res)=>{
+    try {
+        let message= 'accepted';
+        const acceptedWorker = req.params.id;
+        let result = await db.query(`UPDATE dailylog set departure_time='accepted'
+                                        where 
+                                        log_date=CURRENT_DATE and worker_id =$1`,[acceptedWorker]);
+        if(result)
+        console.log("accepted departure");  
+        io.emit('accepted-departure',message); 
+        res.redirect("/admin/dailylog");                          
+    } catch (error) {
+        console.log(error);
+    }
+}
 export const workerType =async (req, res) => {
     let type = req.query.type;
     const adminBranch = req.user.branch_id;

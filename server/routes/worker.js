@@ -35,5 +35,5 @@ workerRoute.post('/worker/submitArrival', workerController.submitArrival);
 
 workerRoute.post('/worker/submitDeparture', workerController.submitDeparture);
 
-
+workerRoute.get('/logout',workerController.logout);
 export default workerRoute;

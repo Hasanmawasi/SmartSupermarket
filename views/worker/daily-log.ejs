@@ -90,3 +90,33 @@
     </table>
 </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const socket = io();
+    socket.on('accepted-login',(response)=>{
+        const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
+        notificationSound.play().catch((error) => {
+       console.error("Audio playback failed:", error);
+       });
+        let arrivalbtn = document.getElementById('arrivalButton');
+        let message= document.getElementById("statusMessage")          
+        if(response == 'accepted'){
+            arrivalbtn.innerHTML = "accepted";
+            message.innerHTML='Arrival log is Accepted'
+        }
+    });
+
+    socket.on('accepted-departure',(response)=>{
+        const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
+      notificationSound.play().catch((error) => {
+      console.error("Audio playback failed:", error);
+     });
+        let departurebtn = document.getElementById('departureButton')
+        let message= document.getElementById("statusMessage") 
+        if(response == 'accepted'){
+            departurebtn.innerHTML = "accepted";
+             message.innerHTML='Departure log is Accepted'
+        }
+    });
+
+</script>

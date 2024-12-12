@@ -11,9 +11,18 @@ import session from "express-session";
 import flash from "connect-flash";
 import { LoginStrategy } from "./server/strategy/LoginStrategy.js";
 import connectPgSimple from "connect-pg-simple";
+import http from 'http';
+import {Server} from "socket.io";
+
+
 
 const PgSession = connectPgSimple(session);
+
 const app = express();
+
+const server = http.createServer(app);
+export const io = new Server(server);
+
 app.use(express.static("public"));
 app.use('/admin/updateProfile', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,14 +45,7 @@ app.use(
     },
   })
 );
-// app.use(session({
-//   secret:"secrets",
-//   saveUninitialized: false,
-//   resave: false,
-//   cookie:{
-//     maxAge: 60000*60,
-//   }
-// }));
+
 
 app.use(flash());
 app.use((req, res, next) => {
@@ -63,6 +65,13 @@ app.set("view engine", "ejs");
 // connect to the database
 db.connect();
 // routes 
+// Handle admin connections
+io.on('connection', (socket) => {
+  console.log('A user connected');
+  socket.on('disconnect', () => {
+    console.log('A user disconnected');
+  });
+});
 
 app.use("/auth", authRoutes);
 app.use(adminRoute);
@@ -71,7 +80,8 @@ app.use(workerRoute);
 
 
 
-app.listen(3000, () => {
+
+server.listen(3000, () => {
     console.log(`the server is running on 3000`);
   });
   

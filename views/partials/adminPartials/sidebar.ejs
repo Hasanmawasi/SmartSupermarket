@@ -43,10 +43,14 @@
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/dailylog" class="nav-link link-body-emphasis" >
+        <a href="/admin/dailylog" class="nav-link link-body-emphasis position-relative" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#chick"></use></svg>
           Daily logs
+          <span id="log-indicator" class="d-none position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+          </span>
         </a>
+        
       </li>
       <li class="my-1">
         <a href="/admin/profit" class="nav-link link-body-emphasis" >
@@ -94,8 +98,28 @@
     </div>
   </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
 <script>
-  
+  // const socket = io(); 
+
+  let pendingLogs = 0;
+
+socket.on('new-log', () => {
+    pendingLogs++;
+    const logIndicator = document.getElementById('log-indicator');
+    logIndicator.classList.remove('d-none');
+});
+
+socket.on('accepted-login', () => {
+    pendingLogs--;
+    if (pendingLogs <= 0) {
+        const logIndicator = document.getElementById('log-indicator');
+        logIndicator.classList.add('d-none');
+    }
+});
+
+
+
   fetch('/sidebarPhoto')
   .then(response => response.json())
   .then((data) => {
