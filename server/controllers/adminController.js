@@ -73,34 +73,34 @@ export const search =  async (req, res) => {
 };
   
 
-export const addProduct =async (req, res)=>{
-    const file =req.file;
-    console.log(file.filename);
-    const adminBranch = req.user.branch_id;
-    const {productName,category,productPrice,basePrice,expideDate,description,barcode,quantity}= req.body;
-    if(!file){
-        res.send("image not uploaded")
-    }
-    let imageUrl = `/image/productPhoto/${file.filename}`;
-    let result = await db.query(`INSERT INTO product(description,expire_date,image_url,base_price,selling_price,bar_code,product_name,category_id)
-         VALUES($1,$2,$3,$4,$5,$6,$7,$8)
-          RETURNING *`,
-        [description,expideDate,imageUrl,basePrice,productPrice,barcode,productName,category]
-    );
-    let productId = result.rows[0].product_id;
+// export const addProduct =async (req, res)=>{
+//     const file =req.file;
+//     console.log(file.filename);
+//     const adminBranch = req.user.branch_id;
+//     const {productName,category,productPrice,basePrice,expideDate,description,barcode,quantity}= req.body;
+//     if(!file){
+//         res.send("image not uploaded")
+//     }
+//     let imageUrl = `/image/productPhoto/${file.filename}`;
+//     let result = await db.query(`INSERT INTO product(description,expire_date,image_url,base_price,selling_price,bar_code,product_name,category_id)
+//          VALUES($1,$2,$3,$4,$5,$6,$7,$8)
+//           RETURNING *`,
+//         [description,expideDate,imageUrl,basePrice,productPrice,barcode,productName,category]
+//     );
+//     let productId = result.rows[0].product_id;
 
-    let result2 = await db.query(`INSERT INTO branch_storage(branch_id,product_id,quantity)
-         VALUES($1,$2,$3)`,
-         [adminBranch,productId,quantity]
-        );
+//     let result2 = await db.query(`INSERT INTO branch_storage(branch_id,product_id,quantity)
+//          VALUES($1,$2,$3)`,
+//          [adminBranch,productId,quantity]
+//         );
 
-    if(result && result2){
-        req.flash('success',`the product: ${productName} added successfuly ${quantity} items to ${adminBranch}!`);
-        res.redirect("/admin/products/forms?form=add")
-    }else{
-        res.status(404).send("error adding pruduct");
-    }
-}
+//     if(result && result2){
+//         req.flash('success',`the product: ${productName} added successfuly ${quantity} items to ${adminBranch}!`);
+//         res.redirect("/admin/products/forms?form=add")
+//     }else{
+//         res.status(404).send("error adding pruduct");
+//     }
+// }
 
 export const workerEdit =async (req,res)=>{
     try{ 
@@ -393,8 +393,162 @@ export const sendReport = async (req, res) => {
     }
 }
 
-export const viewReport = async (req, res) => {
 
+
+export const productDivisions =async (req, res) => {
+    let type = req.query.type;
+    
+    try {
+        const categoryResult = await db.query('SELECT category_id FROM category WHERE LOWER(type) = $1', [type.toLowerCase()]);
+
+        if (categoryResult.rows.length === 0) {
+            return res.status(404).send('Category not found');
+        }
+
+        const categoryId = categoryResult.rows[0].category_id;
+
+        // console.log(categoryId)
+
+        const divisionsResult = await db.query('SELECT * FROM division WHERE category_id = $1', [categoryId]);
+
+        res.render("admin/divisions", {
+            results: divisionsResult.rows,
+            categoryType: type,
+            category_id: categoryId,
+        })
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+};
+
+export const addDivision = async (req, res) => {
+    const { divisionName, categoryId } = req.body; 
+    console.log('Division Name:', divisionName); 
+    console.log('Category ID:', categoryId); 
+    try {
+        await db.query("INSERT INTO division (name, category_id) VALUES ($1, $2)", [divisionName, categoryId]);
+
+        const category = await db.query("SELECT type FROM category WHERE category_id = $1", [categoryId]);
+        const categoryType = category.rows[0].type.toLowerCase();
+        console.log(categoryType);
+        req.flash('success', `${divisionName} added Successfully!`)
+        res.redirect(`/admin/products/type?type=${categoryType}`);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+
+
+export const viewProducts = async (req, res) => {
+    const branch = req.user.branch_id;
+    const { id } = req.query    ;
+    console.log(id);
+    try {
+
+        const results = await db.query(`SELECT 
+            p.product_id,
+            p.product_name,
+            p.description,
+            p.expire_date,
+            p.base_price,
+            p.selling_price,
+            p.image_url,
+            bs.quantity
+            FROM 
+            branch_storage bs
+            JOIN 
+            product p
+            ON 
+            bs.product_id = p.product_id
+            WHERE 
+            bs.branch_id = $1
+            AND p.division_id = $2
+            ORDER BY p.product_id DESC;`,[branch, id]);
+        
+            console.log(results.rows)
+        res.render("admin/viewProducts", {
+         products: results.rows,
+         div_id: id
+        })
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+    
+}
+
+export const addProduct = async (req, res) => {
+    const branchId = req.user.branch_id;
+    const { productName, basePrice, sellingPrice, quantity, productDescription,expireDate, divId} = req.body;
+    
+    try {
+        
+        const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',[productDescription, expireDate, basePrice, sellingPrice, productName, divId]);
+
+        const productId = productResult.rows[0].product_id;
+        const product_Name = productResult.rows[0].product_name;
+        console.log(productId);
+
+        await db.query(
+            'INSERT INTO branch_storage (product_id, branch_id, quantity) VALUES ($1, $2, $3)', 
+            [productId, branchId, quantity]
+        );
+        req.flash('success', `${product_Name} added Successfully!`)
+        res.redirect(`/admin/products/viewProducts?id=${divId}`);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+
+export const editProduct = async (req, res) => {
+    const productId = req.params.id;
+    const branch = req.user.branch_id
+    console.log("this is the product id from the edit form " + productId)
+    const { productName, basePrice, sellingPrice, quantity, productDescription } = req.body;
+
+    try {
+        
+        const update = await db.query('UPDATE product SET product_name = $1, base_price = $2, selling_price = $3, description = $4 WHERE product_id = $5 RETURNING division_id', [productName,
+            basePrice,
+            sellingPrice,
+            productDescription,
+            productId]);
+
+        const division_id = update.rows[0].division_id;
+        
+        await db.query('UPDATE branch_storage SET quantity = $1 WHERE product_id = $2 AND branch_id = $3', [quantity, productId, branch]);
+
+        req.flash('success', `${productName} updated Successfully!`)
+        res.redirect(`/admin/products/viewProducts?id=${division_id}`);
+
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
+}
+
+export const deleteProduct = async (req, res) => {
+    const branch = req.user.branch_id;
+    const productId = req.params.id;
+
+    try {
+        const product = await db.query('SELECT * FROM product WHERE product_id = $1', [productId]);
+        const productName = product.rows[0].product_name;
+        const division_id = product.rows[0].division_id;
+        const remove = await db.query('DELETE FROM branch_storage WHERE product_id = $1 AND branch_id = $2 ', [productId, branch]);
+
+        await db.query('DELETE FROM product WHERE product_id = $1', [productId]);
+
+        req.flash('success', `${productName} deleted Successfully!`)
+        res.redirect(`/admin/products/viewProducts?id=${division_id}`);
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
 }
 
 export default dashboard;

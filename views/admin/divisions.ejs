@@ -1,0 +1,100 @@
+<div class="container my-4">
+    <!-- Add Worker Button -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Divisions</h3>
+      <button class="btn btn-primary" data-bs-toggle="modal"
+        data-bs-target="#addModal" >Add Division</button>
+    </div>
+    <!-- include the alert message -->
+    <%- include('../partials/adminpartials/alertmessage.ejs') %>
+    <!-- Worker List -->
+    <div class="worker-list">
+        <!-- ======== -->
+       <% if(locals.results){ %>
+        <% results.forEach(result =>{ %>
+          <!-- Worker Item -->
+          <div class="worker-item d-flex bg-white align-items-center justify-content-between p-3 mb-3 rounded shadow-sm " >
+          <div class="d-flex align-items-center">
+            <!-- Profile Photo -->
+            <img src="" alt="Profile" class="worker-photo rounded-circle">
+            <!-- Worker Info -->
+            <div class="worker-info ms-3">
+              <h5 class="mb-0">ID</h5>
+              <p class="text-muted mb-0"><%= result.division_id %></p>
+            </div>
+            <div class="worker-info ms-3">
+              <h5 class="mb-0"><%= result.name %></h5>
+              <p class="text-muted mb-0"><%= categoryType %></p>
+            </div>
+          
+        </div>
+
+           <form action="/admin/products/viewProducts" method="GET">
+            <input type="hidden" name="id" value="<%= result.division_id%>">
+          <button class="btn btn-outline-primary">View</button>
+          </form>
+          </div>
+      <% }); %>
+      <% } %>
+    </div>
+
+    <div
+    class="modal fade"
+    id="addModal"
+    tabindex="-1"
+    aria-labelledby="addModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Division</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <form id="addForm" action="/admin/products/addDivision" method="POST">
+            <div class="mb-3">
+              <label for="divisionName" class="form-label">Division Name</label>
+              <input
+                required
+                name="divisionName"
+                type="text"
+                class="form-control"
+                id="divisionName"
+              />
+              <input
+                name="categoryId"
+                type="hidden"
+                class="form-control"
+                id="divisionId"
+                value="<%= category_id %>"
+              />
+            </div>
+            
+          
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+        
+          <button type="submit" data-bs-dismiss="modal" class="btn btn-success">
+            Add Division
+          </button>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  
