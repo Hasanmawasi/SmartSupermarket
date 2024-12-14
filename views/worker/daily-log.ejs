@@ -1,5 +1,8 @@
+   <div class="mt-5"> 
+    <%- include('../modals/alertModal.ejs') %>
+   </div>
 <div class="main-log">
-<div class="log-container ">
+    <div class="log-container ">
     <h2>Daily Log</h2>
     <p class="description">Submit your arrival and departure times. Please wait for admin approval after each submission.</p>
     <form action="/worker/submitArrival" method="POST">
@@ -83,7 +86,11 @@
         let message= document.getElementById("statusMessage")          
         if(response == 'accepted'){
             arrivalbtn.innerHTML = "accepted";
-            message.innerHTML='Arrival log is Accepted'
+            message.innerHTML='Arrival log is Accepted';
+            // window.location.reload();
+        }else if(response == 'rejected'){
+            arrivalbtn.innerHTML = "rejected";
+             message.innerHTML='Arrival log is rejected';
         }
     });
 
@@ -96,7 +103,10 @@
         let message= document.getElementById("statusMessage") 
         if(response == 'accepted'){
             departurebtn.innerHTML = "accepted";
-             message.innerHTML='Departure log is Accepted'
+             message.innerHTML='Departure log is Accepted';
+        }else if(response == 'rejected'){
+            departurebtn.innerHTML = "rejected";
+             message.innerHTML='Arrival log is rejected';
         }
     });
 

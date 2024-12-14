@@ -271,7 +271,8 @@ export const ImgprofileUpdate = async (req, res)=>{
 export const dailyLog = async (req, res) => {
     try {
         let branch = req.user.branch_id;
-        let logStatus= "pending"
+        let logStatus= "pending";
+        let rejectStatus = "rejected";
         let result = await db.query(`SELECT * FROM dailylog
                                     inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
                                      where 
@@ -283,38 +284,34 @@ export const dailyLog = async (req, res) => {
              where 
              dailylog.branch_id=$1 and dailylog.departure_time= $2 
              `,
-            [branch, logStatus]); 
+            [branch, logStatus]);
+        let result3 = await db.query(`SELECT * FROM dailylog
+            inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
+                where 
+                dailylog.branch_id=$1 and dailylog.departure_time= $2 OR dailylog.log_status = $2 
+                `,
+            [branch, rejectStatus]); 
+        let result4 = await db.query(`SELECT * FROM dailylog
+            inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
+                where 
+                dailylog.branch_id=$1 and  (dailylog.departure_time IS NULL OR dailylog.departure_time != $2) AND dailylog.log_status =$3  
+                `,
+            [branch,"accepted","accepted"]);
         let pendingWorker = result.rows; 
         let departureWorker = result2.rows;
+        let rejectedWorkers= result3.rows; 
+        let inWork = result4.rows;   
         res.render("admin/dailylog", {
         pendingWorker: pendingWorker,
         departureWorker: departureWorker,
+        rejectedWorkers: rejectedWorkers,
+        inWork: inWork,
         });
     } catch (error) {
         console.log(error)
     }
     
 }
-
-// export const dailyDeparture =async (req, res)=>{
-//     try {
-//         let branch = req.user.branch_id;
-//         let logStatus= "pending"
-//         let result = await db.query(`SELECT * FROM dailylog
-//                                     inner join  worker on worker.worker_id= dailylog.worker_id and worker.branch_id=$1
-//                                      where 
-//                                      dailylog.branch_id=$1 and dailylog.departure_time= $2 
-//                                      `,
-//                                     [branch, logStatus]);
-//         let departureWorker = result.rows; 
-//         res.render("admin/dailylog", {
-//             departureWorker: departureWorker,
-//         });
-//     } catch (error) {
-//         console.log(error)
-//     }
-// }
-
 
 export const acceptArrivalWorker= async (req, res)=>{
     try {
@@ -326,6 +323,22 @@ export const acceptArrivalWorker= async (req, res)=>{
         if(result)
         console.log("accepted!");   
        //sending data
+        io.emit('accepted-login',message);
+        res.redirect("/admin/dailylog");                          
+    } catch (error) {
+        console.log(error)
+    }
+}
+export const RejectArrivalWorker= async (req, res)=>{
+    try {
+        const rejectedWorker = req.params.id;
+        let message= 'rejected'
+        let result = await db.query(`UPDATE dailylog set log_status='rejected'
+                                        where 
+                                        log_date=CURRENT_DATE and worker_id =$1`,[rejectedWorker]);
+        if(result)
+        console.log("worker rejcted");   
+       
         io.emit('accepted-login',message);
         res.redirect("/admin/dailylog");                          
     } catch (error) {
@@ -348,6 +361,23 @@ export const acceptDepartureWorker =async (req, res)=>{
         console.log(error);
     }
 }
+
+export const rejectDepartureWorker =async (req, res)=>{
+    try {
+        let message= 'rejected';
+        const rejectedWorker = req.params.id;
+        let result = await db.query(`UPDATE dailylog set departure_time='rejected'
+                                        where 
+                                        log_date=CURRENT_DATE and worker_id =$1`,[rejectedWorker]);
+        if(result)
+        console.log("rejected departure");  
+        io.emit('accepted-departure',message);                       
+        res.redirect("/admin/dailylog");    
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export const workerType =async (req, res) => {
     let type = req.query.type;
     const adminBranch = req.user.branch_id;

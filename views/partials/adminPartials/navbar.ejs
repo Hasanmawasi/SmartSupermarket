@@ -4,7 +4,10 @@
     aria-label="Third navbar example"
   >
     <div class="container-fluid">
-      <a class="navbar-brand" href="#"> Supermarket</a>
+      <a href="/admin/profile" class="d-flex align-items-center link-body-emphasis text-decoration-none " >
+        <img id="navbarimg" src="" alt="" width="45" height="43" class="rounded-circle me-2">
+      </a>
+      <a class="navbar-brand" href="#"> TasawaQ</a>
       <button
         class="navbar-toggler"
         type="button"
@@ -38,3 +41,12 @@
     </div>
   </nav>
 </div>
+<script>
+  fetch('/sidebarPhoto')
+  .then(response => response.json())
+  .then((data) => {
+    const img= document.getElementById("navbarimg");
+    console.log(data)
+    img.src = data;
+  })
+</script>

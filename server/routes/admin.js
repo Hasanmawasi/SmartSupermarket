@@ -55,7 +55,7 @@ adminRoute.post("/admin/worker/sendReport" ,adminController.sendReport);
 
 adminRoute.post("/admin/delete/:id",adminController.deleteWorker);
 
-adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto)
+adminRoute.get("/sidebarPhoto",adminController.sidebarPhoto);
 
 adminRoute.get("/admin/products/type", adminController.productDivisions);
 
@@ -69,7 +69,10 @@ adminRoute.post("/admin/products/editProduct/:id", adminController.editProduct);
 
 adminRoute.post("/admin/products/deleteProduct/:id", adminController.deleteProduct);
 
+
 adminRoute.post("/accept/:id",adminController.acceptArrivalWorker);
+
+adminRoute.post("/reject/:id",adminController.RejectArrivalWorker);
 
 adminRoute.post("/departure/accept/:id",adminController.acceptDepartureWorker);
 
@@ -78,6 +81,9 @@ adminRoute.get("/admin/schedules/:category",adminController.scheduleType);
 adminRoute.post("/admin/schedules/:category/save",adminController.saveSchedule);
 
 adminRoute.get("/admin/schedules",adminController.schedule);
+
+adminRoute.post("/departure/reject/:id",adminController.rejectDepartureWorker);
+
 
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },

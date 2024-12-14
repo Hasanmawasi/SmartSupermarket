@@ -260,13 +260,18 @@ export const submitDeparture= async (req, res) => {
           message: `Departure log ${departureStatus}`,
         });
       } else {
-      res.json(`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`)
+        // req.flash('warning',`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`);
+        res.json(`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`)
+        // res.redirect("/worker/log")
       }}
   } catch (error) {
     console.error("Error logging time:", error);
+    req.flash('warning',`Your arrival log should been accepted before loging your departure!`);
+
     res.render('worker/daily-log', {
       layout: "./layouts/worker",
       message: "An internal error occurred. Please try again.",
+      warningMessage: req.flash('warning'),
     });
   }
 };

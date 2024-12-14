@@ -1,4 +1,75 @@
-<div id="arrivalContainer" class="arrivalContainer border shadow reviews-list mt-5">
+<div class="mt-4 d-flex justify-content-between">  
+  <p >
+    <a class="btn btn-danger" data-bs-toggle="collapse" href="#rejectedcollapse" role="button" aria-expanded="false" aria-controls="rejectedcollapse">
+      Rejected Workers
+    </a>
+  </p>
+  
+  <h2> <% let date = new Date();  %> <%= date.toDateString(); %></h2>
+  <p >
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#acceptedcollapse" role="button" aria-expanded="false" aria-controls="acceptedcollapse">
+     Workers in work
+    </a>
+  </p>
+  
+</div>
+<div class="collapse" id="acceptedcollapse">
+  <div  class="card card-body">
+    <h3>Accepted workers ToDay:</h3>
+    <% if(inWork){ %>
+      <% inWork.forEach((worker) =>{ %>
+      <div class="request-container">
+        <div class="request-details">
+          <img src="<%= worker.image_url %>" alt="Profile" class="worker-photo rounded-circle">
+          <div class="mx-2"> 
+           <p class="worker-name"><%= worker.name %></p>
+           <p class="request-info"><%= worker.arrival_time %></p>
+         </div>
+        </div>
+        <p>working</p>
+      </div>
+      <% }) }%>
+  </div>
+</div>
+<div class="collapse" id="rejectedcollapse">
+  <div class="card card-body">
+   <h3> Rejected workers ToDay:</h3>
+   <% if(rejectedWorkers){ %>
+    <% rejectedWorkers.forEach((resp) =>{ %>
+      <div class="request-container">
+        <div class="request-details">
+          <img src="<%= resp.image_url %>" alt="Profile" class="worker-photo rounded-circle">
+          <div class="mx-2"> 
+           <p class="worker-name"><%= resp.name %></p>
+           <p class="request-info"><%= resp.arrival_time %></p>
+         </div>
+        </div> 
+          <%
+            const url = resp.log_status == 'rejected' 
+              ? `/accept/${resp.worker_id}` 
+              : `/departure/accept/${resp.worker_id}`;
+          %>       
+        <form action="<%= url %>" method="post">
+          <button class="accept-btn" >Accept</button>
+        </form>
+      </div>
+      <% }) %>
+    <% } %>
+  </div>
+</div>
+<div id="arrivalContainer" class="arrivalContainer reviews-list position-relative  border shadow-lg  bg-white rounded-3  mt-1">
+  <div id="waitingMessage" class="position-absolute top-50 d-flex">
+      <h3 class="mx-3">waiting to new arrival</h3>
+      <div class="spinner-grow text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-success" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
   <% if(pendingWorker){ %>
     <% pendingWorker.forEach((worker) =>{ %>
     <div class="request-container">
@@ -14,14 +85,28 @@
         <form action="/accept/<%= worker.worker_id %>" method="post">
         <button class="accept-btn" >Accept</button>
        </form>
-        <button class="reject-btn">Reject</button>
+       <form action="/reject/<%= worker.worker_id %>" method="post"> 
+         <button class="reject-btn">Reject</button>
+       </form>
       </div>
     </div>
     <% }) %>
     <% } %>
    </div>
 
-   <div id="departureContainer" class="departureContainer border shadow reviews-list mt-1">
+   <div id="departureContainer" class="departureContainer position-relative border rounded-3 shadow bg-white reviews-list mt-1">
+    <div id="departureMessage" class="position-absolute top-50 d-flex">
+      <h3 class="mx-3">Waiting new departure </h3>
+      <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <div class="spinner-grow text-danger" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
     <% if(departureWorker){ %>
       <% departureWorker.forEach((worker) =>{ %>
       <div class="request-container">
@@ -37,7 +122,9 @@
           <form action="/departure/accept/<%= worker.worker_id %>" method="post">
           <button class="accept-btn" >Accept</button>
          </form>
+         <form action="/departure/reject/<%= worker.worker_id %>" method="post">
           <button class="reject-btn">Reject</button>
+        </form>
         </div>
       </div>
       <% }) %>
@@ -45,20 +132,15 @@
      
      </div>
 
-
-
-
-
-
    <script src="/socket.io/socket.io.js"></script>
 <script>
-  const socket = io();
+  
   
   socket.on('connect', () => {
   console.log('Connected to the server');
 });
 
-// Listen for new logs
+
   socket.on('new-log', (log) => {
     const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
     notificationSound.play().catch((error) => {
@@ -68,7 +150,6 @@
     const newLog = document.createElement('div');
     newLog.className = 'request-container';
     console.log(log);
-    // newLog.id = `log-${log.id}`;
     newLog.innerHTML = `
       <div class="request-details">
         <img src="${log.image_url}" alt="Profile" class="worker-photo rounded-circle">
@@ -79,13 +160,16 @@
       </div>
       <p>ariving to work</p>
       <div class="action-buttons">
-        <form action="/accept/${log.worker_id}" method="post">
+       <form action="/accept/${log.worker_id}" method="post">
         <button class="accept-btn" >Accept</button>
        </form>
+       <form action="/reject/${log.worker_id}" method="post">
         <button class="reject-btn">Reject</button>
+       </form>
       </div>
     `;
     logContainer.appendChild(newLog);
+    waiting();
   });
 
 
@@ -99,7 +183,6 @@
     const newLog = document.createElement('div');
     newLog.className = 'request-container';
     console.log(departure);
-    // newLog.id = `log-${log.id}`;
     newLog.innerHTML = `
       <div class="request-details">
         <img src="${departure.image_url}" alt="Profile" class="worker-photo rounded-circle">
@@ -110,24 +193,39 @@
       </div>
       <p>leaving work</p>
       <div class="action-buttons">
-        <form action="/departure/accept/${departure.worker_id}" method="post">
+      <form action="/departure/accept/${departure.worker_id}" method="post">
         <button class="accept-btn" >Accept</button>
        </form>
+       <form action="/departure/reject/${departure.worker_id}" method="post">
         <button class="reject-btn">Reject</button>
+       </form>
       </div>
     `;
     logContainer.appendChild(newLog);
+    waiting();
   });
-  // Accept log
-  // function acceptLog(logId) {
-  //     fetch('/accept/${log.worker_id}', {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({ logId }),
-  //     }).then((res) => {
-  //       if (res.ok) {
-  //         document.getElementById(`log-${logId}`).remove();
-  //       }
-  //     });
-  //   }
+
+   waiting();
+   
+  
+function waiting(){
+  let arrivalcontainer = document.getElementById("arrivalContainer");
+  let departureContainer = document.getElementById("departureContainer")
+  let message = document.getElementById("waitingMessage");
+  let departureMessage = document.getElementById("departureMessage");
+  console.log(arrivalcontainer.children.length)
+  if(arrivalcontainer.children.length === 1){
+    message.classList.remove('d-none');
+  }else{
+    message.classList.add("d-none");
+  }
+
+  if (departureContainer.children.length === 1) {
+    departureMessage.classList.remove('d-none');
+  } else {
+    departureMessage.classList.add("d-none");
+  }
+
+}
+ 
 </script>

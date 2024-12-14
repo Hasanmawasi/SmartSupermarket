@@ -268,10 +268,13 @@
   /* =========daily log page========== */
 
 /* Request Container Style */
-/* #arrivalContainer,#departureContainer{
-  height: 40vh !important;
-} */
 
+#waitingMessage{
+  left: 30%;
+}
+#departureMessage{
+  left: 30%;
+}
 .request-container {
   /* margin-top: 40px; */
   display: flex;
@@ -523,7 +526,149 @@
   width: 50px;
   height: 50px;
 }
+/* product section */
+.product-card {
+  width: 100%; /* Take full width of the column */
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 10px 0; /* Only vertical margin, as Bootstrap's row/col system handles horizontal spacing */
+  text-align: center;
+  background-color: #f9f9f9;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.product-card img {
+  max-width: 100%;
+  border-radius: 5px;
+}
+.card-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.search-container {
+width: 100%;
+display: flex;
+justify-content: center;
+margin-bottom: 20px;
+}
 
+.search-bar {
+width: 50%; 
+max-width: 500px;
+}
+
+.search-bar form {
+display: flex; /* Ensures input and button are in a row */
+}
+
+.search-bar input[type="text"] {
+flex: 1; /* Makes the input take up the remaining space */
+padding: 10px 15px;
+border: 1px solid #ddd;
+border-radius: 10px 0 0 10px;
+outline: none;
+}
+
+.search-bar button {
+padding: 10px 15px;
+background-color: #0033ff;
+color: white;
+border: none;
+border-radius: 0 10px 10px 0;
+cursor: pointer;
+display: flex; 
+align-items: center; 
+justify-content: center; 
+}
+/* ======= */
+
+/* schedule section */
+.content {
+  padding: 20px;
+  overflow-x: auto;
+}
+
+.active {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.schedule-table-container {
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  overflow-x: auto;
+}
+
+.schedule-table {
+  width: 100%;
+  max-width: 1250px;
+  min-width: 700px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  table-layout: auto;
+}
+
+.schedule-table th, 
+.schedule-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.schedule-table th {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Dropdown Styling */
+.schedule-table td select {
+  width: 100%; 
+  padding: 8px 10px; 
+  font-size: 14px; 
+  border: 1px solid #007bff; 
+  border-radius: 6px; 
+  background-color: #f9f9f9;
+  color: #333; 
+  appearance: none; /* Hides default arrow on some browsers */
+  cursor: pointer;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Dropdown hover/focus */
+.schedule-table td select:hover {
+  border-color: #0056b3;
+}
+
+.schedule-table td select:focus {
+  border-color: #0056b3;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+  outline: none; /* Remove default outline */
+}
+
+/* Custom dropdown arrow */
+.schedule-table td select::-ms-expand {
+  display: none; /* Hide arrow in IE and Edge */
+}
+
+/* Mobile and Small Screens */
+@media (max-width: 768px) {
+  .schedule-table {
+    width: 100%; 
+    font-size: 12px; 
+  }
+
+  .schedule-table th, 
+  .schedule-table td {
+    padding: 6px; 
+    font-size: 12px; 
+  }
+
+  .schedule-table td select {
+    font-size: 12px; 
+  }
+}
+/* ===== */
 /* Media query for medium screens and above */
 @media (min-width: 768px) {
   .large-screen {
