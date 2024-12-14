@@ -1,0 +1,153 @@
+<style>
+    /* General Layout */
+    .content {
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    .active {
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+  
+    .schedule-table-container {
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+      overflow-x: auto;
+    }
+  
+    .schedule-table {
+      width: 100%;
+      max-width: 1250px;
+      min-width: 700px;
+      margin: 0 auto;
+      border-collapse: collapse;
+      table-layout: auto;
+    }
+  
+    .schedule-table th, 
+    .schedule-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      font-size: 14px;
+      text-align: center;
+    }
+  
+    .schedule-table th {
+      background-color: #007bff;
+      color: white;
+    }
+  
+    /* Dropdown Styling */
+    .schedule-table td select {
+      width: 100%; 
+      padding: 8px 10px; 
+      font-size: 14px; 
+      border: 1px solid #007bff; 
+      border-radius: 6px; 
+      background-color: #f9f9f9;
+      color: #333; 
+      appearance: none; /* Hides default arrow on some browsers */
+      cursor: pointer;
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+  
+    /* Dropdown hover/focus */
+    .schedule-table td select:hover {
+      border-color: #0056b3;
+    }
+  
+    .schedule-table td select:focus {
+      border-color: #0056b3;
+      box-shadow: 0 0 6px rgba(0, 123, 255, 0.5);
+      outline: none; /* Remove default outline */
+    }
+  
+    /* Custom dropdown arrow */
+    .schedule-table td select::-ms-expand {
+      display: none; /* Hide arrow in IE and Edge */
+    }
+  
+    /* Mobile and Small Screens */
+    @media (max-width: 768px) {
+      .schedule-table {
+        width: 100%; 
+        font-size: 12px; 
+      }
+  
+      .schedule-table th, 
+      .schedule-table td {
+        padding: 6px; 
+        font-size: 12px; 
+      }
+  
+      .schedule-table td select {
+        font-size: 12px; 
+      }
+    }
+  </style>
+  
+  <div class="content">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1>Weekly Schedule Management</h1>
+      <div>
+        <form action="/admin/schedules/<%= category %>/save" method="POST" style="display:inline;">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        
+        <button class="btn btn-secondary" onclick="window.location.reload()">Reset Schedule</button>
+      </div>    
+    </div>
+  
+    <!-- Worker Categories Selector -->
+    <ul class="nav nav-tabs tabs">
+      <li class="nav-item">
+        <a class="nav-link <%= category === 'cashier' ? 'active' : '' %>" href="/admin/schedules/cashier">Cashiers</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= category === 'clerks' ? 'active' : '' %>" href="/admin/schedules/clerks">Stock Clerks</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= category === 'staff' ? 'active' : '' %>" href="/admin/schedules/staff">Receiving Staff</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <%= category === 'cleaner' ? 'active' : '' %>" href="/admin/schedules/cleaner">Cleaners</a>
+      </li>
+    </ul>
+  
+    <!-- Schedule Table -->
+    <div class="schedule-table-container">
+      <table class="schedule-table">
+        <thead>
+          <tr>
+            <th>Worker Name</th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% Object.keys(scheduleData).forEach(workerName => { %>
+            <tr>  
+              <td><%= workerName %></td>
+              <% ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].forEach(day => { %>
+                <td>
+                  <select name="schedule[<%= workerName %>][<%= day %>]" class="form-select">
+                    <option value="Off" <%= scheduleData[workerName].schedule[day] === 'Off' ? 'selected' : '' %> >Off</option>
+                    <% shiftNames.forEach(shiftName => { %>
+                      <option value="<%= shiftName %>" <%= scheduleData[workerName].schedule[day] === shiftName ? 'selected' : '' %>><%= shiftName %></option>
+                    <% }) %>
+                  </select>
+                </td>
+              <% }) %>
+            </tr>
+          <% }) %>
+
+        </tbody>
+      </form>
+      </table>
+    </div>
+  </div>
+  

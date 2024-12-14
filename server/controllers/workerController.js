@@ -19,11 +19,52 @@ export const home = (req, res) => {
   });
 };
 
-export const log = (req, res) => {
-  res.render("worker/daily-log", {
-    layout: "./layouts/worker",
-  });
+export const log = async (req, res) => {
+  const workerId = req.user.worker_id;
+
+  try {
+        const { rows } = await db.query(`
+      SELECT ws.day_of_week, st.start_time, st.end_time, st.status
+      FROM worker_schedule ws
+      JOIN schedule_templates st ON ws.schedule_id = st.id
+      WHERE ws.worker_id = $1
+      ORDER BY 
+        CASE ws.day_of_week
+          WHEN 'Monday' THEN 1
+          WHEN 'Tuesday' THEN 2
+          WHEN 'Wednesday' THEN 3
+          WHEN 'Thursday' THEN 4
+          WHEN 'Friday' THEN 5
+          WHEN 'Saturday' THEN 6
+          WHEN 'Sunday' THEN 7
+        END;`, 
+      [workerId]
+    );
+
+    const formattedSchedule = rows.map(row => ({
+      ...row,
+      start_time: formatToAmPm(row.start_time),
+      end_time: formatToAmPm(row.end_time)
+    }));
+
+    res.render("worker/daily-log", {
+      layout: "./layouts/worker",
+      schedule: formattedSchedule,
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
 };
+function formatToAmPm(time24) {
+  if (!time24) return '-'; // Handle NULL or empty time
+  const [hours, minutes] = time24.split(':');
+  let hoursNum = parseInt(hours, 10); // Convert to integer
+  const period = hoursNum >= 12 ? 'PM' : 'AM';
+  hoursNum = hoursNum % 12 || 12; // Convert 0, 12, 13, 14, etc., to 12-hour format
+  return `${hoursNum}:${minutes} ${period}`;
+}
+
 
 export const reports = (req, res) => {
     res.render('worker/reports', {

@@ -51,26 +51,7 @@ export const forms = async (req,res)=>{
     }
 };
 
-export const search =  async (req, res) => {
-    try {
-        const { query } = req.query;
-    
-        if (!query) {
-          return res.status(400).json({ error: 'Query parameter is missing' });
-        }
-    
-        // Search database using ILIKE for case-insensitive matching
-        const result = await db.query(
-          `SELECT * FROM product WHERE product_name ILIKE $1 OR description ILIKE $1`,
-          [`%${query}%`] // Match the query as part of name or description
-        );
-    
-        res.status(200).json(result.rows);
-      } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
-};
+
   
 
 // export const addProduct =async (req, res)=>{
@@ -166,12 +147,6 @@ export const updateWorkerInfo =async (req, res)=>{
         console.log(err);
     }
 }
-
-export const customers = (req, res)=>{
-    res.render("admin/customers",{
-        layout:"./layouts/admin"
-    })
-};
 
 export const orders = (req, res)=>{
     res.render("admin/orders",{
@@ -541,6 +516,7 @@ export const viewProducts = async (req, res) => {
             AND p.division_id = $2
             ORDER BY p.product_id DESC;`,[branch, id]);
         
+
             console.log(results.rows)
         res.render("admin/viewProducts", {
          products: results.rows,
@@ -624,5 +600,166 @@ export const deleteProduct = async (req, res) => {
         res.status(500).send('Server error');
     }
 }
+
+
+export const scheduleType = async (req, res) => {
+    const category = req.params.category;
+    const branch = req.user.branch_id;
+
+    try {
+      const scheduleQuery = `
+        SELECT 
+          w.name, 
+          w.position, 
+          ws.day_of_week, 
+          st.shift_name
+        FROM 
+          worker AS w
+        LEFT JOIN 
+          worker_schedule AS ws ON w.worker_id = ws.worker_id
+        LEFT JOIN 
+          schedule_templates AS st ON ws.schedule_id = st.id
+        WHERE 
+          w.position = $1
+          AND w.branch_id = $2
+        ORDER BY 
+          w.name,
+          CASE 
+            WHEN ws.day_of_week = 'Monday' THEN 1
+            WHEN ws.day_of_week = 'Tuesday' THEN 2
+            WHEN ws.day_of_week = 'Wednesday' THEN 3
+            WHEN ws.day_of_week = 'Thursday' THEN 4
+            WHEN ws.day_of_week = 'Friday' THEN 5
+            WHEN ws.day_of_week = 'Saturday' THEN 6
+            WHEN ws.day_of_week = 'Sunday' THEN 7
+          END;
+      `;
+
+      const shiftNamesQuery = `SELECT shift_name FROM schedule_templates ORDER BY shift_name;`;
+
+      const scheduleResults = await db.query(scheduleQuery, [category, branch]);
+      const shiftNamesResults = await db.query(shiftNamesQuery);
+
+      const scheduleData = {};
+      scheduleResults.rows.forEach(row => {
+        if (!scheduleData[row.name]) {
+          scheduleData[row.name] = { schedule: {} };
+        }
+        scheduleData[row.name].schedule[row.day_of_week || ''] = row.shift_name || 'Off';
+      });
+
+      const shiftNames = shiftNamesResults.rows.map(row => row.shift_name);
+
+      res.render('admin/schedule', { category, scheduleData, shiftNames });
+    } catch (err) {
+      console.error("Database query error:", err);
+      res.status(500).send("Internal Server Error");
+    }
+};
+
+export const schedule = (req, res) => {
+    res.redirect('/admin/schedules/cashier');
+}
+
+
+export const saveSchedule = async (req, res) => {
+    console.log("Incoming schedule data:", req.body);
+    const category = req.params.category;
+    const branch = req.user.branch_id;
+    const scheduleData = req.body.schedule;
+    
+    try {
+      for (const workerName in scheduleData) {
+        const workerSchedule = scheduleData[workerName];
+  
+        // Get worker ID from the worker table
+        const workerQuery = `SELECT worker_id FROM worker WHERE name = $1 AND position = $2 AND branch_id = $3 LIMIT 1`;
+        const workerResult = await db.query(workerQuery, [workerName, category, branch]);
+  
+        if (workerResult.rows.length > 0) {
+          const workerId = workerResult.rows[0].worker_id;
+  
+          // Loop through each day of the week for the current worker
+          for (const day in workerSchedule) {
+            const shiftName = workerSchedule[day] || 'Off';
+  
+            // Get schedule template ID for the shift name
+            const scheduleTemplateQuery = `SELECT id FROM schedule_templates WHERE shift_name = $1 LIMIT 1`;
+            const scheduleTemplateResult = await db.query(scheduleTemplateQuery, [shiftName]);
+            
+            const scheduleId = scheduleTemplateResult.rows.length > 0 ? scheduleTemplateResult.rows[0].id : null;
+  
+            // Check if a schedule already exists for this worker on this day
+            const checkScheduleQuery = `
+              SELECT id FROM worker_schedule 
+              WHERE worker_id = $1 AND day_of_week = $2
+            `;
+            const existingScheduleResult = await db.query(checkScheduleQuery, [workerId, day]);
+  
+            if (existingScheduleResult.rows.length > 0) {
+              // Update existing schedule
+              const updateScheduleQuery = `
+                UPDATE worker_schedule 
+                SET schedule_id = $1 
+                WHERE worker_id = $2 AND day_of_week = $3
+              `;
+              await db.query(updateScheduleQuery, [scheduleId, workerId, day]);
+            } else {
+              // Insert a new schedule
+              const insertScheduleQuery = `
+                INSERT INTO worker_schedule (worker_id, day_of_week, schedule_id) 
+                VALUES ($1, $2, $3)
+              `;
+              await db.query(insertScheduleQuery, [workerId, day, scheduleId]);
+            }
+          }
+        } else {
+          console.warn(`Worker not found: ${workerName} in category: ${category}`);
+        }
+      }
+  
+      res.redirect(`/admin/schedules/${category}`);
+    } catch (err) {
+      console.error("Error saving schedule:", err);
+      res.status(500).send("Internal Server Error");
+    }
+  };
+  
+
+
+  export const customers = async (req, res) => {
+    try {
+        // Get all the customer reviews with individual ratings
+        const result = await db.query(`
+            SELECT 
+              c.name, 
+              r.review_text, 
+              r.review_date, 
+              r.rating 
+            FROM 
+              customers c 
+            JOIN 
+              reviews r ON c.customer_id = r.customer_id
+        `);
+
+        const averageResult = await db.query(`
+            SELECT AVG(r.rating) as overall_rating 
+            FROM reviews r
+        `);
+
+        const overallRating = parseFloat(averageResult.rows[0].overall_rating).toFixed(1); // Round to 1 decimal place
+
+        res.render("admin/customers", {
+            reviews: result.rows,
+            overallRating: overallRating,
+            layout: "./layouts/admin"
+        });
+    } catch (err) {
+        console.error("Error fetching customer reviews:", err);
+        res.status(500).send("Internal Server Error");
+    }
+};
+
+
 
 export default dashboard;
