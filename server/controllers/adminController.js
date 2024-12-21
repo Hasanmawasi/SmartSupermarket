@@ -562,10 +562,11 @@ export const viewProducts = async (req, res) => {
 export const addProduct = async (req, res) => {
     const branchId = req.user.branch_id;
     const { productName, basePrice, sellingPrice, quantity, productDescription,expireDate, divId} = req.body;
-    
     try {
-        
-        const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',[productDescription, expireDate, basePrice, sellingPrice, productName, divId]);
+        let file = req.file;
+        let imageUrl= `/image/poductImg/${file.filename}`;
+
+        const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id,image_url) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',[productDescription, expireDate, basePrice, sellingPrice, productName, divId,imageUrl]);
 
         const productId = productResult.rows[0].product_id;
         const product_Name = productResult.rows[0].product_name;
@@ -609,6 +610,41 @@ export const editProduct = async (req, res) => {
         console.error(err.message);
         res.status(500).send('Server error');
     }
+}
+
+export const updateProductImg = async (req, res)=>{
+    try{
+        const file = req.file;
+            
+        if(!file){
+            return res.status(400).send("no image Uploaded");
+        }
+        const photoURL = `/image/productImg/${file.filename}`;
+        const id = req.params.productId;
+    
+        const oldphoto = await db.query("SELECT image_url, product_name, division_id FROM product WHERE product_id = $1",[id]);
+        const oldphotoUrl = oldphoto.rows[0].image_url;
+        let productName = oldphoto.rows[0].product_name;
+        let divisionId=oldphoto.rows[0].division_id;
+        await db.query("UPDATE product set image_url = $1 where product_id=$2",[photoURL,id]);
+        console.log(`image uploaded ${photoURL}`);
+    
+    
+        console.log(oldphoto.rows[0].image_url);
+        if(oldphoto){
+            fs.unlink(__dirname+"../../../public"+oldphotoUrl,err=>{
+                if(err){
+                    console.log(`error deleting old photo ${err}`);
+                }else{
+                    console.log(`old photo deleted ${oldphotoUrl}`);
+                }
+            })
+        }
+       req.flash('success',`${productName}'s image Updated successfully! `)
+       res.redirect(`/admin/products/viewProducts?id=${divisionId}`);  
+        }catch(err){
+            console.log(err);
+        }
 }
 
 export const deleteProduct = async (req, res) => {
@@ -790,6 +826,24 @@ export const saveSchedule = async (req, res) => {
     }
 };
 
+export const logout= (req, res) => {
+    // Destroy the session or logout the user
+    req.logout((err) => {
+      if (err) {
+        console.error('Error during signout:', err);
+        return res.status(500).send('An error occurred during signout.');
+      }
+      req.session.destroy((sessionErr) => {
+        if (sessionErr) {
+          console.error('Error destroying session:', sessionErr);
+          return res.status(500).send('An error occurred during session destruction.');
+        }
+        // Redirect to login or homepage
+        res.clearCookie('connect.sid'); // Clear the session cookie
+        res.redirect('/login'); // Replace with your login route
+      });
+    });
+  };
 
 
 export default dashboard;

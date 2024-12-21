@@ -63,9 +63,11 @@ adminRoute.post("/admin/products/addDivision", adminController.addDivision);
 
 adminRoute.get("/admin/products/viewProducts", adminController.viewProducts);
 
-adminRoute.post("/admin/products/addProduct", adminController.addProduct);
+adminRoute.post("/admin/products/addProduct",uplaodProductImg.single("productImage"), adminController.addProduct);
 
 adminRoute.post("/admin/products/editProduct/:id", adminController.editProduct);
+
+adminRoute.post("/admin/products/updateImage/:productId",uplaodProductImg.single("productImage"),adminController.updateProductImg)
 
 adminRoute.post("/admin/products/deleteProduct/:id", adminController.deleteProduct);
 
@@ -84,6 +86,7 @@ adminRoute.get("/admin/schedules",adminController.schedule);
 
 adminRoute.post("/departure/reject/:id",adminController.rejectDepartureWorker);
 
+adminRoute.get("/logout",adminController.logout);
 
 const transactions = [
     { date: '2024-11-01', id: '00001', type: 'Sale', amount: 200.0, method: 'Credit Card', status: 'Completed' },
