@@ -564,7 +564,7 @@ export const addProduct = async (req, res) => {
     const { productName, basePrice, sellingPrice, quantity, productDescription,expireDate, divId} = req.body;
     try {
         let file = req.file;
-        let imageUrl= `/image/poductImg/${file.filename}`;
+        let imageUrl= `/image/productImg/${file.filename}`;
 
         const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id,image_url) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',[productDescription, expireDate, basePrice, sellingPrice, productName, divId,imageUrl]);
 
