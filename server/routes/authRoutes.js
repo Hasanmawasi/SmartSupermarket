@@ -15,7 +15,7 @@ authRoutes.post(
     } else if (role === "Worker") {
       res.redirect("/worker/home");
     } else if (role === "Manager") {
-      res.redirect("/manager/overview");
+      res.redirect("/manager/home");
     } else {
       res.redirect("/login");
     }

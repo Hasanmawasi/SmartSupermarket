@@ -1,6 +1,6 @@
 <div class="add-worker" <%= (form === "add") ? "" : "hidden" %>>
     <h2 class="form-title">Add Worker</h2>
-    <form id="addWorkerForm" action="/admin/addworker" method="post">
+    <form id="addWorkerForm" action="/manager/addAdmins" method="post">
       <!-- Generate ID Row -->
       <div class="form-row">
         <input type="text" id="generatedIdDisplay" placeholder="Generated ID" name="workerID" required>
@@ -12,22 +12,28 @@
         <button type="button" id="generatePasswordButton">Generate Password</button>
       </div>
       <div class="form-row">
-        <input type="text" id="" placeholder="Worker branch" name="workerBranch" required>
+        <!-- <label for="workerBranch">Select Branch:</label> -->
+        <select class="form-select" id="workerBranch" name="workerBranch" required>
+            <% locals.branches.forEach(branch => { %>
+            <option value="<%= branch.branch_id %>"><%= branch.branch_id %></option>
+            <% }) %>
+        </select>
         
       </div>
       <!-- Vertical Form Fields -->
       <div class="vertical-form">
         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
         <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
-        <select id="workerType" name="workerType" required>
+        <input type="text" name="workerType" id="workerType" value="admin" aria-readonly="true">
+        <!-- <select id="workerType" name="workerType"  >
           <option value="" disabled selected>Select Worker Type</option>
           <option value="cashier">Cashier</option>
           <option value="clerks">Stock Clerk</option>
           <option value="staff">Receiving Staff</option>
           <option value="cleaner">Cleaner</option>
-        </select>
+        </select> -->
         <input type="number" id="salary" name="salary" placeholder="Salary" required>
-        <button type="submit">Add Worker</button>
+        <button type="submit">Add Admin</button>
       </div>
     </form>
   </div>
@@ -39,7 +45,7 @@
       <img src="<%= profileimg %>" alt="Worker Photo">
     </div>
     
-    <form id="worker-details-form" action="/admin/updateWorkerInfo" method="post">
+    <form id="worker-details-form" action="/manager/updateAdminInfo" method="post">
       <div class="worker-detail">
         <label for="first-name">Name:</label>
         <input type="text" id="first-name" value="<%= locals.name %>" name="name" readonly>
@@ -85,11 +91,12 @@
     ModalTitle: "Delete Worker",
     ModalBody: `Are you sure to delete "${locals.name}" ?`,
     ActionBoton: "Delete",
-    formAction:`/admin/delete/${locals.id}`,
+    formAction:`/manager/delete/${locals.id}`,
     formMethod:"POST"
   }) %>
 
   <script>
+    // Generate unique ID
     // Initialize idCounter from localStorage or set it to 0 if not present
     let idCounter = parseInt(localStorage.getItem("idCounter")) || 0;
 
@@ -100,6 +107,7 @@
     const workerId = `Admin-${idCounter}-${timestamp}`;
     document.getElementById("generatedIdDisplay").value = workerId;
 });
+
 
     // Generate random password
     document.getElementById("generatePasswordButton").addEventListener("click", () => {
@@ -112,11 +120,7 @@
     });
 
     // Handle form submission
-    document.getElementById("addWorkerForm").addEventListener("submit", (event) => {
-      // event.preventDefault();
-      alert("Worker added successfully!");
-      // Additional submission logic can be added here
-    });
+    
 
 
     // ------------------------------------------------------------------------

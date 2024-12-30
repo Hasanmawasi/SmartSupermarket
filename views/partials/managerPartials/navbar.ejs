@@ -1,0 +1,54 @@
+<div class="container-fluid navbarr">
+    <nav
+      class="navbar navbar-expand-sm shadow-lg navbar-dark bg-danger"
+      aria-label="Third navbar example"
+    >
+      <div class="container-fluid">
+        <a href="/manager/profile" class="d-flex align-items-center link-body-emphasis text-decoration-none " >
+          <img id="navbarimg" src="" alt="" width="45" height="43" class="rounded-circle me-2">
+        </a>
+        <a class="navbar-brand" href="#"> TasawaQ</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarsExample03"
+          aria-controls="navbarsExample03"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse justify-content-center mx-auto" id="navbarsExample03">
+          <ul class="navbar-nav me-auto mb-2 mb-sm-0 mx-auto">
+            <li class="nav-item">
+              <a href="" class="nav-link" aria-current="page">Home</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link px-2">About</a>
+            </li>
+            <li class="nav-item">
+              <a href="" class="nav-link px-2">FAQs</a>
+            </li>
+          </ul>
+          <div class="col-md-3 text-end">
+          <form action="/logout" method="get">
+            <button type="submit" class="btn btn-light signout">
+              Sign out
+            </button>
+          </form>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </div>
+  <script>
+    fetch('/sidebarPhoto')
+    .then(response => response.json())
+    .then((data) => {
+      const img= document.getElementById("navbarimg");
+      console.log(data)
+      img.src = data;
+    })
+  </script>

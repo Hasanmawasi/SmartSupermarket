@@ -3,7 +3,8 @@ import dotenv from "dotenv";
 import expressEjsLayouts from "express-ejs-layouts";
 import adminRoute from "./server/routes/admin.js";
 import workerRoute from "./server/routes/worker.js";
-import authRoutes from "./server/routes/authRoutes.js"
+import authRoutes from "./server/routes/authRoutes.js";
+import managerRoute from "./server/routes/manager.js";
 import db from "./server/config/db.js";
 import bodyParser from "body-parser";
 import passport from "passport";
@@ -77,7 +78,7 @@ io.on('connection', (socket) => {
 app.use("/auth", authRoutes);
 app.use(adminRoute);
 app.use(workerRoute);
-
+app.use(managerRoute);
 
 
 server.listen(3000, () => {

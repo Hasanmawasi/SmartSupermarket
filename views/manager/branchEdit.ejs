@@ -1,0 +1,75 @@
+<div class="worker-form" <%= (form === "view") ? "" : "hidden" %>>
+    
+    <div class="">
+      <img src="/image/branchlogo.jpeg" alt="Worker Photo">
+    </div>
+    
+    <form id="worker-details-form" action="/manager/updateBranch/<%=locals.branch.branch_id%>" method="post">
+      <div class="worker-detail">
+        <label for="branchid">Branch ID:</label>
+        <input type="text" id="branchid" value="<%= locals.branch.branch_id %>" name="branchid" readonly>
+      </div>
+    
+      <div class="worker-detail">
+        <label for="branchlocation">Branch location: </label>
+        <input type="text" id="branchlocation" value="<%= locals.branch.location %>" name="branchlocation" readonly>
+      </div>
+      <div class="worker-detail">
+        <label for="contactNumber">Contact Number:</label>
+        <input type="number" id="contactNumber" value="<%= locals.branch.contact_number %>" name="contactNumber" readonly >
+      </div>
+      
+      <div class="worker-actions">
+        <button type="submit" id="save-btn" style="display: none;">Update</button>
+        <button type="button" id="cancel-btn" style="display: none;">Cancel</button>
+      </div>
+    </form>
+    <div class="form-header">
+      <button class="edit-button" id="edit-btn">Edit</button>
+      
+      <!-- <button class="" >Delete</button> -->
+      <button type="button" id="delete-btn" class="delete-button" data-bs-toggle="modal" data-bs-target="#deleteModal" >
+        Delete
+      </button>
+    </div>
+  </div>
+  <%- include('../partials/adminPartials/adminModals.ejs', {
+    ModalId: "deleteModal",
+    ModalTitle: "Delete Branch",
+    ModalBody: `Are you sure to delete "${locals.branch.branch_id}" ?`,
+    ActionBoton: "Delete",
+    formAction:`/manager/deleteBranch/${locals.branch.branch_id}`,
+    formMethod:"POST"
+  }) %>
+
+  <script>
+    const editButton = document.getElementById("edit-btn");
+    const deleteButton = document.getElementById("delete-btn");
+    const saveButton = document.getElementById("save-btn");
+    const cancelButton = document.getElementById("cancel-btn");
+    const inputs = document.querySelectorAll("#worker-details-form input");
+
+// Enable editing
+editButton.addEventListener("click", () => {
+  inputs.forEach(input => {
+    if (input.id === "branchid" || input.id === "contactNumber" || input.id === "branchlocation") {
+      input.removeAttribute("readonly");
+      input.style.backgroundColor = "#ffffff";
+    }
+  });
+  saveButton.style.display = "inline-block";
+  cancelButton.style.display = "inline-block";
+  editButton.style.display = "none";
+});
+
+// Cancel editing
+cancelButton.addEventListener("click", () => {
+  inputs.forEach(input => {
+    input.setAttribute("readonly", "true");
+    input.style.backgroundColor = "#e9ecef";
+  });
+  saveButton.style.display = "none";
+  cancelButton.style.display = "none";
+  editButton.style.display = "inline-block";
+});
+  </script>

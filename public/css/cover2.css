@@ -1,3 +1,17 @@
+::-webkit-scrollbar{
+  width: 10px;
+  background-color: #459fff;
+}
+::-webkit-scrollbar-track{
+  border-radius: 3px;
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+  border-radius: 5px;
+  background-color: #1544ff;
+  border: 2px solid #121212;
+}
+
 body {
   height: 100vh !important;
   background-image: url("/image/workerCover.jpg") !important;
@@ -15,4 +29,27 @@ body {
   font-size: 30px;
   color: black;
   font: bold;
+}
+/* Styles for the loader */
+#loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  visibility: hidden;
+  overflow: hidden;
+}
+
+
+#loader video {
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+
 }

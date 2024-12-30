@@ -1,30 +1,32 @@
-<style>
-  
-
-
-</style>
-
 <body>
   <div class="container my-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h3>Products</h3>
-      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
+      
+      <a href="/admin/salesPage"> 
+        <button class="btn btn-primary" >Add Sales</button>
+      </a>
     </div>
-
     
-
-    <div class="search-container">
-      <div class="search-bar">
-        <form>
-          <input type="text" id="searchInput" placeholder="Search products..." />
-          <button disabled>
-            <i class="bi bi-search"></i> <!-- Optional Bootstrap search icon -->
-            Search
-          </button>
-        </form>
-      </div>
+    <div class="d-flex justify-content-between align-items-center gap-3"> 
+      <a href="/admin/predictPage" class=" "> 
+        <button class="btn btn-success " >predict Price</button>
+      </a>
+      <!-- <div class="search-container "> -->
+        <div class="search-bar ">
+          <form>
+            <input type="text" id="searchInput" placeholder="Search products..." />
+            <button disabled>
+              <i class="bi bi-search"></i> <!-- Optional Bootstrap search icon -->
+              Search
+            </button>
+          </form>
+        </div>
+      <!-- </div> -->
+       <div class=""> 
+      <button class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#addModal">Add Product</button>
     </div>
-
+    </div>
     <%- include('../partials/adminpartials/alertmessage.ejs') %>
 
     <div class="row" id="productContainer">
@@ -32,10 +34,22 @@
         <% products.forEach((product, index) => { %> 
           <div class="col-12 col-sm-6 col-md-3 product-item"> 
             <div class="product-card">
+              <div class="position-relative">
               <img src="<%= product.image_url %>" alt="Product Image"  width="150" height="150" />
-              <h5 class="mt-3 product-name"><%= product.product_name %></h5>
-              <p>Price: <%= product.selling_price %></p>
-              <p>Stock: <%= product.quantity %></p>
+              <% if(product.on_sale === true){  %>
+                <% if(locals.sales){ %>
+                    <% sales.filter(sale=>{ %>
+                      <% if(sale.product_id == product.product_id){ %>
+                      <h4 class=""><span class="badge bg-warning text-dark position-absolute start-0 top-0 z-index-5">Sale: <%= sale.new_price %>$</span></h4>
+                  <% } %>
+                <% })} %>
+                <% }%>
+                  
+              </div>
+              <h5 class="mt-2 product-name"><%= product.product_name %></h5>
+              <p class="<%= product.on_sale == true ? 'text-decoration-line-through': '' %>">Price: <%= product.selling_price %>$</p>
+              
+              <p>Stock: <%= product.quantity%> </p>
               <div class="card-buttons">
                 <button 
                   class="btn btn-primary" 

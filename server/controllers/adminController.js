@@ -19,20 +19,23 @@ export const login = (req,res)=>{
 
 export const dashboard = (req,res)=>{
         res.render("admin/dashboard",{
-            layout:"./layouts/admin"
+            layout:"./layouts/admin",
+            enable:"dashboard",
         })
 };
 export const home = (req,res)=>{
     
         res.render("admin/home",{
-            layout:"./layouts/home"
+            layout:"./layouts/home",
+            
         })
 };
 
 export const products = (req,res)=>{
     
     res.render("admin/products",{
-        layout:"./layouts/admin"
+        layout:"./layouts/admin",
+        enable:"product",
     })
 };
 
@@ -44,7 +47,9 @@ export const forms = async (req,res)=>{
         res.render("admin/forms",{
             form: form,
             category: type,
-            layout:"./layouts/admin"
+            layout:"./layouts/admin",
+            enable:"product",
+
         })
     }catch(err){
         console.log(err);
@@ -105,7 +110,8 @@ export const workerEdit =async (req,res)=>{
         salary: salary,
         id: worker_id,
         email:email,
-        layout:"./layouts/admin"
+        layout:"./layouts/admin",
+        enable:"workers"
     })
   }catch(err){
     console.log(err);
@@ -150,13 +156,15 @@ export const updateWorkerInfo =async (req, res)=>{
 
 export const orders = (req, res)=>{
     res.render("admin/orders",{
-        layout:"./layouts/admin"
+        layout:"./layouts/admin",
+        enable: "orders"
     })
 };
 
 export const profit = (req, res)=>{
     res.render("admin/profit",{
-        layout:"./layouts/admin"
+        layout:"./layouts/admin",
+        enable:"profits"
     })
 };
 
@@ -191,7 +199,8 @@ export const reports = async (req, res) => {
 
 export const workers = (req, res) => {
     res.render("admin/workers", {
-        layout:"./layouts/admin"
+        layout:"./layouts/admin",
+        enable: "workers"
     })
 }
 export const profile =async (req, res) => {
@@ -306,6 +315,7 @@ export const dailyLog = async (req, res) => {
         departureWorker: departureWorker,
         rejectedWorkers: rejectedWorkers,
         inWork: inWork,
+        enable:"dailylog"
         });
     } catch (error) {
         console.log(error)
@@ -391,6 +401,7 @@ export const workerType =async (req, res) => {
         type: type,
         layout: './layouts/admin',
         workersInfo: workersInfo,
+        enable:"workers"
     })
 };
 
@@ -406,7 +417,7 @@ export const addworkers = async (req , res)=>{
         const checkResult = await db.query("SELECT * FROM  worker WHERE worker_id= $1",[workerId,]);
 
         if(checkResult.rows.length >0 ){
-            res.redirect("/admin/login");
+            res.redirect("/login");
         }else{
             bcrypt.hash(workerPass , saltRounds , async(err , hash)=>{
                 if(err){
@@ -494,6 +505,7 @@ export const productDivisions =async (req, res) => {
             results: divisionsResult.rows,
             categoryType: type,
             category_id: categoryId,
+            enable:"products"
         })
     } catch (err) {
         console.error(err.message);
@@ -522,7 +534,7 @@ export const addDivision = async (req, res) => {
 
 export const viewProducts = async (req, res) => {
     const branch = req.user.branch_id;
-    const { id } = req.query    ;
+    const { id } = req.query ;
     console.log(id);
     try {
 
@@ -534,6 +546,7 @@ export const viewProducts = async (req, res) => {
             p.base_price,
             p.selling_price,
             p.image_url,
+            p.on_sale,
             bs.quantity
             FROM 
             branch_storage bs
@@ -546,11 +559,35 @@ export const viewProducts = async (req, res) => {
             AND p.division_id = $2
             ORDER BY p.product_id DESC;`,[branch, id]);
         
-
-            console.log(results.rows)
+            const result2 = await db.query(
+                `SELECT 
+                    s.sale_id,
+                    s.product_id,
+                    s.new_price,
+                    s.sale_percentage,
+                    s.sale_date,
+                    p.product_name,
+                    p.base_price,
+                    p.selling_price,
+                    p.image_url
+                 FROM 
+                    sales s
+                 JOIN 
+                    product p
+                 ON 
+                    s.product_id = p.product_id
+                 WHERE 
+                    s.branch_id = $1
+                 ORDER BY 
+                    s.sale_date DESC;`,
+                [branch]
+            );
+            let sales= result2.rows;
         res.render("admin/viewProducts", {
          products: results.rows,
-         div_id: id
+         div_id: id,
+         sales: sales,
+         enable:"products"
         })
     } catch (err) {
         console.error(err.message);
@@ -566,7 +603,8 @@ export const addProduct = async (req, res) => {
         let file = req.file;
         let imageUrl= `/image/productImg/${file.filename}`;
 
-        const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id,image_url) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',[productDescription, expireDate, basePrice, sellingPrice, productName, divId,imageUrl]);
+        const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id,image_url) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',
+            [productDescription, expireDate, basePrice, sellingPrice, productName, divId,imageUrl]);
 
         const productId = productResult.rows[0].product_id;
         const product_Name = productResult.rows[0].product_name;
@@ -716,7 +754,11 @@ export const scheduleType = async (req, res) => {
 
       const shiftNames = shiftNamesResults.rows.map(row => row.shift_name);
 
-      res.render('admin/schedule', { category, scheduleData, shiftNames });
+      res.render('admin/schedule', 
+        { category, 
+        scheduleData, 
+        shiftNames,
+        enable:"schedule" });
     } catch (err) {
       console.error("Database query error:", err);
       res.status(500).send("Internal Server Error");
@@ -818,13 +860,133 @@ export const saveSchedule = async (req, res) => {
         res.render("admin/customers", {
             reviews: result.rows,
             overallRating: overallRating,
-            layout: "./layouts/admin"
+            layout: "./layouts/admin",
+            enable:"customers"
         });
     } catch (err) {
         console.error("Error fetching customer reviews:", err);
         res.status(500).send("Internal Server Error");
     }
 };
+
+export const predictPage = (req, res)=>{
+    res.render("admin/predict",{
+        layout: "./layouts/admin",
+        enable: "product"
+    })
+}
+
+export const salesPage =async (req, res)=>{
+    try {
+        let branch_id = req.user.branch_id;
+        let result = await db.query(`SELECT 
+                                        s.sale_id,
+                                        s.product_id,
+                                        s.new_price,
+                                        s.sale_percentage,
+                                        s.sale_date,
+                                        p.product_name,
+                                        p.base_price,
+                                        p.selling_price,
+                                        p.image_url,
+                                        bs.quantity
+                                    FROM sales AS s
+                                    JOIN product AS p ON s.product_id = p.product_id
+                                    JOIN branch_storage AS bs 
+                                        ON s.product_id = bs.product_id 
+                                        AND s.branch_id = bs.branch_id
+                                    WHERE s.branch_id = $1;
+                                    `,
+                                    [branch_id]);
+        let sales = result.rows;  
+    
+        res.render("admin/salesPage",{
+            sales: sales,
+            layout: "./layouts/admin",
+            enable:"product"
+        })
+    } catch (error) {
+        console.log("error in sales query: ",error);
+    }
+   
+}
+
+export const saleSearch = async (req, res) => {
+        const query = req.query.query?.toLowerCase();
+        const id = req.user.branch_id;
+        if (!query || query.trim() === "") {
+          return res.status(400).json({ message: "Search query is required" });
+        }
+      
+        // Filter products by name (case-insensitive)
+        try {
+            // Query PostgreSQL database for products matching the search string
+            const result = await db.query(
+             `SELECT * 
+                FROM product p 
+                JOIN branch_storage b 
+                ON p.product_id = b.product_id 
+                WHERE p.product_name ILIKE $1 
+                AND b.branch_id = $2;
+              `,
+              [`%${query}%`,id]
+            );
+            
+            res.json(result.rows); // Return the matched rows
+          } catch (error) {
+            console.error("Error executing query:", error);
+            res.status(500).json({ message: "Internal server error" });
+          }
+      
+      };
+ 
+ export const addSale= async (req, res)=>{
+    const id = req.params.id;
+    const {salePercentage,salePrice} = req.body;
+    const branchId = req.user.branch_id;
+    // const product = await db.query("SELECT * FROM product where product_id=$1",[id]);
+    try {
+        let isOnSale = await db.query(`SELECT sale_id FROM sales WHERE product_id= $1;`,[id]);
+        if(isOnSale.rowCount >0){
+            let saleId = isOnSale.rows[0].sale_id;
+            let updateSale = await db.query(`UPDATE sales SET new_price = $1, sale_percentage = $2, sale_date = CURRENT_DATE  WHERE sale_id = $3;`,
+                                                [salePrice,salePercentage,saleId]
+                                            );
+        }else{ 
+        const addsale = await db.query(`INSERT INTO sales(product_id,new_price,sale_percentage,sale_date,branch_id)
+                                     values($1,$2,$3,CURRENT_DATE,$4)`,
+                                     [id,salePrice,salePercentage,branchId]
+                                    );
+        const updateOnSale = await db.query("Update product set on_sale ='true' where product_id=$1",[id]); 
+        }
+        res.redirect("/admin/salesPage");
+    } catch (error) {
+        console.error(error);
+    }                                 
+ };    
+
+ export const deleteSale= async (req,res)=>{
+    const saleId = req.params.id;
+    try {
+    let productid = await db.query(`SELECT product_id from sales where sale_id = $1`,[saleId]);
+    let pId = productid.rows[0].product_id;
+    
+    let result1 = await db.query(`UPDATE product set on_sale='false' where product_id=$1`,[pId]); 
+    console.log(saleId);  
+    let result = await db.query(`DELETE FROM sales WHERE sale_id = $1;`,[saleId]);  
+    if(result){
+        req.flash('success','The sale is deleted successfully!');
+        res.redirect("/admin/salesPage");
+    } else{
+        req.flash('error','The sale is failed to deleted!');
+        res.redirect("/admin/salesPage");
+    }
+    
+    } catch (error) {
+       console.log(error); 
+    }
+    
+ };
 
 export const logout= (req, res) => {
     // Destroy the session or logout the user

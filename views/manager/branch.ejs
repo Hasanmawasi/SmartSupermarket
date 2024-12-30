@@ -1,0 +1,127 @@
+<div class="container my-4" >
+    
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h3>Branches</h3>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddBranchForm">Add New Branch</button>
+      <div class="modal" tabindex="-1" id="AddBranchForm">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Add New Branch</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form action="/manager/addBranch" method="POST">
+                <label for="branchid" class="form-label"><strong>Add Branch ID</strong></label>
+                    <input 
+                    name="branchid" 
+                    type="text" 
+                    class="form-control"   
+                    required
+                  />
+                  <label for="branchlocation" class="form-label"><strong>Branch Location</strong></label>
+                    <input 
+                    name="branchlocation" 
+                    type="text" 
+                    class="form-control"   
+                    required
+                  />
+                  <label for="contactnumber" class="form-label"><strong>Branch Contact Number</strong></label>
+                    <input 
+                    name="contactnumber" 
+                    type="text" 
+                    class="form-control"   
+                    required
+                  />
+              
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-success">Add Branch</button>
+            </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- include the alert message -->
+    <%- include('../partials/adminpartials/alertmessage.ejs') %>
+   
+    <div class="worker-list">
+       
+       <% if(locals.branches){ %>
+        <% branches.forEach(branch =>{  %>
+          <% if(branch.branch_id != 'default_branch_id') {%>
+          <div class="worker-item d-flex bg-white align-items-center justify-content-between p-3 mb-3 rounded shadow-sm " >
+          <div class="d-flex align-items-center">
+           
+            <img src="/image/branchlogo.jpeg" alt="Profile" class="rounded-circle" style="height: 100px; width: 100px;">
+            
+            <div class="worker-info ms-3">
+              <h5 class="mb-0">Branch ID</h5>
+              <p class="text-muted mb-0">#<%= branch.branch_id %></p>
+            </div>
+            <div class="worker-info ms-3">
+              <h5 class="mb-0">Location</h5>
+              <p class="text-muted mb-0"><%= branch.location %></p>
+            </div>
+          
+          <div class="worker-info ms-3">
+            <h5 class="mb-0">Contact Number: </h5>
+            <p class="text-muted mb-0"><%= branch.contact_number %></p>
+          </div>
+        </div>
+          
+          <a href="/manager/branch/update?form=view&&id=<%= branch.branch_id%>"><button class="btn btn-outline-primary">View</button></a>
+          </div>
+        <% } %>
+     <%   }); %>
+      <% } %>
+     <!-- ======= -->
+
+    </div>
+  </div>
+  <div class="d-flex justify-content-between">
+    <h3>Items Relocate</h3>
+    <button class="btn btn-primary">relocate</button>
+  </div>
+  <div class="container mt-2 reviews-list bg-light rounded shadow">
+    
+        <% if(locals.product){ %>
+            <% locals.product.forEach( p=>{ %>
+        <div class="review-item shadow">
+           <div class="d-flex align-items-center justify-content-between mb-1 p-3 border rounded">
+            
+            <div class="text-center">
+            <img src="<%=p.image_url%>" alt="Product Image" class="rounded-circle" style="height: 50px;">
+            </div>
+           
+            <div class="text-center">
+            <h6 class="mt-2">Product Name</h6>
+            <div class="fw-bold "><%= p.product_name %></div>
+            </div>
+
+            <div class="text-center">
+            <h6 class="mt-2">Selling Price</h6>
+            <div class="fw-bold "><%= p.selling_price %></div>
+            </div>
+         
+            <div>
+                <form action="/manager/relocateProduct" method="post">
+                    <input type="text" name="id" value="<%= p.product_id %>" hidden>
+                <select name="branch" id="">
+                    <option value="" selected> Select branch</option>
+                    <% locals.branches.forEach(branch =>{ %>
+                        <option value="<%= branch.branch_id %>"><%= branch.branch_id %></option>
+                        <% }) %>
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="submit"class="btn btn-success align-self-end">Relocate</button>
+            </form>
+            </div>
+        
+        </div>
+        </div>
+        <% })} %>
+  </div>

@@ -15,19 +15,35 @@
   </svg>
 
  
-
-  
+<!-- Loader vedio -->
+  <div id="loader">
+    <video id="vedio"  muted>
+        <source src="/image/loaderVedio/loader.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    </div>
 <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-
+ 
 
 <main class="px-3 mt-5">
   <h1 class="home-title">Your All-in-One Work Management Platform.</h1>
   <p class="Lead fs-4">Efficient tools for managing your day and staying connected with the admin. </p>
   <p class="">
-    <a href="/worker/log" class="btn btn-lg btn-light fw-bold border-white bg-white">Get Started!</a>
+    <a id="getStarted" class="btn btn-lg btn-light fw-bold border-white bg-white">Get Started!</a>
   </p>
 </main>
 
 </div>
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
+<script>
+  // JavaScript to handle the loader and redirection
+  document.getElementById('getStarted').addEventListener('click', () => {
+      const loader = document.getElementById('loader');
+      const vedio =  document.getElementById('vedio');
+      vedio.play();
+      loader.style.visibility = 'visible'; // Show the loader
+      setTimeout(() => {
+          window.location.href = '/worker/log'; // Redirect to the dashboard page
+      }, 3000); // Wait for 2 seconds
+  });
+</script>

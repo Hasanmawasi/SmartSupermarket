@@ -534,7 +534,8 @@
   padding: 15px;
   margin: 10px 0; /* Only vertical margin, as Bootstrap's row/col system handles horizontal spacing */
   text-align: center;
-  background-color: #ffffff;
+  
+  background-color: white;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 .product-card img {
@@ -650,7 +651,9 @@ justify-content: center;
 .schedule-table td select::-ms-expand {
   display: none; /* Hide arrow in IE and Edge */
 }
-
+/* .hidden-no-sale{
+  visibility: hidden;
+} */
 /* Mobile and Small Screens */
 @media (max-width: 768px) {
   .schedule-table {

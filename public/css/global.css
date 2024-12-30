@@ -21,6 +21,20 @@ body{
     padding: 0;
 }
 
+::-webkit-scrollbar{
+    width: 10px;
+    background-color: #459fff;
+}
+::-webkit-scrollbar-track{
+    border-radius: 3px;
+    background-color: transparent;
+}
+::-webkit-scrollbar-thumb{
+    border-radius: 5px;
+    background-color: #1544ff;
+    border: 2px solid #121212;
+}
+
 .navbarr {
     background-color: var(--blue) !important;
     /* position: fixed; */

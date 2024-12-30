@@ -86,6 +86,16 @@ adminRoute.get("/admin/schedules",adminController.schedule);
 
 adminRoute.post("/departure/reject/:id",adminController.rejectDepartureWorker);
 
+adminRoute.get("/admin/predictPage",adminController.predictPage);
+
+adminRoute.get("/admin/salesPage",adminController.salesPage);
+
+adminRoute.post("/admin/addSale/:id",adminController.addSale);
+
+adminRoute.get("/admin/deleteSale/:id",adminController.deleteSale);
+
+adminRoute.get("/admin/search",adminController.saleSearch);
+
 adminRoute.get("/logout",adminController.logout);
 
 const transactions = [

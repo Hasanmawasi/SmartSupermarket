@@ -1,0 +1,223 @@
+<div class="mt-5"> 
+<h1>Add Sales</h1>
+</div>
+
+    <div class="search-container">
+    <div class="search-bar">
+      <form>
+        <input type="text" id="search" placeholder="Search products..." onkeyup="searchProduct()"/>
+        <button disabled>
+          <i class="bi bi-search"></i> 
+          Search
+        </button>
+      </form>
+    </div>
+  </div>
+
+<!-- Dropdown for Products -->
+<div class="accordion" id="accordionExample">
+    <div class="accordion-item">
+      <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+        <!-- data added here -->
+      </div>
+    </div>
+  </div>
+  <div class="mt-5"> 
+  <h2 >Products on Sale</h2>
+  </div>
+  <%- include('../modals/messageModal.ejs') %>
+<div class="reviews-list bg-white p-3 rounded" >
+<% if(locals.sales){ %>
+<% locals.sales.forEach(sale=>{ %>
+
+    <div class="d-flex review-item align-items-center justify-content-between my-2 p-3  rounded">
+        <img src="<%=sale.image_url%>" alt="Product Image" class="rounded-circle" style="height: 50px;">
+        <div class="text-center">
+            <h6 class="mt-2">Product Name</h6>
+            <div class="fw-bold mx-2"> <%= sale.product_name %></div>
+        </div>
+        <div class="text-center">
+            <h6 class="mt-2">Product ID</h6>
+            <div class="fw-bold mx-2"><%= sale.product_id %></div>
+        </div>
+        <div class="text-center">
+            <h6 class="mt-2" >Sale Price</h6>
+            <div class="fw-bold mx-2"><%=sale.new_price %></div>
+        </div>
+       <div class="text-center">
+        <h6 class="mt-2" >Sale percentage</h6>
+        <div class="fw-bold mx-2"> <%= sale.sale_percentage %>%</div>
+       </div>
+        <div class="text-center">
+            <h6 class="mt-2">Available quantity</h6>
+            <div class="fw-bold mx-2"> <%= sale.quantity %></div>
+        </div>
+        
+        <div class="text-center">
+          <form action="/admin/deleteSale/<%= sale.sale_id %>"> 
+            <button type="submit"  class="btn btn-danger">Delete Sale</button>
+         </form>
+        </div>
+        
+      </div>
+<% })} %>
+</div>
+<script>
+      // Grab the search input and the collapse element
+  const searchInput = document.getElementById('search');
+  const collapseOne = document.getElementById('collapseOne');
+
+  // Add focus event to open the accordion when the search bar is focused
+  searchInput.addEventListener('focus', () => {
+    const collapseInstance = new bootstrap.Collapse(collapseOne, {
+      show: true // Programmatically show the collapse (open the accordion)
+    });
+  });
+
+  // Optional: Add blur event to close the accordion when the search bar loses focus
+//   searchInput.addEventListener('blur', () => {
+//     const collapseInstance = new bootstrap.Collapse(collapseOne, {
+//       hide: true // Programmatically hide the collapse (close the accordion)
+//     });
+//   });
+
+  // Function to search for products on key press
+  async function searchProduct() {
+  const searchValue = document.getElementById("search").value;
+  const dropdown = document.getElementById("collapseOne");
+
+  if (searchValue.length >= 2) { // Trigger search only if 2+ characters are entered
+    try {
+      const response = await fetch(`http://localhost:3000/admin/search?query=${searchValue}`);
+      if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+      
+      const products = await response.json();
+      console.log(products);
+
+      // Clear the dropdown before appending results
+      dropdown.innerHTML = "";
+
+      if (products.length > 0) {
+        products.forEach(product => {
+          // Create product option with modal
+          let option = document.createElement("div");
+          option.innerHTML = `
+            <div class="accordion-body">
+                <div class="d-flex align-items-center justify-content-between mb-1 p-3 border rounded">
+                    
+                    <div class="text-center">
+                    <img src="${product.image_url}" alt="Product Image" class="rounded-circle" style="height: 50px;">
+                    </div>
+                   
+                    <div class="text-center">
+                        <h6 class="mt-2">Product Name</h6>
+                    <div class="fw-bold ">${product.product_name}</div>
+                    </div>
+
+                    <div class="text-center">
+                    <h6 class="mt-2">Selling Price</h6>
+                    <div class="fw-bold ">${product.selling_price}$</div>
+                    </div>
+
+                    <div class="text-center">
+                    <h6 class="mt-2">Expire Date</h6>
+                    <div class="fw-bold ">${(product.expire_date).split('T')[0]}</div>
+                    </div>
+                    
+                    <div class="sale">
+                        ${product.on_sale == true ? '<span class="badge bg-warning text-dark">On Sale</span>' : ''}
+                    </div>
+        
+                    <div class="text-center">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#Modal${product.product_id}" class="btn btn-success align-self-end">Add Sale</button>
+                    </div>
+                
+                </div>
+                </div>
+            <div class="modal fade" id="Modal${product.product_id}" tabindex="-1" aria-labelledby="ModalLabel${product.product_id}" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel${product.product_id}">Add Sale</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <form action="/admin/addSale/${product.product_id}" method="post">
+                    <div class="modal-body">
+                      <label for="Pid" class="form-label fw-bold">Product ID:</label>
+                      <input type="text" name="Pid" class="form-control" value="${product.product_id}" readOnly>
+                      <label for="baseprice" class="form-label fw-bold">Product Base Price:</label>
+                      <input type="text" name="baseprice" class="form-control" value="${product.base_price}" readOnly>
+                      <label for="price" class="form-label fw-bold">Product Price:</label>
+                      <input type="text" name="price" id="p${product.product_id}" class="form-control" value="${product.selling_price}" readOnly>
+                      <label for="salePrice" class="form-label fw-bold">Sale Price(Enter price and get automaticaly the %):</label>
+                      <input type="number" step="0.01" name="salePrice" class="form-control" id="s${product.product_id}">
+                      <label for="salePercentage" class="form-label fw-bold">Sale Percentage %(Enter the % and get the sale price):</label>
+                      <input type="text" name="salePercentage" id="sp${product.product_id}" class="form-control">
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                      <button type="submit" class="btn btn-primary">Add Sale</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          `;
+          
+
+          // Append the option to the dropdown
+          dropdown.appendChild(option);
+
+          // Add event listeners dynamically
+          const salePriceInput = document.getElementById(`s${product.product_id}`);
+          const salePercentageInput = document.getElementById(`sp${product.product_id}`);
+          const basePriceInput = document.getElementById(`p${product.product_id}`);
+
+          const basePrice = parseFloat(basePriceInput.value);
+
+          if (basePrice) {
+            // Calculate sale percentage from sale price
+            salePriceInput.addEventListener("input", () => {
+              const salePrice = parseFloat(salePriceInput.value);
+              if (!isNaN(salePrice) && salePrice <= basePrice) {
+                const salePercentage = ((basePrice - salePrice) / basePrice) * 100;
+                salePercentageInput.value = salePercentage.toFixed(2);
+              } else {
+                salePercentageInput.value = ""; // Clear if invalid
+              }
+            });
+
+            // Calculate sale price from sale percentage
+            salePercentageInput.addEventListener("input", () => {
+              const salePercentage = parseFloat(salePercentageInput.value);
+              if (!isNaN(salePercentage) && salePercentage >= 0 && salePercentage <= 100) {
+                const salePrice = basePrice - (basePrice * salePercentage) / 100;
+                salePriceInput.value = salePrice.toFixed(2);
+              } else {
+                salePriceInput.value = ""; // Clear if invalid
+              }
+            });
+          }
+        });
+      } else {
+        dropdown.innerHTML = "<h4 class='p-3'>No Product Found</h4>";
+      }
+    } catch (error) {
+      console.error("Error during search:", error);
+      dropdown.innerHTML = "<h4 class='p-3 text-danger'>Error Fetching Products</h4>";
+    }
+  } else {
+    // Clear dropdown for short inputs
+    dropdown.innerHTML = "<h4 class='p-3'>Enter at least 2 characters to search</h4>";
+  }
+}
+
+
+  // Function to auto-fill the product name in the form
+  function selectProduct() {
+    const selectedProduct = document.getElementById("productDropdown").value;
+    document.getElementById("productName").value = selectedProduct;
+  }
+
+ 
+</script>

@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-center mt-4" > 
+    <div class="profile-container ">
+        <form action="/manager/updateProfileImg" method="post" enctype="multipart/form-data">
+          <!-- Profile Photo -->
+          <img src="<%= locals.image %>" alt="Profile Photo" class="profile-photo" id="profilePhoto">
+            <div class="d-flex justify-content-between">
+                <input type="file" id="photoInput" accept="image/*" name="uploadedPhoto" onchange="loadPhoto(event)" required>
+                <button type="submit" id="updateBtn" class="btn  btn-success" >update</button>
+            </div>
+        </form>
+        <!-- Profile Information -->
+         <form action="/manager/updateProfile" method="post"> 
+        <div class="profile-info">
+            <label>First Name</label>
+            <p class="info-text" id="firstNameText"><%= locals.firstName %></p>
+            <input type="text" id="firstNameInput" value="<%= locals.firstName %>" name="fname">
+    
+            <label>Last Name</label>
+            <p class="info-text" id="lastNameText"><%= locals.lastName %></p>
+            <input type="text" id="lastNameInput" value="<%= locals.lastName %>" name="lname">
+    
+            <label>Salary</label>
+            <p class="info-text" id="salary"><%= locals.salary %></p>
+            <input type="text" id="Salary" value="<%= locals.salary %>" name="salary" readonly>
+    
+            <label>Phone Number</label>
+            <p class="info-text" id="phoneText"><%= locals.phone %></p>
+            <input type="text" id="phoneInput" value="<%= locals.phone %>" name="phoneNumber">
+    
+            <label>Email Address</label>
+            <p class="info-text" id="emailText"><%= locals.email %></p>
+            <input type="email" id="emailInput" value="<%= locals.email %>" name="email">
+        </div>
+        <button type="submit" class="button save-button" onclick="saveProfile()">Save</button>
+       </form>
+        <!-- Buttons -->
+        <button class="button edit-button" onclick="editProfile()">Edit</button>
+    </div>
+    </div>

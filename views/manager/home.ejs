@@ -1,4 +1,4 @@
-  <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+<svg xmlns="http://www.w3.org/2000/svg" class="d-none">
     <symbol id="check2" viewBox="0 0 16 16">
       <path
         d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
@@ -24,12 +24,6 @@
     </symbol>
   </svg>
 
-  <div id="loader">
-    <video id="vedio"  muted>
-        <source src="/image/loaderVedio/loader.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-</div>
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <main class="px-3 mt-5">
       <h1 class="home-title">Effortless Management for a Smarter Supermarket.</h1>
@@ -38,8 +32,7 @@
       </p>
       <p class="">
         <a
-        id="getStarted"
-          
+          href="/manager/dashboard"
           class="btn btn-lg btn-light fw-bold border-white bg-white"
           >Get Started!</a
         >
@@ -52,15 +45,3 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"
   ></script>
-  <script>
-    // JavaScript to handle the loader and redirection
-    document.getElementById('getStarted').addEventListener('click', () => {
-        const loader = document.getElementById('loader');
-        const vedio =  document.getElementById('vedio');
-        vedio.play();
-        loader.style.visibility = 'visible'; // Show the loader
-        setTimeout(() => {
-            window.location.href = '/admin/dashboard'; // Redirect to the dashboard page
-        }, 3000); // Wait for 2 seconds
-    });
-</script>

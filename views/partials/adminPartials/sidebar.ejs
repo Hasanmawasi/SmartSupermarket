@@ -35,19 +35,19 @@
   </svg>   
   
 <div class="d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary" >
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+    <a href="/" class="d-flex align-items-center mb-1 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
       <span class="fs-4 fw-bold">Data Overview</span>
     </a>
     <hr>
-    <ul class="nav nav-pills flex-column mb-auto activeLink sidebar-list my-1 ">
+    <ul class="nav nav-pills flex-column mb-auto activeLink sidebar-list mb-1 ">
       <li class="my-1">
-        <a href="/admin/dashboard" class="nav-link link-body-emphasis" >
+        <a href="/admin/dashboard" class="nav-link link-body-emphasis <%= locals.enable== "dashboard"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="20" height="20"><use xlink:href="#speedometer2"></use></svg>
           Dashboard
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/dailylog" class="nav-link link-body-emphasis position-relative" >
+        <a href="/admin/dailylog" class="nav-link link-body-emphasis position-relative <%= locals.enable== "dailylog"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#chick"></use></svg>
           Daily logs
           <span id="log-indicator" class="d-none position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
@@ -57,37 +57,37 @@
         
       </li>
       <li class="my-1">
-        <a href="/admin/profit" class="nav-link link-body-emphasis" >
+        <a href="/admin/profit" class="nav-link link-body-emphasis <%= locals.enable=="profits"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#profit"></use></svg>
           Profits
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/orders" class="nav-link link-body-emphasis" >
+        <a href="/admin/orders" class="nav-link link-body-emphasis <%= locals.enable== "orders"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
           Orders
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/schedules" class="nav-link link-body-emphasis" >
+        <a href="/admin/schedules" class="nav-link link-body-emphasis <%= locals.enable== "schedule"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#schedule"></use></svg>
           Schedules
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/workers" class="nav-link link-body-emphasis" >
+        <a href="/admin/workers" class="nav-link link-body-emphasis <%= locals.enable== "workers"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
           Workers
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/products" class="nav-link link-body-emphasis" >
+        <a href="/admin/products" class="nav-link link-body-emphasis <%= locals.enable== "product"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
           Products
         </a>
       </li>
       <li class="my-1">
-        <a href="/admin/customers" class="nav-link link-body-emphasis" >
+        <a href="/admin/customers" class="nav-link link-body-emphasis <%= locals.enable== "customers"? "active" : "" %>" >
           <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#people"></use></svg>
           Customers
         </a>

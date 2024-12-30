@@ -1,8 +1,8 @@
-<div class="container my-4" style="height: 73vh;">
+<div class="container my-4">
     <!-- Add Worker Button -->
     <div class="d-flex justify-content-between align-items-center mb-3">
-      <h3>Workers</h3>
-      <a href="/admin/worker/add?form=add"><button class="btn btn-primary">Add Worker</button></a>
+      <h3>Admins </h3>
+      <a href="/manager/admin/add?form=add"><button class="btn btn-primary">Add Admin</button></a>
     </div>
     <!-- include the alert message -->
     <%- include('../partials/adminpartials/alertmessage.ejs') %>
@@ -25,14 +25,17 @@
               <h5 class="mb-0"><%= worker.name %></h5>
               <p class="text-muted mb-0"><%= worker.position %></p>
             </div>
-          
+            <div class="worker-info ms-3">
+                <h5 class="mb-0"><%= worker.position %></h5>
+                <p class="text-muted mb-0"><%= worker.branch_id %></p>
+            </div>
           <div class="worker-info ms-3">
             <h5 class="mb-0">salary</h5>
             <p class="text-muted mb-0"><%= worker.salary %></p>
           </div>
         </div>
           <!-- Edit Button -->
-          <a href="/admin/worker/add?form=view&&id=<%= worker.worker_id %>"><button class="btn btn-outline-primary">View</button></a>
+          <a href="/manager/admin/add?form=view&&id=<%= worker.worker_id %>"><button class="btn btn-outline-primary">View</button></a>
           </div>
      <%   }}); %>
       <% } %>

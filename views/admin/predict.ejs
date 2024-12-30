@@ -1,0 +1,307 @@
+<div class="mt-4 "> 
+<h1>Predection Models</h1>
+</div>
+<div class="container ">
+    <div class="row justify-content-center">
+      <!-- Form Container -->
+      <div class="col-md-6">
+        <div class="card ">
+            <div class="card-body">
+              <h1 class="card-title text-center my-3">Predict Product Price</h1>
+              <form id="predictionForm">
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="category" class="form-label fw-bolder">Category:</label>
+                    <select id="category" name="category" class="form-select" required>
+                      <option value="" disabled selected>Select a category</option>
+                      <option value="Produce">Produce</option>
+                      <option value="Bakery">Bakery</option>
+                      <option value="Beverages">Beverage</option>
+                      <option value="Dairy">Dairy</option>
+                      <option value="Snacks">Snacks</option>
+                    </select>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="demand" class="form-label fw-bolder">Demand:</label>
+                    <select id="demand" name="demand" class="form-select" required>
+                    <option value="" disabled selected>Select demand level</option>
+                    <option value="Loww">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="season" class="form-label fw-bolder">Season:</label>
+                    <select id="season" name="season" class="form-select" required>
+                    <option value="" disabled selected>Select season type</option>
+                    <option value="Discount">Discount</option>
+                    <option value="Seasonal">Seasonal</option>
+                    <option value="Regular">Regular</option>
+                    </select>
+
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="weight" class="form-label fw-bolder">Weight (kg):</label>
+                    <input type="number" id="weight" name="weight" step="0.01" class="form-control" placeholder="e.g., 0.07" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label for="competitorPrice" class="form-label fw-bolder">Competitor Price ($):</label>
+                    <input type="number" id="competitorPrice" name="competitorPrice" step="0.01" class="form-control" placeholder="e.g., 0.5" required>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label for="ratings" class="form-label fw-bolder">Ratings:</label>
+                    <input type="number" id="ratings" name="ratings" step="0.1" class="form-control" placeholder="e.g., 3.5" required>
+                  </div>
+                </div>
+                <button type="button" id="predict" class="btn btn-primary w-100 my-3">Predict Price</button>
+              </form>
+              <div id="result" class="alert alert-info mt-3" style="display: none;">
+                <!-- Predicted price will be displayed here -->
+              </div>
+              <div id="ErrorResult" class="alert alert-danger mt-3" style="display: none;">
+                <!-- Predicted price will be displayed here -->
+              </div>
+            </div>
+          </div>
+          
+      </div>
+      <!-- Description Container -->
+      <div class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title text-primary">How to Use</h2>
+            <p>To predict the price of a product:</p>
+            <ul>
+              <li>Enter the product's category, demand level, and season.</li>
+              <li>Provide the weight of the product in kilograms.</li>
+              <li>Include the competitor's price and average product ratings(1~9).</li>
+              <li>Click "Predict Price" to see the estimated price.</li>
+            </ul>
+            <p>This model uses a <strong class="text-danger"> Machine Learning</strong> backend to predict prices based on the provided details.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <%- include('../modals/confirmModal.ejs',{
+    ModalId:"validationModal",
+    ModalTitle:"Alert",
+    ModalBody:"Please fill out all required fields before submitting the form.",
+    // ActionBoton:"confirm"
+  }) %>
+ <div class="container mt-5">
+    <div class="row justify-content-center">
+        <!-- Form Container -->
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h1 class="card-title text-center my-3">Predict Sales</h1>
+                    <form id="salesPredictionForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="unitPrice" class="form-label fw-bolder">Unit Price:</label>
+                                <input type="number" id="unitPrice" name="unitPrice" step="0.01" class="form-control" placeholder="e.g., 3" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="quantity" class="form-label fw-bolder">Quantity:</label>
+                                <input type="number" id="quantity" name="quantity" class="form-control" placeholder="1" value="1" readonly>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="tax" class="form-label fw-bolder">Tax 5%:</label>
+                                <input type="number" id="tax" name="tax" step="0.1" class="form-control" placeholder="e.g., 0.15" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="cogs" class="form-label fw-bolder">COGS:</label>
+                                <input type="number" id="cogs" name="cogs" step="0.01" class="form-control" placeholder="e.g., 2.3" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="grossIncome" class="form-label fw-bolder">Gross Income:</label>
+                                <input type="number" id="grossIncome" name="grossIncome" step="0.01" class="form-control" placeholder="e.g., 0.55" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="rating" class="form-label fw-bolder">Rating:</label>
+                                <input type="number" id="rating" name="rating" step="0.1" class="form-control" placeholder="e.g., 9" required>
+                            </div>
+                        </div>
+                        <button type="button" id="predictsale" class="btn btn-primary w-100 my-3">Predict Sale</button>
+                    </form>
+                    <div id="saleResult" class="alert alert-info mt-3" style="display: none;">
+                        <!-- Predicted sales result will be displayed here -->
+                    </div>
+                    <div id="saleErrorResult" class="alert alert-danger mt-3" style="display: none;">
+                        <!-- Predicted sales result will be displayed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Description Container -->
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">How to Use</h2>
+                    <p>To predict sales for a product:</p>
+                    <ul>
+                        <li>Enter the unit price, and tax percentage (5%).</li>
+                        <li>Quantity is 1 represent 1 product</li>
+                        <li>Provide the COGS (Cost of Goods Sold)</li>
+                        <li>Include rating (1~9) and gross income value.</li>
+                        <li>Click "Predict Sale" to see the estimated sales value.</li>
+                    </ul>
+                    <p>This model uses a <strong class="text-danger">Machine Learning</strong> backend to predict sales based on the provided details.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <script>
+   
+  document.getElementById('predict').addEventListener('click', () => {
+    const category = document.getElementById('category').value;
+    const demand = document.getElementById('demand').value;
+    const season = document.getElementById('season').value;
+    const weight = document.getElementById('weight').value;
+    const competitorPrice = document.getElementById('competitorPrice').value;
+    const ratings = document.getElementById('ratings').value;
+    const pButton = document.getElementById('predict');
+    const resultDiv = document.getElementById('result');
+    const errorDiv =  document.getElementById('ErrorResult');
+    // Check if any input is empty
+    if (!category || !demand || !season || !weight || !competitorPrice || !ratings) {
+      // Show the modal
+      const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
+      validationModal.show();
+      return;
+    }
+    pButton.classList.add('disable');
+    pButton.innerHTML=`<div class="d-flex justify-content-center align-items-center">
+                        <div class="spinner-border text-white" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        </div>
+                        `
+    // Proceed with form submission or API call
+    fetch('https://classic-up-loon.ngrok-free.app/predictPrice', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        "Category": [category],
+        "Demand": [demand],
+        "Season": [season],
+        "Weight (kg)": [parseFloat(weight)],
+        "Competitor_Price ($)": [parseFloat(competitorPrice)],
+        "Ratings": [parseFloat(ratings)],
+      }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+          
+        }
+        return response.json();
+      })
+      .then(data => {
+        pButton.classList.remove("disable")
+        pButton.innerHTML='Pridict'
+        resultDiv.style.display = 'block';
+        resultDiv.innerText = `Predicted Price: ${data.predicted_price}`;
+      })
+      .catch(error => {
+        errorDiv.style.display = 'block';
+        errorDiv.innerText = `Prediction Error: ${error} Check Values and predict`;
+          pButton.classList.remove("disable");
+          pButton.innerHTML='Pridict';
+          console.error('Error:', error) 
+        });
+  });
+
+  // sales model fetching
+
+  const apiEndpoint = "https://classic-up-loon.ngrok-free.app/predictSale"; // Replace with your actual public URL
+
+document.getElementById('predictsale').addEventListener('click', () => {
+    const unitPrice = document.getElementById('unitPrice').value;
+    const quantity = document.getElementById('quantity').value;
+    const tax = document.getElementById('tax').value;
+    const cogs = document.getElementById('cogs').value;
+    const grossIncome = document.getElementById('grossIncome').value;
+    const rating = document.getElementById('rating').value;
+
+    const pButton = document.getElementById('predictsale');
+    const resultDiv = document.getElementById('saleResult');
+    const errorDiv = document.getElementById('saleErrorResult');
+
+    // Validate inputs
+    if (!unitPrice || !quantity || !tax || !cogs || !grossIncome || !rating) {
+        const validationModal = new bootstrap.Modal(document.getElementById('validationModal'));
+        validationModal.show();
+        return;
+    }
+
+    // Disable button and show loading spinner
+    pButton.classList.add('disable');
+    pButton.innerHTML = `
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border text-white" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+    `;
+
+    // Prepare data for the API call
+    const requestData = {
+        features: [
+            [
+                parseFloat(unitPrice),
+                parseInt(quantity, 10),
+                parseFloat(tax),
+                parseFloat(cogs),
+                parseFloat(grossIncome),
+                parseFloat(rating)
+            ]
+        ]
+    };
+
+    // Perform the fetch request
+    fetch(apiEndpoint, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Reset button and display result
+            pButton.classList.remove("disable");
+            pButton.innerHTML = 'Predict Sale';
+            resultDiv.style.display = 'block';
+            resultDiv.innerText = `Predicted Sales: ${data.predictions}`;
+        })
+        .catch(error => {
+            // Handle errors and reset button
+            errorDiv.style.display = 'block';
+            errorDiv.innerText = `Prediction Error: ${error.message}. Check values and try again.`;
+            pButton.classList.remove("disable");
+            pButton.innerHTML = 'Predict Sale';
+            console.error('Error:', error);
+        });
+});
+
+
+  </script>
