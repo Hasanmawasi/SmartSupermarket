@@ -224,6 +224,11 @@ h1 {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+   
+}
+.report-view-section{
+    height: 435px;
+    overflow-y: scroll;
 }
 
 .section h2 {
@@ -398,23 +403,23 @@ h1 {
 .login-page{
     display: flex; 
     flex-direction: row;              
-  justify-content: center;     
-  align-items: center;     
-  height: 100vh;     
-  min-width: 100vw;
-  background-color: #f0f0f0; 
+    justify-content: center;     
+    align-items: center;     
+    height: 100vh;     
+    min-width: 100vw;
+    /* background-color:rgb(42, 42, 234) */
   }
 
 
 .circle{
-  background-color: blue;
+  background-color: rgb(0, 0, 0);
   width: 300px;               
   height: 300px;          
   border-radius: 50%; 
   margin-left: 20px; 
 }
 
-    .login-container {
+.login-container {
   max-width: 350px;
   background: #f8f9fd;
   background: linear-gradient(

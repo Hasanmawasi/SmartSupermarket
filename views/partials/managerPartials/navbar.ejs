@@ -23,13 +23,13 @@
         <div class="collapse navbar-collapse justify-content-center mx-auto" id="navbarsExample03">
           <ul class="navbar-nav me-auto mb-2 mb-sm-0 mx-auto">
             <li class="nav-item">
-              <a href="" class="nav-link" aria-current="page">Home</a>
+              <a href="/manager/home" class="nav-link" aria-current="page">Home</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link px-2">About</a>
+              <a href="/manager/about" class="nav-link px-2">About</a>
             </li>
             <li class="nav-item">
-              <a href="" class="nav-link px-2">FAQs</a>
+              <a href="/manager/report" class="nav-link px-2">FAQs</a>
             </li>
           </ul>
           <div class="col-md-3 text-end">
@@ -44,7 +44,7 @@
     </nav>
   </div>
   <script>
-    fetch('/sidebarPhoto')
+    fetch('/manager/sidephoto')
     .then(response => response.json())
     .then((data) => {
       const img= document.getElementById("navbarimg");

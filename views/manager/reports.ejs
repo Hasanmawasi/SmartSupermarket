@@ -5,8 +5,8 @@
         <div class="col-md-6">
             <%- include('../partials/adminpartials/alertmessage.ejs') %>
             <section class="section report-form-section">
-                <h2>Send Report to Manager</h2>
-                <form id="reportForm" method="POST" action="/admin/worker/sendReport">
+                <h2>Send Report to Admins</h2>
+                <form id="reportForm" method="POST" action="/manager/sendReport">
                     <label for="reportTitle">Report Title:</label>
                     <input type="text" id="reportTitle" name="reportTitle" required placeholder="Enter report title" class="form-control mb-3">
 
@@ -19,14 +19,14 @@
         </div>
 
         <!-- Reports View Section on the right side -->
-        <div class="col-md-6">
+        <div class="col-md-6 ">
             <section class="section report-view-section">
-                <h2>Reports Submitted by Workers</h2>
+                <h2>Reports Submitted by Admins</h2>
                 <div class="report-list" id="reportList">
                     <!-- Reports will be displayed here -->
-                     <% if(reports.length > 0) { %>
-                        <% reports.forEach(report => { %>
-                        <div class="report-card border p-3 mb-3">
+                     <% if(locals.reports) { %>
+                        <% locals.reports.forEach(report => { %>
+                        <div class="report-card border p-3 mb-3 shadow">
                             <h3><%=report.report_title%></h3>
                             <p class="report-date"><%= new Date(report.report_date).toLocaleDateString() %></p>
                             <p class="report-content"><%= report.report_body %></p>
@@ -39,21 +39,5 @@
                 </div>
             </section>
         </div>
-    </div>
-    <div class="col-12"> 
-    <div class="section report-view-section">
-        <h2>Reports Submitted by Manager</h2>
-        <% if(managerReports.length > 0) { %>
-            <% managerReports.forEach(report => { %>
-            <div class="report-card border p-3 mb-3">
-                <h3><%=report.report_title%></h3>
-                <p class="report-date"><%= new Date(report.report_date).toLocaleDateString() %></p>
-                <p class="report-content"><%= report.report_body %></p>
-            </div>
-           <% }); %>
-        <% } else {%>
-            <p>No reports have been submitted yet.</p>
-        <% } %>
-    </div>
     </div>
 </div>

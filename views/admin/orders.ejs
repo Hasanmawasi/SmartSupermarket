@@ -4,7 +4,11 @@
         <div class="card bg-primary text-white">
           <div class="card-body">
             <h5>Total Orders</h5>
-            <h2>75</h2>
+            <h2><% if(locals.totalOrders == 0){ %>
+              <%= locals.totalOrders %>
+               <% }else{ %>
+               <%= locals.totalOrders.count %>
+               <% } %></h2>
           </div>
         </div>
       </div>
@@ -12,7 +16,12 @@
         <div class="card bg-success text-white">
           <div class="card-body">
             <h5>Orders delivered</h5>
-            <h2>35</h2>
+            <h2><% if(locals.delevered == 0){ %>
+              <%= locals.delevered %>
+               <% }else{ %>
+               <%= locals.delevered.count %>
+               <% } %>
+            </h2>
           </div>
         </div>
       </div>
@@ -20,7 +29,11 @@
         <div class="card bg-danger text-white">
           <div class="card-body">
             <h5>Orders Canceled</h5>
-            <h2>6</h2>
+            <h2><% if(locals.canceled == 0){ %>
+                <%= locals.canceled %>
+                 <% }else{ %>
+                 <%= locals.canceled.count %>
+                 <% } %></h2>
           </div>
         </div>
       </div>
@@ -28,7 +41,11 @@
         <div class="card bg-info text-white">
           <div class="card-body">
             <h5>Orders Income</h5>
-            <h2>65$</h2>
+            <h2><% if(locals.income == 0){ %>
+              <%= locals.income %>
+               <% }else{ %>
+               <%= locals.income.sum %>
+               <% } %></h2>
           </div>
         </div>
       </div>
@@ -37,40 +54,42 @@
     <div class="Orders-title mt-3" >
         <h2>Orders</h2>
     </div>
-    <div class="reviews-list mt-3">
+    <div class="reviews-list mt-3 p-3">
+      <% if(locals.orders){ %>
+        <% locals.orders.forEach(order =>{ %>
         <div class="review-item d-flex justify-content-evenly">
-            <span>#1
-            <img src="/image/logo.png" alt="icon " style="width: 40px; height: 40px; border-radius: 7px;"></span>
-            <p>12$</p>
-            <p>10-3-2024</p>
-            <p style="padding: 3px; background-color: greenyellow; border-radius: 5px;">delivered</p>
+          <div class="text-center">
+            <h6>ID</h6>
+            <h5><%=order.order_id %></h5>
+          </div>
+            
+            <div class="text-center">
+              <h6>Total Amount</h6>
+              <h5><%=order.total_amount %>$</h5>
+            </div>
+            <div class="text-center">
+              <h6>Total Amount</h6>
+              <h5><%= new Date(order.order_date).toDateString()  %></h5>
+            </div>
+            
+            <div class="text-center" >
+              <h6>Status </h6>
+              <h5 class="rounded"
+              <% if (order.status === 'Delivered') { %>
+                style="background-color:  greenyellow; padding: 3px; border-radius: 5px;"
+              <% } else if (order.status === 'Pending') { %>
+                style="background-color:  rgb(253, 249, 21); padding: 3px; border-radius: 5px;" 
+              <% } else if (order.status === 'Canceled') { %>
+                style="background-color:  rgb(216, 13, 13);"  
+              <% } else { %>
+                style="background-color:  greenyellow; padding: 3px; border-radius: 5px;"     
+              <% } %>
+              >
+                  <%= order.status %>
+              </h5>
+            </div>
+           
         </div>
-        <div class="review-item d-flex justify-content-evenly">
-            <span>#1
-            <img src="/image/logo.png" alt="icon " style="width: 40px; height: 40px; border-radius: 7px;"></span>
-            <p>12$</p>
-            <p>10-3-2024</p>
-            <p style="padding: 3px; background-color: greenyellow; border-radius: 5px;">delivered</p>
-        </div>
-        <div class="review-item d-flex justify-content-evenly">
-            <span>#1
-            <img src="/image/logo.png" alt="icon " style="width: 40px; height: 40px; border-radius: 7px;"></span>
-            <p>12$</p>
-            <p>10-3-2024</p>
-            <p style="padding: 3px; background-color: rgb(253, 249, 21); border-radius: 5px;">pending</p>
-        </div>
-        <div class="review-item d-flex justify-content-evenly">
-            <span>#1
-            <img src="/image/logo.png" alt="icon " style="width: 40px; height: 40px; border-radius: 7px;"></span>
-            <p>12$</p>
-            <p>10-3-2024</p>
-            <p style="padding: 3px; background-color: rgb(216, 13, 13); border-radius: 5px;">Canceled</p>
-        </div>
-        <div class="review-item d-flex justify-content-evenly">
-            <span>#1
-            <img src="/image/logo.png" alt="icon " style="width: 40px; height: 40px; border-radius: 7px;"></span>
-            <p>12$</p>
-            <p>10-3-2024</p>
-            <p style="padding: 3px; background-color: rgb(253, 249, 21); border-radius: 5px;">delivered</p>
-        </div>
+        <% })} %>
+        
     </div>

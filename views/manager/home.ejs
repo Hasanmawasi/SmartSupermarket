@@ -23,7 +23,12 @@
       ></path>
     </symbol>
   </svg>
-
+  <div id="loader">
+    <video id="vedio"  muted>
+        <source src="/image/loaderVedio/loader.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+</div>
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <main class="px-3 mt-5">
       <h1 class="home-title">Effortless Management for a Smarter Supermarket.</h1>
@@ -45,3 +50,20 @@
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
     crossorigin="anonymous"
   ></script>
+<script>
+       window.onload = function () {
+            const video = document.getElementById('vedio');
+            const loader = document.getElementById('loader');
+            loader.style.visibility = 'visible'; // Show the loader)
+            setTimeout(() => {
+              loader.style.visibility = 'hidden'; // Redirect to the dashboard page
+              }, 3000); 
+            video.play()
+                .then(() => {
+                    console.log("Video is playing");
+                })
+                .catch(error => {
+                    // console.error("Error playing video:", error);
+                });
+        };
+</script>

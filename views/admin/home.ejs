@@ -39,7 +39,7 @@
       <p class="">
         <a
         id="getStarted"
-          
+          href="/admin/dashboard"
           class="btn btn-lg btn-light fw-bold border-white bg-white"
           >Get Started!</a
         >
@@ -53,14 +53,29 @@
     crossorigin="anonymous"
   ></script>
   <script>
+     window.onload = function () {
+            const video = document.getElementById('vedio');
+            const loader = document.getElementById('loader');
+            loader.style.visibility = 'visible'; // Show the loader)
+            setTimeout(() => {
+              loader.style.visibility = 'hidden'; // Redirect to the dashboard page
+              }, 3000); 
+            video.play()
+                .then(() => {
+                    console.log("Video is playing");
+                })
+                .catch(error => {
+                    // console.error("Error playing video:", error);
+                });
+        };
     // JavaScript to handle the loader and redirection
-    document.getElementById('getStarted').addEventListener('click', () => {
-        const loader = document.getElementById('loader');
-        const vedio =  document.getElementById('vedio');
-        vedio.play();
-        loader.style.visibility = 'visible'; // Show the loader
-        setTimeout(() => {
-            window.location.href = '/admin/dashboard'; // Redirect to the dashboard page
-        }, 3000); // Wait for 2 seconds
-    });
+    // document.getElementById('getStarted').addEventListener('click', () => {
+    //   const vedio =  document.getElementById('vedio');
+    //     const loader = document.getElementById('loader');
+    //     vedio.play();
+    //     loader.style.visibility = 'visible'; // Show the loader
+    //     setTimeout(() => {
+    //         window.location.href = '/admin/dashboard'; // Redirect to the dashboard page
+    //     }, 3000); // Wait for 2 seconds
+    // });
 </script>

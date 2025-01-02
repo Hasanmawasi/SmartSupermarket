@@ -16,7 +16,12 @@
       <div class="col-md-3">
         <div class="card shadow p-3">
           <h5>Total Expenses</h5>
-          <p class="highlight text-danger">$18,000</p>
+          <p class="highlight text-danger">$
+            <% if(locals.salaries == 0){ %>
+              <%= locals.salaries %>
+               <% }else{ %>
+               <%= locals.salaries.sum %>
+               <% } %><p>
         </div>
       </div>
       <div class="col-md-3">

@@ -57,37 +57,6 @@ export const forms = async (req,res)=>{
 };
 
 
-  
-
-// export const addProduct =async (req, res)=>{
-//     const file =req.file;
-//     console.log(file.filename);
-//     const adminBranch = req.user.branch_id;
-//     const {productName,category,productPrice,basePrice,expideDate,description,barcode,quantity}= req.body;
-//     if(!file){
-//         res.send("image not uploaded")
-//     }
-//     let imageUrl = `/image/productPhoto/${file.filename}`;
-//     let result = await db.query(`INSERT INTO product(description,expire_date,image_url,base_price,selling_price,bar_code,product_name,category_id)
-//          VALUES($1,$2,$3,$4,$5,$6,$7,$8)
-//           RETURNING *`,
-//         [description,expideDate,imageUrl,basePrice,productPrice,barcode,productName,category]
-//     );
-//     let productId = result.rows[0].product_id;
-
-//     let result2 = await db.query(`INSERT INTO branch_storage(branch_id,product_id,quantity)
-//          VALUES($1,$2,$3)`,
-//          [adminBranch,productId,quantity]
-//         );
-
-//     if(result && result2){
-//         req.flash('success',`the product: ${productName} added successfuly ${quantity} items to ${adminBranch}!`);
-//         res.redirect("/admin/products/forms?form=add")
-//     }else{
-//         res.status(404).send("error adding pruduct");
-//     }
-// }
-
 export const workerEdit =async (req,res)=>{
     try{ 
     let form= req.query.form;  
@@ -154,18 +123,77 @@ export const updateWorkerInfo =async (req, res)=>{
     }
 }
 
-export const orders = (req, res)=>{
-    res.render("admin/orders",{
-        layout:"./layouts/admin",
-        enable: "orders"
-    })
+export const orders = async (req, res)=>{
+    try{ 
+        let Adminbranch = req.user.branch_id;
+
+        let result1 = await db.query(`SELECT branch_id, COUNT(*) 
+                                        FROM public.orders 
+                                        where branch_id = $1
+                                        GROUP BY branch_id;`,[Adminbranch]);
+        let totalOroders = result1.rows[0];
+            if(totalOroders == undefined)
+                totalOroders=0;
+        let result2 = await db.query(`SELECT branch_id, COUNT(*) 
+                                        FROM public.orders 
+                                        where branch_id = $1 AND ( status = 'Delivered')
+                                        GROUP BY branch_id;`,[Adminbranch]);    
+        let delevered = result2.rows[0];
+         if(delevered == undefined)
+            delevered =0;
+        let result3 = await db.query(`SELECT branch_id, COUNT(*) 
+                                        FROM public.orders 
+                                        where branch_id = $1 AND ( status = 'Canceled')
+                                        GROUP BY branch_id;`,[Adminbranch]);    
+        let canceled = result3.rows[0];
+           if(canceled == undefined)
+             canceled=0;
+
+        let result = await db.query(`SELECT * FROM orders where branch_id = $1`,[Adminbranch]);
+        let orders = result.rows;
+
+        let result4 = await db.query(`SELECT branch_id, SUM(total_amount) 
+            FROM public.orders 
+            where branch_id = $1 AND ( status != 'Canceled')
+            GROUP BY branch_id;`,[Adminbranch]);    
+          let income = result4.rows[0];
+                if(income== undefined)
+                    income=0;
+        res.render("admin/orders",{
+            totalOrders : totalOroders,
+            canceled: canceled,
+            delevered: delevered,
+            income: income,
+            orders: orders,
+            layout:"./layouts/admin",
+            enable: "orders"
+        })
+    } catch (error) {
+        console.log(error);
+    }
+   
 };
 
-export const profit = (req, res)=>{
-    res.render("admin/profit",{
-        layout:"./layouts/admin",
-        enable:"profits"
-    })
+export const profit = async (req, res)=>{
+    try {
+        let adminBranch= req.user.branch_id;
+        let result = await db.query(`SELECT branch_id , SUM(salary)
+                                        from worker where branch_id=$1
+                                        GROUP BY branch_id`,[adminBranch]);
+        let salaries = result.rows[0];
+            if(salaries == undefined)
+                salaries=0;
+        
+        console.log(result.rows[0])
+        res.render("admin/profit",{
+            salaries: salaries,
+            layout:"./layouts/admin",
+            enable:"profits"
+        }) 
+    } catch (error) {
+        console.log(error)
+    }
+    
 };
 
 export const about = (req, res) => {
@@ -185,7 +213,12 @@ export const reports = async (req, res) => {
             `SELECT report_date, report_title, report_body FROM reports WHERE recipient = $1 ORDER BY report_date    DESC`,
             [recipient]
         );
+        const result1 = await db.query(
+            `SELECT report_date, report_title, report_body FROM reports WHERE recipient = 'Admin' ORDER BY report_date    DESC`,
+           
+        );
         res.render("admin/reports", {
+            managerReports: result1.rows,
             reports:  result.rows,
             layout:"./layouts/admin",
         })
@@ -476,7 +509,9 @@ export const sendReport = async (req, res) => {
 
     try {
        const result = await db.query("INSERT INTO reports(report_date, report_title, report_body, recipient, worker_id) VALUES ($1,$2,$3,$4,$5) RETURNING *", [report_date, report_title, report_content, recipient, workerId]);
-       res.status(201).json({ message: "Report added successfully!", report: result.rows[0] });
+       req.flash("success","Report  sent successfully!");
+       res.redirect("/admin/reports");
+    //    res.status(201).json({ message: "Report added successfully!", report: result.rows[0] });
     } catch (error) {
         console.log(error);
         res.status(500).json({ error: "Database error occurred!" });

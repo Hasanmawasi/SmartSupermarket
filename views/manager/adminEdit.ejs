@@ -25,13 +25,6 @@
         <input type="text" id="firstName" name="firstName" placeholder="First Name" required>
         <input type="text" id="lastName" name="lastName" placeholder="Last Name" required>
         <input type="text" name="workerType" id="workerType" value="admin" aria-readonly="true">
-        <!-- <select id="workerType" name="workerType"  >
-          <option value="" disabled selected>Select Worker Type</option>
-          <option value="cashier">Cashier</option>
-          <option value="clerks">Stock Clerk</option>
-          <option value="staff">Receiving Staff</option>
-          <option value="cleaner">Cleaner</option>
-        </select> -->
         <input type="number" id="salary" name="salary" placeholder="Salary" required>
         <button type="submit">Add Admin</button>
       </div>
@@ -50,24 +43,29 @@
         <label for="first-name">Name:</label>
         <input type="text" id="first-name" value="<%= locals.name %>" name="name" readonly>
       </div>
-      <!-- <div class="worker-detail">
-        <label for="last-name">Last Name:</label>
-        <input type="text" id="last-name" value="<%= locals.lname %>" readonly>
-      </div> -->
       <div class="worker-detail">
-        <label for="worker-id">Worker ID:</label>
+        <label for="worker-id">Admin ID:</label>
         <input type="text" id="worker-id" value="<%= locals.id %>" name="workerid" readonly>
+      </div>
+      <div class="worker-detail">
+        <label for="worker-branch">Admin Branch:</label>
+        <select id="worker-branch" class="form-select" name="adminbranch" disabled>
+            <option value="<%= locals.branch %>" selected><%= locals.branch %></option>
+            <% locals.branches.forEach(branch => { %>
+                <option value="<%= branch.branch_id %>"><%= branch.branch_id %></option>
+                <% }) %>
+        </select>
       </div>
       <div class="worker-detail">
         <label for="salary">Salary:</label>
         <input type="number" id="salary" value="<%= locals.salary %>" name="salary" readonly >
       </div>
       <div class="worker-detail">
-        <label for="work-type">Work email:</label>
+        <label for="work-type">Admin email:</label>
         <input type="text" id="work-email" value="<%= locals.email %>" name="email" readonly>
       </div>
       <div class="worker-detail">
-        <label for="work-type">Work Type:</label>
+        <label for="work-type">Admin Position:</label>
         <input type="text" id="work-type" value="<%= locals.position %>" name="type" readonly>
       </div>
      
@@ -130,12 +128,13 @@
     const saveButton = document.getElementById("save-btn");
     const cancelButton = document.getElementById("cancel-btn");
     const inputs = document.querySelectorAll("#worker-details-form input");
-
+    const select = document.getElementById("worker-branch");
 // Enable editing
 editButton.addEventListener("click", () => {
   inputs.forEach(input => {
-    if (input.id === "work-email" || input.id === "salary" || input.id === "work-type") {
+    if (input.id === "work-email" || input.id === "salary" || input.id === "work-type" || select.id==="worker-branch") {
       input.removeAttribute("readonly");
+      select.removeAttribute("disabled");
       input.style.backgroundColor = "#ffffff";
     }
   });
@@ -150,6 +149,7 @@ cancelButton.addEventListener("click", () => {
     input.setAttribute("readonly", "true");
     input.style.backgroundColor = "#e9ecef";
   });
+  select.setAttribute("disabled", 'true');
   saveButton.style.display = "none";
   cancelButton.style.display = "none";
   editButton.style.display = "inline-block";
@@ -164,10 +164,10 @@ cancelButton.addEventListener("click", () => {
 // });
 
 // Save functionality (placeholder)
-saveButton.addEventListener("click", (e) => {
-  // e.preventDefault();
-  alert("Changes saved!");
-  // Add update logic here (e.g., API call)
-});
+// saveButton.addEventListener("click", (e) => {
+//   // e.preventDefault();
+//   alert("Changes saved!");
+//   // Add update logic here (e.g., API call)
+// });
 
   </script>

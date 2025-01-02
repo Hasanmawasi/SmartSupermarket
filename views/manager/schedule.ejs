@@ -1,0 +1,129 @@
+<!-- <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
+    <symbol id="plus" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+    <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"/>
+    </symbol>
+</svg> -->
+<div class="mt-4">
+    <h1>schedule</h1>
+</div>
+<div>
+    
+    <div class="schedule-table-container   ">
+        <%- include('../partials/adminpartials/alertmessage.ejs') %>
+        <table id="scheduleTable" class="schedule-table">
+            <thead >
+                <tr>
+                    <th>shift Name</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>Status</th>
+                    <th>Edit</th>
+                </tr>
+            </thead>
+            <% if(locals.schedule) %>
+            <tbody> 
+            <% schedule.forEach((sch) => { %>
+                <tr>
+                    <form action="/manager/updateScheduleTemplate/<%= sch.id %>" method="post"> 
+                        <td class="fw-bold"><%= sch.shift_name %></td>
+                        <td><input name="starttime" type="time" class="form-control" value="<%= sch.start_time %>" required></td>
+                        <td><input name="endtime" type="time" class="form-control" value="<%= sch.end_time %>" required></td>
+                        <td> <%= sch.status %></td>
+                        <td> <button type="submit" class="btn btn-warning" >update</button></td>
+                    </form>
+                </tr>
+                <% }) %>
+                
+                
+            </tbody>
+        </table>
+        <!-- <button id="addRowBtn" class="btn btn-primary mt-3">Add New Row</button> -->
+    </div>
+    
+    <button type="button" id="addRowBtn" class="btn btn-secondary " style="color: rgb(219, 219, 228); background-color: rgb(6, 67, 250);">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-square-fill" viewBox="0 0 16 16">
+        <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0"></path>
+        </svg>
+    </button>
+  
+</div>
+
+
+<script>
+  document.getElementById('addRowBtn').addEventListener('click', function () {
+    const tableBody = document.querySelector('#scheduleTable tbody'); // Get the table body
+    const newRow = document.createElement('tr'); // Create a new row
+
+    // Add the form and inputs inside the row
+    newRow.innerHTML = `
+        <td><input id="shift_name" name="shift_name" type="text" class="form-control" placeholder="Shift Name" required></td>
+    <td><input id="starttime" name="starttime" type="time" class="form-control" required></td>
+    <td><input id="endtime" name="endtime" type="time" class="form-control" required></td>
+    <td>
+        <select id="status" name="status" class="form-control" required>
+            <option value="full-time">full-time</option>
+            <option value="part-time">part-time</option>
+        </select>
+    </td>
+    <td>
+        <button type="button" class="btn btn-success save-btn">Save</button>
+        <button type="button" class="btn btn-danger cancel-btn">Cancel</button>
+    </td>
+    `;
+
+    tableBody.appendChild(newRow); // Append the new row to the table
+
+    // Save button functionality
+    const saveButton = newRow.querySelector('.save-btn');
+saveButton.addEventListener('click', function () {
+    // Collect values based on input ids
+    const shiftName = newRow.querySelector('#shift_name').value;
+    const startTime = newRow.querySelector('#starttime').value;
+    const endTime = newRow.querySelector('#endtime').value;
+    const status = newRow.querySelector('#status').value;
+
+    // Create a data object
+    const data = {
+        shift_name: shiftName,
+        starttime: startTime,
+        endtime: endTime,
+        status: status
+    };
+    console.log(data);
+    // Submit data via fetch
+    fetch('/manager/addScheduleTemplate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', // Tell the server we're sending JSON
+        },
+        body: JSON.stringify(data) , // Send the data as a JSON string
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        console.log(response.json())
+        // return response.json();
+    })
+    .then(data => {
+        
+        window.location.href = "/manager/schedule"; 
+        newRow.remove(); // Optionally remove the row
+      
+    })
+    .catch(error => {
+        
+        console.error(error);
+    });
+});
+
+
+    // Cancel button functionality
+    const cancelButton = newRow.querySelector('.cancel-btn');
+    cancelButton.addEventListener('click', function () {
+        newRow.remove(); // Remove the row on cancel
+    });
+});
+
+</script>
+

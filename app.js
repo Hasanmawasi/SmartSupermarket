@@ -27,6 +27,7 @@ export const io = new Server(server);
 app.use(express.static("public"));
 app.use('/admin/updateProfile', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
 passport.use(LoginStrategy);
 
 dotenv.config();
@@ -80,7 +81,11 @@ app.use(adminRoute);
 app.use(workerRoute);
 app.use(managerRoute);
 
-
+app.get("*",(req,res)=>{
+  res.render("404",{
+    layout:false,
+  })
+})
 server.listen(3000, () => {
     console.log(`the server is running on 3000`);
   });
