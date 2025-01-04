@@ -17,6 +17,14 @@ managerRoute.get("/login",managerController.login);
 
 managerRoute.get("/manager/dashboard",managerController.dashboard);
 
+managerRoute.post("/manager/changeBranch",managerController.changeBranch);
+
+managerRoute.get("/manager/profit/:branch",managerController.profit);
+
+// managerRoute.post("/manager/profit/:branch",managerController.profit);//////
+
+managerRoute.post("/manager/profitData/:branch",managerController.profitData);
+
 managerRoute.get("/manager/home",managerController.home);
 
 managerRoute.get("/manager/report",managerController.report);

@@ -260,9 +260,9 @@ export const submitDeparture= async (req, res) => {
           message: `Departure log ${departureStatus}`,
         });
       } else {
-        // req.flash('warning',`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`);
-        res.json(`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`)
-        // res.redirect("/worker/log")
+        req.flash('warning',`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`);
+        // res.json(`Your arrival log should been accepted before loging your departure! current status: ${arrivalStatus}`)
+        res.redirect("/worker/log")
       }}
   } catch (error) {
     console.error("Error logging time:", error);

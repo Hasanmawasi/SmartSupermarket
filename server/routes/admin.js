@@ -43,6 +43,10 @@ adminRoute.get("/admin/orders",adminController.orders);
 
 adminRoute.get("/admin/profit",adminController.profit);
 
+
+adminRoute.post("/admin/profitData",adminController.profitData);
+
+
 adminRoute.get("/admin/dailylog",adminController.dailyLog);
 
 adminRoute.get("/admin/workers/type",adminController.workerType);

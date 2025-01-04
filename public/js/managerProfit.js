@@ -1,12 +1,14 @@
 
 // let months =[];
 
+
 let profitChart=null;
 
 const fetchProfitData = async () => {
   try {
+    const branch = document.getElementById('branch').value;
     const currentYear = document.getElementById('currentYear').value;
-      const response = await fetch('/admin/profitData', {
+      const response = await fetch(`/manager/profitData/${branch}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

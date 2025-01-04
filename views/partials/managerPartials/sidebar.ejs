@@ -47,7 +47,7 @@
             </a>
           </li>
           <li class="my-1">
-            <a href="" class="nav-link link-body-emphasis <%= locals.enable=="profits"? "active" : "" %>" >
+            <a href="/manager/profit" class="nav-link link-body-emphasis <%= locals.enable=="profits"? "active" : "" %>" >
               <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#profit"></use></svg>
               Profits
             </a>
@@ -102,52 +102,52 @@
       console.log(data)
       img.src = data;
       })
-      const socket = io(); 
+    //   const socket = io(); 
     
     
-    let pendingLogs = parseInt(localStorage.getItem('pendingLogs')) || 0;
+    // let pendingLogs = parseInt(localStorage.getItem('pendingLogs')) || 0;
     
     
-    const updateLogIndicator = () => {
-        let notifi = document.getElementById("log-indicator").innerHTML= pendingLogs;
-        const logIndicator = document.getElementById('log-indicator');
-        if (pendingLogs > 0) {
-            logIndicator.classList.remove('d-none');
-        } else {
-            logIndicator.classList.add('d-none');
-        }
-    };
+    // const updateLogIndicator = () => {
+    //     let notifi = document.getElementById("log-indicator").innerHTML= pendingLogs;
+    //     const logIndicator = document.getElementById('log-indicator');
+    //     if (pendingLogs > 0) {
+    //         logIndicator.classList.remove('d-none');
+    //     } else {
+    //         logIndicator.classList.add('d-none');
+    //     }
+    // };
     
     
-    updateLogIndicator();
+    // updateLogIndicator();
     
     
-    socket.on('new-log', () => {
-        pendingLogs++;
-        localStorage.setItem('pendingLogs', pendingLogs);
-        updateLogIndicator(); 
-    });
+    // socket.on('new-log', () => {
+    //     pendingLogs++;
+    //     localStorage.setItem('pendingLogs', pendingLogs);
+    //     updateLogIndicator(); 
+    // });
     
-    socket.on('new-departure', () => {
-        pendingLogs++;
-        localStorage.setItem('pendingLogs', pendingLogs);
-        updateLogIndicator(); 
-    });
-    socket.on('accepted-login', () => {
-        if (pendingLogs > 0) {
-            pendingLogs--;
-            localStorage.setItem('pendingLogs', pendingLogs); 
-            updateLogIndicator(); 
-        }
-    });
+    // socket.on('new-departure', () => {
+    //     pendingLogs++;
+    //     localStorage.setItem('pendingLogs', pendingLogs);
+    //     updateLogIndicator(); 
+    // });
+    // socket.on('accepted-login', () => {
+    //     if (pendingLogs > 0) {
+    //         pendingLogs--;
+    //         localStorage.setItem('pendingLogs', pendingLogs); 
+    //         updateLogIndicator(); 
+    //     }
+    // });
     
-    socket.on('accepted-departure', () => {
-        if (pendingLogs > 0) {
-            pendingLogs--;
-            localStorage.setItem('pendingLogs', pendingLogs); 
-            updateLogIndicator(); 
-        }
-    });
+    // socket.on('accepted-departure', () => {
+    //     if (pendingLogs > 0) {
+    //         pendingLogs--;
+    //         localStorage.setItem('pendingLogs', pendingLogs); 
+    //         updateLogIndicator(); 
+    //     }
+    // });
     
      
      </script>

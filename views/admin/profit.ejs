@@ -4,24 +4,31 @@
       <div class="col-md-3">
         <div class="card shadow p-3">
           <h5>Total Monthly Profit</h5>
-          <p class="highlight text-success">$12,000</p>
+          <p class="highlight text-success">$<% if(locals.profit == 0){ %>
+            <%= locals.profit %>
+             <% }else{ %>
+             <%= locals.profit.profit %>
+             <% } %></p>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card shadow p-3">
           <h5>Total Sales Revenue</h5>
-          <p class="highlight">$30,000</p>
+          <p class="highlight">$<% if(locals.revenue == 0){ %>
+            <%= locals.revenue %>
+             <% }else{ %>
+             <%= locals.revenue.revenue %>
+             <% } %></p>
         </div>
       </div>
       <div class="col-md-3">
         <div class="card shadow p-3">
-          <h5>Total Expenses</h5>
-          <p class="highlight text-danger">$
-            <% if(locals.salaries == 0){ %>
-              <%= locals.salaries %>
-               <% }else{ %>
-               <%= locals.salaries.sum %>
-               <% } %><p>
+          <h5>Total Expenses </h5>
+          <p class="highlight text-danger">$<% if(locals.salaries == 0){ %>
+            <%= locals.salaries %>
+             <% }else{ %>
+             <%= locals.salaries.sum %>
+             <% } %></p>
         </div>
       </div>
       <div class="col-md-3">
@@ -31,17 +38,29 @@
         </div>
       </div>
     </div>
-
+  
     <div class="col-md-12 mt-4 card p-2 mb-3 shadow ">
+      <div class="d-flex justify-content-between"> 
         <h2 >Monthly Profit Breakdown</h2>
+        
+       
+        <form action="/admin/profitData" method="post">
+         <select name="currentYear" id="currentYear" class="form-select" style="width: 100px;">
+            <% locals.years.forEach((year,index)=>{  %>
+              <option value="<%= year.year %>" <%= index==0 ? "selected":"" %> ><%= year.year %></option>
+              <% }) %>
+          </select>
+        </form>
+      
+      </div>  
         <div class="p3">
             <canvas class="" id="profitChart"></canvas>
         </div>
     </div>
-    <div class="row card shadow mt-4">
-        <div class="col-md-12">
+    <div class="p-2 col-md-12 card shadow mt-4">
         
-          <table class="table table-bordered mt-3">
+        
+          <table class="table table-bordered mt-3 " id="profitsTable">
             <thead>
               <tr>
                 <th>Month</th>
@@ -51,26 +70,15 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>January</td>
-                <td>$30,000</td>
-                <td>$18,000</td>
-                <td>$12,000</td>
-              </tr>
-              <tr>
-                <td>February</td>
-                <td>$28,000</td>
-                <td>$16,500</td>
-                <td>$11,500</td>
-              </tr>
+             
             </tbody>
           </table>
         </div>
-      </div>
+      
 
       <!-- Transaction Details -->
-    <div class="row mt-4">
-        <div class="col-md-12 card shadow">
+    <div class="p-3 col-12 card shadow mt-4">
+       
           <h3>Transaction Details</h3>
           <input type="text" class="form-control mb-3" placeholder="Search Transactions">
           <table class="table table-striped">
@@ -89,6 +97,5 @@
             </tbody>
           </table>
         </div>
-      </div>
-    <!-- </div> -->
+      
     <script src="/js/profit.js"></script>    

@@ -1,8 +1,7 @@
-   <div class="mt-5"> 
-    <%- include('../modals/alertModal.ejs') %>
-   </div>
-<div class="main-log">
-    <div class="log-container ">
+  
+<div class="main-log d-flex flex-column">
+  <div class="log-container ">
+      <%- include('../modals/alertModal.ejs') %>
     <h2>Daily Log</h2>
     <p class="description">Submit your arrival and departure times. Please wait for admin approval after each submission.</p>
     <form action="/worker/submitArrival" method="POST">
@@ -35,8 +34,15 @@
     <% } else {%>
         <div id="statusMessage" class="status pending">Status: Awaiting arrival log</div>
     <% } %>
+    <div class="timer-container mt-2">
+      <h2 class="fw-bold text-white ">Work Timer</h2>
+      <div class="timer text-white">
+          <span id="hours">00</span>:<span id="minutes">00</span>:<span id="seconds">00</span>
+      </div>
   </div>
-
+  </div>
+  
+  
   <div class="schedule-container">
     <div class="schedule-heading">Weekly Work Schedule</div>
     <table>
@@ -74,8 +80,57 @@
     </table>
   </div>
   </div>
+  <style>
+    
+  </style>
 <script src="/socket.io/socket.io.js"></script>
 <script>
+          
+          let intervalId; 
+
+const initializeTimer = () => {
+    const hoursEl = document.getElementById('hours');
+    const minutesEl = document.getElementById('minutes');
+    const secondsEl = document.getElementById('seconds');
+
+    
+    let startTime = localStorage.getItem('timerStartTime') 
+    if (!startTime) {
+     
+        startTime = new Date();
+        localStorage.setItem('timerStartTime', startTime);
+    } else {
+       
+        startTime = new Date(startTime);
+    }
+
+    const updateTimer = () => {
+        const currentTime = new Date();
+        const elapsedTime = Math.floor((currentTime - startTime) / 1000);
+
+        const hours = Math.floor(elapsedTime / 3600);
+        const minutes = Math.floor((elapsedTime % 3600) / 60);
+        const seconds = elapsedTime % 60;
+
+        
+        hoursEl.textContent = hours.toString().padStart(2, '0');
+        minutesEl.textContent = minutes.toString().padStart(2, '0');
+        secondsEl.textContent = seconds.toString().padStart(2, '0');
+    };
+
+    intervalId = setInterval(updateTimer, 1000);
+    updateTimer();
+};
+
+
+const stopTimer = () => {
+    clearInterval(intervalId); 
+    localStorage.removeItem('timerStartTime'); 
+    console.log("Timer stopped!");
+};
+
+
+
     const socket = io();
     socket.on('accepted-login',(response)=>{
         const notificationSound = new Audio('/sounds/mixkit-software-interface-back-2575.mp3'); // Path to your sound file
@@ -83,11 +138,13 @@
        console.error("Audio playback failed:", error);
        });
         let arrivalbtn = document.getElementById('arrivalButton');
-        let message= document.getElementById("statusMessage")          
+        let message= document.getElementById("statusMessage")    
+             
         if(response == 'accepted'){
             arrivalbtn.innerHTML = "accepted";
             message.innerHTML='Arrival log is Accepted';
-            // window.location.reload();
+            const simulatedStartTime = new Date();
+            initializeTimer(simulatedStartTime);
         }else if(response == 'rejected'){
             arrivalbtn.innerHTML = "rejected";
              message.innerHTML='Arrival log is rejected';
@@ -104,6 +161,7 @@
         if(response == 'accepted'){
             departurebtn.innerHTML = "accepted";
              message.innerHTML='Departure log is Accepted';
+             stopTimer();
         }else if(response == 'rejected'){
             departurebtn.innerHTML = "rejected";
              message.innerHTML='Arrival log is rejected';

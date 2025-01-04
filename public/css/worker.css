@@ -25,7 +25,7 @@
     box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
     width: 350px;
     text-align: center;
-    height: 81vh;
+    /* height: 81vh; */
   }
 
   .log-container h2 {
@@ -94,7 +94,41 @@
   }
 
   /* ======================= */
+  .timer-container {
+    text-align: center;
+    background: rgb(12 59 240 / 83%);
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 0 10px 20px rgba(32, 131, 230, 0.3);
+}
 
+.timer-container h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.timer {
+    font-size: 48px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.timer span {
+   color: white;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgb(31 52 231 / 51%);
+    border-radius: 8px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+}
+/* ====================== */
   .schedule-container {
     margin-bottom: 3rem;
     width: 92%;

@@ -177,24 +177,53 @@ export const orders = async (req, res)=>{
 export const profit = async (req, res)=>{
     try {
         let adminBranch= req.user.branch_id;
+        const currentDate = new Date(); // Get the current date
+        const currentMonth = currentDate.getMonth() + 1; // Add 1 because getMonth() returns 0-11
         let result = await db.query(`SELECT branch_id , SUM(salary)
                                         from worker where branch_id=$1
                                         GROUP BY branch_id`,[adminBranch]);
         let salaries = result.rows[0];
             if(salaries == undefined)
                 salaries=0;
-        
-        console.log(result.rows[0])
+        let result1  = await db.query(`SELECT revenue, profit from profits where DATE_PART('month', month) =$1 and branch_id=$2;`,
+                                        [currentMonth,adminBranch]);
+        let revenue = result1.rows[0];
+            if(revenue == undefined)
+                revenue=0;
+        let profit = result1.rows[0];
+        if(profit == undefined)
+            profit=0;
+        let result2 =  await db.query(`SELECT DISTINCT EXTRACT(YEAR FROM month) AS year
+                                            FROM profits
+                                            WHERE branch_id=$1
+                                            ORDER BY year DESC;
+                                            `,[adminBranch]);
+        let years = result2.rows;
         res.render("admin/profit",{
+            years: years,
             salaries: salaries,
+            revenue: revenue,
+            profit: profit,
             layout:"./layouts/admin",
             enable:"profits"
         }) 
     } catch (error) {
         console.log(error)
-    }
-    
+    }  
 };
+
+export const profitData = async (req, res)=>{
+    try {
+        let adminBranch = req.user.branch_id;
+        let {currentYear} = req.body;
+        let result = await db.query(`SELECT month,revenue,profit,expenses FROM profits where branch_id = $1 and DATE_PART('year', month) =$2 `,
+                                        [adminBranch,currentYear]
+                                      );
+        res.json(result.rows);
+    } catch (error) {
+        console.log(error)
+    }
+}
 
 export const about = (req, res) => {
 
