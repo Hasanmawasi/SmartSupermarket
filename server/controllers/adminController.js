@@ -5,6 +5,12 @@ import fs from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import { io } from "../../app.js";
+import { Storage} from '@google-cloud/storage'
+
+
+// Google Cloud Storage configuration
+const storage = new Storage({projectId: 'mindful-server-446821-n5', keyFilename: 'service_account.json'});
+const bucketName = 'taswa';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -660,15 +666,28 @@ export const viewProducts = async (req, res) => {
     
 }
 
+async function uploadImage(filePath, destination) {
+    await storage.bucket(bucketName).upload(filePath, {
+        destination: destination, // File name in the bucket
+    });
+
+    console.log(`${filePath} uploaded to ${bucketName}`);
+    return `https://storage.googleapis.com/${bucketName}/${destination}`;
+}
+
 export const addProduct = async (req, res) => {
     const branchId = req.user.branch_id;
     const { productName, basePrice, sellingPrice, quantity, productDescription,expireDate, divId} = req.body;
     try {
         let file = req.file;
-        let imageUrl= `/image/productImg/${file.filename}`;
+        let localFilePath = file.path;  // Local path to the uploaded file on the server
+        let destinationFileName = `image/productImg/${file.filename}`;  // Desired name/path in the bucket
+
+        // Upload image and get the URL
+        let storedImageUrl = await uploadImage(localFilePath, destinationFileName);  // Await the result to get the URL
 
         const productResult = await db.query('INSERT INTO product (description, expire_date, base_price, selling_price, product_name, division_id,image_url) VALUES ($1, $2, $3, $4, $5, $6,$7) RETURNING *',
-            [productDescription, expireDate, basePrice, sellingPrice, productName, divId,imageUrl]);
+            [productDescription, expireDate, basePrice, sellingPrice, productName, divId,storedImageUrl]);
 
         const productId = productResult.rows[0].product_id;
         const product_Name = productResult.rows[0].product_name;

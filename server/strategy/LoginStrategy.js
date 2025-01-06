@@ -54,7 +54,6 @@ passport.serializeUser((user, done) => {
 });
 
 
-// Deserialize user from session
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
