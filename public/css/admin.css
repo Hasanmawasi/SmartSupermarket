@@ -41,18 +41,17 @@
 }
 
 /* ============================================= */
-/* about us page */
-/* General Styling */
+/* pie chart */
 
-
-
-
-
-
-
-
-
-
+#topProduct , #donatchart{
+  height: 400px !important;
+}
+#donatchart{
+  margin-left: 10px;
+}
+.customer-margin{
+  margin-left: 165px;
+}
 /* ========================== */
 /* workers */
 

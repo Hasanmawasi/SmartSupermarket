@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-between mt-4">
     <h1>Profits for Branch <span class="text-primary fw-bold"><%= selectedBranch%></span></h1>
     <div class="d-flex flex-row"> 
-    <h3 class="fw-bold mx-2">Select Branch: </h3>
+    <h4 class="fw-bold mx-2 mt-1">Select Branch: </h4>
     <form action="/manager/changeBranch" method="post" style="width: 150px;" >
     <select name="branch" class="form-select fw-bold" id="branch">
         <% locals.branches.forEach((branch,index)=>{  %>

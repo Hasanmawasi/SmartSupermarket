@@ -25,6 +25,8 @@ adminRoute.get('/admin/reports', adminController.reports)
 
 adminRoute.get("/admin/dashboard",authorizeRoles(["Admin"]),adminController.dashboard);
 
+adminRoute.post("/admin/dashboardData",adminController.dashboardData);
+
 adminRoute.get("/admin/products",adminController.products);
 
 adminRoute.get("/admin/workers",adminController.workers);
@@ -38,6 +40,8 @@ adminRoute.post("/admin/updateProfile",adminController.adminProfileUpdate);
 adminRoute.get("/admin/products/forms",adminController.forms);
 
 adminRoute.get("/admin/customers",adminController.customers);
+
+adminRoute.get("/admin/customersReviews",adminController.costomersReviews)
 
 adminRoute.get("/admin/orders",adminController.orders);
 

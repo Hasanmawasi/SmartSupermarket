@@ -15,15 +15,19 @@ managerRoute.use(authRoutes);
 
 managerRoute.get("/login",managerController.login);
 
-managerRoute.get("/manager/dashboard",managerController.dashboard);
+managerRoute.get("/manager/dashboard/:branch",managerController.dashboard);//////
 
 managerRoute.post("/manager/changeBranch",managerController.changeBranch);
 
 managerRoute.get("/manager/profit/:branch",managerController.profit);
 
-// managerRoute.post("/manager/profit/:branch",managerController.profit);//////
+managerRoute.post("/manager/dashboardData/:branch",managerController.dashboardData);////////
+
+managerRoute.get("/manager/customersReviews",managerController.costomersReviews);////////
 
 managerRoute.post("/manager/profitData/:branch",managerController.profitData);
+
+managerRoute.post("/manager/changeDashboardBranch",managerController.changeDashboardBranch)
 
 managerRoute.get("/manager/home",managerController.home);
 

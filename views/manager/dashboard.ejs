@@ -1,3 +1,118 @@
-<div class="mt-4">
-    <h1>Dashboard</h1>
+<div class="d-flex justify-content-between mt-4">
+  <h1>Dashboard for Branch <span class="text-primary fw-bold"><%= selectedBranch%></span></h1>
+  <div class="d-flex flex-row"> 
+  <h4 class="fw-bold mt-1 mx-2">Select Branch: </h4>
+  <form action="/manager/changeDashboardBranch" method="post" style="width: 150px;" >
+  <select name="branch" class="form-select fw-bold" id="branch">
+      <% locals.branches.forEach((branch)=>{  %>
+          <option value="<%= branch.branch_id %>" <%= selectedBranch== branch.branch_id ? "selected":"" %> ><%= branch.branch_id %></option>
+    <% }) %>
+  </select>
+ </form>
+ </div>
 </div>
+
+<section class="top-section mb-4 mt-1 mt">
+    <div class="row header col-sm-12">
+      <div class="col-md-3 col-sm-3 ">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <h5>Total Orders</h5>
+            <h2><%= locals.orders %> </h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3 ">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <h5>Workers in work</h5>
+            <h2><%= locals.workers %></h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3">
+        <div class="card bg-danger text-white">
+          <div class="card-body">
+            <h5><%= new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());%> Profets</h5>
+            <h2><%= locals.profit %></h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3 col-sm-3 ">
+        <div class="card bg-info text-white">
+          <div class="card-body">
+            <h5><%= new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());%> Revenue</h5>
+            <h2>$<%= locals.revenue %></h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
+    <div class="row"> 
+      <div class="title shadow-lg d-flex  justify-content-between"> 
+        <h3>Profits and Expenses</h3>
+        <form action="/manager/dashboardData" method="post">
+          <select name="currentYear" id="currentYear" class="form-select" style="width: 100px;">
+             <% locals.years.forEach((year,index)=>{  %>
+               <option value="<%= year.year %>" <%= index==0 ? "selected":"" %> ><%= year.year %></option>
+               <% }) %>
+           </select>
+         </form>
+      </div>
+      <section class="profit-section border card-shadow">
+        
+        <div class="row" > 
+          
+          <div class="col-sm-12   ">
+            
+            <canvas id="myChart"></canvas>
+          </div>   
+       
+        </div>
+      </div>
+      </section>
+  
+  
+     
+  <!-- <section class="product-table border my-4 bg-white"> -->
+     <section class="row mt-4 profit-section border card-shadow">
+      <div class="title shadow-lg d-flex justify-content-evenly">
+        <h3>Top product</h3>
+        <h3 class="customer-margin">Customers Average Rate</h3>
+      </div>
+    <div class="d-flex text-center bg-white shadow rounded ">
+      <div class=" col-sm-6">
+         <canvas id="topProduct"></canvas>
+      </div>
+      <div class="col-sm-6 p-3">     
+        <canvas class="mx-auto"  id="donatchart"></canvas>
+      </div> 
+  </div>
+  </section>
+  
+  <script>
+   
+    document.getElementById('branch').addEventListener('change', async (event) => {
+    try {
+        const branch = event.target.value; 
+        if (branch) {
+            const response = await fetch(`/manager/changeDashboardBranch`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ branch }), 
+            });
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            window.location.href = `/manager/dashboard/${branch}`;
+        }
+    } catch (error) {
+        console.error('Error changing branch:', error);
+    }
+});
+
+  </script>

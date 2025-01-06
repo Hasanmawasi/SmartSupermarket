@@ -41,7 +41,7 @@
         <hr>
         <ul class="nav nav-pills flex-column mb-auto activeLink sidebar-list mb-1 ">
           <li class="my-1">
-            <a href="/manager/dashboard" class="nav-link link-body-emphasis <%= locals.enable== "dashboard"? "active" : "" %>" >
+            <a href="/manager/dashboard/A1" class="nav-link link-body-emphasis <%= locals.enable== "dashboard"? "active" : "" %>" >
               <svg class="bi pe-none me-2" width="20" height="20"><use xlink:href="#speedometer2"></use></svg>
               Dashboard
             </a>
@@ -85,10 +85,10 @@
             <strong>mdo</strong>
           </a>
           <ul class="dropdown-menu text-small shadow">
-            <li><a class="dropdown-item" href="#">Settings</a></li>
+            <!-- <li><a class="dropdown-item" href="#">Settings</a></li> -->
             <li><a class="dropdown-item" href="/manager/profile">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            <li><a class="dropdown-item" href="/logout">Sign out</a></li>
           </ul>
         </div>
       </div>

@@ -35,15 +35,15 @@ dotenv.config();
 app.use(
   session({
     store: new PgSession({
-      pool: db, // PostgreSQL conection
-      tableName: 'session', // Name of the table in PostgreSQL to store sessions
+      pool: db, 
+      tableName: 'session',
     }),
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: false, // Set this to true in production with HTTPS
-      maxAge: 1000 * 60 * 60 * 24 * 7, // 7 day
+      secure: false, 
+      maxAge: 1000 * 60 * 60 * 24 * 7, 
     },
   })
 );
@@ -60,15 +60,13 @@ app.use((req, res, next) => {
 app.use(passport.initialize());
 app.use(passport.session());
 
-//  ejs layout 
+ 
 app.use(expressEjsLayouts);
 app.set("layout", "./layouts/admin.ejs");
 app.set("view engine", "ejs");
 
-// connect to the database
 db.connect();
-// routes 
-// Handle admin connections
+
 io.on('connection', (socket) => {
   console.log('A user connected');
   socket.on('disconnect', () => {
@@ -76,10 +74,15 @@ io.on('connection', (socket) => {
   });
 });
 
+
+
+
 app.use("/auth", authRoutes);
 app.use(adminRoute);
 app.use(workerRoute);
 app.use(managerRoute);
+
+
 
 app.get("*",(req,res)=>{
   res.render("404",{

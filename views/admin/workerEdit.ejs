@@ -12,7 +12,7 @@
         <button type="button" id="generatePasswordButton">Generate Password</button>
       </div>
       <div class="form-row">
-        <input type="text" id="" placeholder="Worker branch" name="workerBranch" required>
+        <input type="text" id="" placeholder="Worker branch" value="<%= locals.adminBranch %>" name="workerBranch" required readonly>
         
       </div>
       <!-- Vertical Form Fields -->
@@ -111,13 +111,7 @@
       document.getElementById("generatedPasswordDisplay").value = password;
     });
 
-    // Handle form submission
-    document.getElementById("addWorkerForm").addEventListener("submit", (event) => {
-      // event.preventDefault();
-      alert("Worker added successfully!");
-      // Additional submission logic can be added here
-    });
-
+  
 
     // ------------------------------------------------------------------------
 

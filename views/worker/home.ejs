@@ -29,7 +29,7 @@
   <h1 class="home-title">Your All-in-One Work Management Platform.</h1>
   <p class="Lead fs-4">Efficient tools for managing your day and staying connected with the admin. </p>
   <p class="">
-    <a id="getStarted" class="btn btn-lg btn-light fw-bold border-white bg-white">Get Started!</a>
+    <a id="getStarted" href="/worker/log" class="btn btn-lg btn-light fw-bold border-white bg-white">Get Started!</a>
   </p>
 </main>
 
@@ -37,13 +37,28 @@
 <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script>
   // JavaScript to handle the loader and redirection
-  document.getElementById('getStarted').addEventListener('click', () => {
-      const loader = document.getElementById('loader');
-      const vedio =  document.getElementById('vedio');
-      vedio.play();
-      loader.style.visibility = 'visible'; // Show the loader
-      setTimeout(() => {
-          window.location.href = '/worker/log'; // Redirect to the dashboard page
-      }, 3000); // Wait for 2 seconds
-  });
+  // document.getElementById('getStarted').addEventListener('click', () => {
+  //     const loader = document.getElementById('loader');
+  //     const vedio =  document.getElementById('vedio');
+  //     vedio.play();
+  //     loader.style.visibility = 'visible'; // Show the loader
+  //     setTimeout(() => {
+  //         window.location.href = '/worker/log'; // Redirect to the dashboard page
+  //     }, 3000); // Wait for 2 seconds
+  // });
+  window.onload = function () {
+            const video = document.getElementById('vedio');
+            const loader = document.getElementById('loader');
+            loader.style.visibility = 'visible'; // Show the loader)
+            setTimeout(() => {
+              loader.style.visibility = 'hidden'; // Redirect to the dashboard page
+              }, 3000); 
+            video.play()
+                .then(() => {
+                    console.log("Video is playing");
+                })
+                .catch(error => {
+                    console.error("Error playing video:", error);
+                });
+        };
 </script>

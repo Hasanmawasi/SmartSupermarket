@@ -23,12 +23,91 @@ export const login = (req,res)=>{
     })
 }
 
-export const dashboard = (req,res)=>{
+export const dashboard =async (req,res)=>{
+    try {
+        let adminBranch = req.user.branch_id;
+        let currentYear = req.body.year;
+        let result = await db.query(`SELECT month,revenue,profit,expenses 
+                                        FROM profits
+                                        where branch_id = $1 
+                                        and DATE_PART('year', month) =$2 `,
+                                         [adminBranch,currentYear]
+                                     );
+        let result2 =  await db.query(`SELECT DISTINCT EXTRACT(YEAR FROM month) AS year
+                                        FROM profits
+                                        WHERE branch_id=$1
+                                        ORDER BY year DESC;
+                                        `,[adminBranch]);
+        let years = result2.rows;   
+        let result3 = await db.query(`SELECT COUNT(*) AS total_orders
+                                        FROM orders
+                                        WHERE branch_id = $1;`,[adminBranch]);
+        let orders = result3.rows[0]?.total_orders || 0;    
+        let result4 = await db.query(`SELECT COUNT(*) AS total_workers
+                                        FROM dailylog 
+                                        WHERE log_status = 'accepted'
+                                        AND branch_id = $1
+                                        and log_date = CURRENT_DATE
+                                        AND (departure_time IS NULL OR departure_time = 'pending')`,[adminBranch]);   
+        let workers = result4.rows[0]?.total_workers || 0;
+        let result5 = await db.query(`SELECT revenue, profit 
+                                        from profits 
+                                        where branch_id = $1 
+                                        AND DATE_PART('year', month) = DATE_PART('year', CURRENT_DATE)
+                                        AND DATE_PART('month', month) = DATE_PART('month', CURRENT_DATE);`,[adminBranch]);
+        let profit =  result5.rows[0]?.profit || 0;
+        let revenue = result5.rows[0]?.revenue || 0;                           
+
         res.render("admin/dashboard",{
             layout:"./layouts/admin",
             enable:"dashboard",
-        })
+            years,
+            orders,
+            workers,
+            profit,
+            revenue
+        }) 
+    } catch (error) {
+        console.log(error)
+    }
+        
 };
+export const dashboardData = async (req, res)=>{
+    try {
+        let adminBranch = req.user.branch_id;
+        let {currentYear} = req.body;
+        let result = await db.query(`SELECT month,revenue,profit,expenses FROM profits where branch_id = $1 and DATE_PART('year', month) =$2 ORDER BY month ASC;`,
+                                        [adminBranch,currentYear]
+                                      );
+        let result1 = await db.query(`SELECT 
+                                        s.product_id, 
+                                        p.product_name, 
+                                        SUM(s.quantity_sold) AS total_quantity_sold
+                                    FROM 
+                                        product_sold s
+                                    JOIN 
+                                        product p 
+                                    ON 
+                                        s.product_id = p.product_id
+                                    WHERE 
+                                        s.branch_id = $1
+                                    GROUP BY 
+                                        s.product_id, p.product_name
+                                    ORDER BY 
+                                        total_quantity_sold DESC
+                                    LIMIT 5;`,
+                                    [adminBranch]);
+        
+        res.json({
+            profits: result.rows,   // The first result with profits
+            branchStorage: result1.rows  // The second result with branch storage info
+          });
+    } catch (error) {
+        console.log(error)
+    }
+};
+
+
 export const home = (req,res)=>{
     
         res.render("admin/home",{
@@ -65,6 +144,7 @@ export const forms = async (req,res)=>{
 
 export const workerEdit =async (req,res)=>{
     try{ 
+        let adminBranch= req.user.branch_id;
     let form= req.query.form;  
     let workerId = req.query.id;
     let worker_id,name,postion,salary,email,profileimg;
@@ -85,6 +165,7 @@ export const workerEdit =async (req,res)=>{
         salary: salary,
         id: worker_id,
         email:email,
+        adminBranch,        
         layout:"./layouts/admin",
         enable:"workers"
     })
@@ -222,7 +303,7 @@ export const profitData = async (req, res)=>{
     try {
         let adminBranch = req.user.branch_id;
         let {currentYear} = req.body;
-        let result = await db.query(`SELECT month,revenue,profit,expenses FROM profits where branch_id = $1 and DATE_PART('year', month) =$2 `,
+        let result = await db.query(`SELECT month,revenue,profit,expenses FROM profits where branch_id = $1 and DATE_PART('year', month) =$2 ORDER BY month ASC; `,
                                         [adminBranch,currentYear]
                                       );
         res.json(result.rows);
@@ -469,7 +550,8 @@ export const workerType =async (req, res) => {
         type: type,
         layout: './layouts/admin',
         workersInfo: workersInfo,
-        enable:"workers"
+        enable:"workers",
+        adminBranch,
     })
 };
 
@@ -485,7 +567,8 @@ export const addworkers = async (req , res)=>{
         const checkResult = await db.query("SELECT * FROM  worker WHERE worker_id= $1",[workerId,]);
 
         if(checkResult.rows.length >0 ){
-            res.redirect("/login");
+            req.flash("error","The worker ID is already found Please Select Another ID!")
+            res.redirect(`/admin/workers/type?type=${workertype}`);
         }else{
             bcrypt.hash(workerPass , saltRounds , async(err , hash)=>{
                 if(err){
@@ -949,6 +1032,20 @@ export const saveSchedule = async (req, res) => {
     } catch (err) {
         console.error("Error fetching customer reviews:", err);
         res.status(500).send("Internal Server Error");
+    }
+};
+
+export const costomersReviews = async (req, res)=>{
+    try {
+        const averageResult = await db.query(`
+            SELECT AVG(r.rating) as overall_rating 
+            FROM reviews r
+        `);
+
+        const overallRating = parseFloat(averageResult.rows[0].overall_rating).toFixed(1);
+        res.json(overallRating)
+    } catch (error) {
+        console.log(error);
     }
 };
 

@@ -19,7 +19,7 @@ const fetchProfitData = async () => {
       }
 
       const data = await response.json(); // Parse JSON response
-      console.log("Profit Data:", data);
+      // console.log("Profit Data:", data);
       return data 
   } catch (error) {
       console.error("Error fetching profit data:", error);

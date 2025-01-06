@@ -5,7 +5,7 @@
       <div class="card bg-primary text-white">
         <div class="card-body">
           <h5>Total Orders</h5>
-          <h2>75 </h2>
+          <h2><%= locals.orders %> </h2>
         </div>
       </div>
     </div>
@@ -13,23 +13,23 @@
       <div class="card bg-success text-white">
         <div class="card-body">
           <h5>Workers in work</h5>
-          <h2>35</h2>
+          <h2><%= workers %></h2>
         </div>
       </div>
     </div>
     <div class="col-md-3 col-sm-3">
       <div class="card bg-danger text-white">
         <div class="card-body">
-          <h5>weakly Profets</h5>
-          <h2>650$</h2>
+          <h5><%= new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());%> Profets</h5>
+          <h2><%= profit %></h2>
         </div>
       </div>
     </div>
     <div class="col-md-3 col-sm-3 ">
       <div class="card bg-info text-white">
         <div class="card-body">
-          <h5>Total Revenue</h5>
-          <h2>$128</h2>
+          <h5><%= new Intl.DateTimeFormat('en-US', { month: 'long' }).format(new Date());%> Revenue</h5>
+          <h2>$<%= revenue %></h2>
         </div>
       </div>
     </div>
@@ -38,75 +38,50 @@
 
 
   <div class="row"> 
-
+    <div class="title shadow-lg d-flex  justify-content-between"> 
+      <h3>Profits and Expenses</h3>
+      <form action="/admin/dashboardData" method="post">
+        <select name="currentYear" id="currentYear" class="form-select" style="width: 100px;">
+           <% locals.years.forEach((year,index)=>{  %>
+             <option value="<%= year.year %>" <%= index==0 ? "selected":"" %> ><%= year.year %></option>
+             <% }) %>
+         </select>
+       </form>
+    </div>
     <section class="profit-section border card-shadow">
+      
       <div class="row" > 
-        <div class="col-sm-6   ">
-          <div class="title shadow-lg"> 
-            <h3>Profits</h3>
-          </div>
+        
+        <div class="col-sm-12   ">
+          
           <canvas id="myChart"></canvas>
         </div>   
-        <div class="col-sm-6  ">
+        <!-- <div class="col-sm-6  ">
           <div class="title shadow-lg"> 
             <h3>pridectd Profits</h3>
           </div>
           <canvas id="myChart1"></canvas>
-        </div> 
+        </div>  -->
       </div>
     </div>
     </section>
 
 
-
-<section class="product-table border my-4 bg-white">
-  <div class="row bg-white shadow">
-    <div class="border items-table col-sm-6">
-      <div class="title shadow-lg">
-        <h3>top product</h3>
-      </div>
-      <div class="table-item ">
-        <p>id</p>
-        <p>image</p>
-        <p>quantity </p>
-        <p>catigory</p>
-        <p>remainig</p>
+   
+<!-- <section class="product-table border my-4 bg-white"> -->
+   <section class="row mt-4 profit-section border card-shadow">
+    <div class="title shadow-lg d-flex justify-content-evenly">
+      <h3>Top product</h3>
+      <h3 class="customer-margin">Customers Average Rate</h3>
     </div>
-      <div class="table-item ">
-        <span>#12
-          <img class="table-image" src="/image/logo.png" alt="product-image"></span>
-          <p>50</p>
-          <p> food</p>
-          <p> 10</p>
-      </div>
-      <div class="table-item ">
-          <span>#12
-          <img class="table-image" src="/image/logo.png" alt="product-image"></span>
-          <p>50</p>
-          <p> candies</p>
-          <p> 10</p>
-      </div>
-      <div class="table-item ">
-        <span>#12
-          <img class="table-image" src="/image/logo.png" alt="product-image"></span>
-        <p>50</p>
-        <p> candies</p>
-        <p> 10</p>
+  <div class="d-flex text-center bg-white shadow rounded ">
+    <div class=" col-sm-6">
+       <canvas id="topProduct"></canvas>
     </div>
-    <div class="table-item ">
-      <span>#12
-        <img class="table-image" src="/image/logo.png" alt="product-image"></span>
-      <p>50</p>
-      <p> candies</p>
-      <p>10</p>
-  </div>
-    </div> 
-    <div class="col-sm-6">
-      <div class="title shadow-lg"> 
-        <h2>Supermarket performance</h2>
-      </div>
-      <canvas id="donatchart"></canvas>
+    <div class="col-sm-6 p-3">     
+      <canvas class="mx-auto"  id="donatchart"></canvas>
     </div> 
 </div>
 </section>
 
+<script src="/js/adminChart.js" ></script>
